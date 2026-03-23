@@ -258,6 +258,41 @@ export async function getPendingPayments(): Promise<PaymentProofWithDetails[]> {
   return proofs as unknown as PaymentProofWithDetails[];
 }
 
+// Cancela la suscripción activa o pendiente del usuario actual
+export async function cancelSubscription(subscriptionId: string): Promise<ActionResult> {
+  const user = await getCurrentUser();
+  if (!user) return { success: false, error: "No autenticado" };
+
+  const supabase = await createClient();
+
+  // Verificar que la suscripción pertenece al usuario y tiene un estado cancelable
+  const { data: subscription } = await supabase
+    .from("subscriptions")
+    .select("id, status, user_id")
+    .eq("id", subscriptionId)
+    .eq("user_id", user.id)
+    .in("status", ["active", "pending"])
+    .single();
+
+  if (!subscription) {
+    return { success: false, error: "Suscripción no encontrada o no se puede cancelar" };
+  }
+
+  const { error } = await supabase
+    .from("subscriptions")
+    .update({ status: "cancelled" })
+    .eq("id", subscriptionId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    console.error("[cancelSubscription] Error:", error.message);
+    return { success: false, error: "Error al cancelar la membresía. Intenta de nuevo." };
+  }
+
+  revalidatePath("/portal/membership");
+  return { success: true };
+}
+
 // Obtiene la suscripción activa o pendiente del usuario actual
 export async function getUserSubscription(): Promise<Subscription | null> {
   const user = await getCurrentUser();

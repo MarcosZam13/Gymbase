@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { uploadPaymentProof } from "@/actions/payment.actions";
+import { uploadPaymentProof, cancelSubscription } from "@/actions/payment.actions";
 import { formatDate, formatPrice } from "@/lib/utils";
 import { MAX_FILE_SIZE_LABEL } from "@/lib/constants";
 import type { Profile, Subscription, SubscriptionStatus, PaymentProof } from "@/types/database";
@@ -38,6 +38,8 @@ interface MembershipClientProps {
 export function MembershipClient({ profile, subscription }: MembershipClientProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [isPending, setIsPending] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
   const [notes, setNotes] = useState("");
 
   const status = (subscription?.status ?? "none") as SubscriptionStatus | "none";
@@ -46,6 +48,21 @@ export function MembershipClient({ profile, subscription }: MembershipClientProp
 
   // Mostrar el formulario de comprobante solo si hay una suscripción pendiente o rechazada
   const showUploadForm = status === "pending" || status === "rejected";
+  // Permitir cancelar solo si la suscripción está activa o pendiente
+  const canCancel = status === "active" || status === "pending";
+
+  const handleCancel = async () => {
+    if (!subscription) return;
+    setIsCancelling(true);
+    const result = await cancelSubscription(subscription.id);
+    setIsCancelling(false);
+    setConfirmCancel(false);
+    if (result.success) {
+      toast.success("Membresía cancelada correctamente.");
+    } else {
+      toast.error(typeof result.error === "string" ? result.error : "Error al cancelar");
+    }
+  };
 
   const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -133,6 +150,46 @@ export function MembershipClient({ profile, subscription }: MembershipClientProp
             <Button asChild size="sm">
               <Link href="/portal/plans">Ver planes disponibles</Link>
             </Button>
+          )}
+
+          {/* Botón de cancelar con confirmación inline */}
+          {canCancel && (
+            <div className="pt-2 border-t border-border">
+              {!confirmCancel ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-danger"
+                  onClick={() => setConfirmCancel(true)}
+                >
+                  Cancelar membresía
+                </Button>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    ¿Estás seguro? Esta acción no se puede deshacer.
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      disabled={isCancelling}
+                      onClick={handleCancel}
+                    >
+                      {isCancelling ? "Cancelando..." : "Sí, cancelar"}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={isCancelling}
+                      onClick={() => setConfirmCancel(false)}
+                    >
+                      No, volver
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
           )}
         </CardContent>
       </Card>
