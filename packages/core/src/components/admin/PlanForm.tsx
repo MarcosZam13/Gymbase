@@ -175,6 +175,33 @@ export function PlanForm({ plan, onSuccess }: PlanFormProps) {
         )}
       </div>
 
+      {/* Orden y visibilidad */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-border pt-4">
+        <div className="space-y-1.5">
+          <Label htmlFor="sort_order">Orden de visualización</Label>
+          <Input
+            id="sort_order"
+            type="number"
+            min={0}
+            placeholder="0"
+            {...register("sort_order", { valueAsNumber: true })}
+          />
+          <p className="text-xs text-muted-foreground">Número menor aparece primero</p>
+        </div>
+        <div className="flex flex-col justify-center gap-2">
+          <Label>Estado del plan</Label>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              className="w-4 h-4 accent-primary"
+              {...register("is_active")}
+              defaultChecked={plan?.is_active ?? true}
+            />
+            <span className="text-sm">Plan activo (visible para nuevos miembros)</span>
+          </label>
+        </div>
+      </div>
+
       <div className="flex justify-end gap-3 pt-2">
         <Button type="submit" disabled={isPending}>
           {isPending ? "Guardando..." : isEditing ? "Guardar cambios" : "Crear plan"}

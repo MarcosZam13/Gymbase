@@ -36,3 +36,17 @@ pnpm-debug.log*
 # Supabase
 supabase/.branches/
 supabase/.temp/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+.eslintcache
+.stylelintcache
+
+# Editor
+.idea/
+*.swp
+*.swo

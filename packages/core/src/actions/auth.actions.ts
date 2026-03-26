@@ -3,6 +3,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { loginSchema, registerSchema } from "@/lib/validations/auth";
 import type { ActionResult } from "@/types/database";
@@ -111,4 +112,38 @@ export async function signOut(): Promise<void> {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/login");
+}
+
+// Envía el correo de recuperación de contraseña al email indicado
+export async function requestPasswordReset(email: string): Promise<ActionResult> {
+  const emailParsed = z.string().email("Correo inválido").safeParse(email);
+  if (!emailParsed.success) return { success: false, error: "Correo inválido" };
+
+  const supabase = await createClient();
+  // redirectTo debe apuntar a la página de reset del app que lo llame
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const { error } = await supabase.auth.resetPasswordForEmail(emailParsed.data, {
+    redirectTo: `${origin}/reset-password`,
+  });
+
+  if (error) {
+    console.error("[requestPasswordReset] Error:", error.message);
+    // Responder con éxito genérico para no revelar si el email existe
+  }
+  return { success: true };
+}
+
+// Actualiza la contraseña del usuario autenticado (flujo post-link de reset)
+export async function updatePassword(newPassword: string): Promise<ActionResult> {
+  const parsed = z.string().min(8, "La contraseña debe tener al menos 8 caracteres").safeParse(newPassword);
+  if (!parsed.success) return { success: false, error: parsed.error.errors[0].message };
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password: parsed.data });
+
+  if (error) {
+    console.error("[updatePassword] Error:", error.message);
+    return { success: false, error: "Error al actualizar la contraseña. El enlace puede haber expirado." };
+  }
+  return { success: true };
 }
