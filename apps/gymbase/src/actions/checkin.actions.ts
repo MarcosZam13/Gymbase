@@ -13,6 +13,7 @@ import {
   fetchOpenCheckin,
   fetchCurrentOccupancy,
   fetchAttendanceLogs,
+  closeStaleCheckins,
 } from "@/services/checkin.service";
 import { scanQRSchema, manualCheckinSchema, checkoutSchema } from "@/lib/validations/checkin";
 import { DEFAULT_GYM_CAPACITY } from "@/lib/constants";
@@ -78,6 +79,10 @@ export async function scanCheckin(input: unknown): Promise<ActionResult<Attendan
 
   const supabase = await createClient();
   try {
+    const orgId = await getOrgId();
+    // Limpiar check-ins huérfanos antes de procesar — evita bloqueos al miembro
+    await closeStaleCheckins(supabase, orgId);
+
     // Buscar el QR escaneado
     const qrRecord = await findQRByCode(supabase, parsed.data.qr_code);
     if (!qrRecord) {
@@ -158,6 +163,8 @@ export async function getOccupancy(): Promise<OccupancyData> {
 
   try {
     const orgId = await getOrgId();
+    // Cerrar check-ins huérfanos antes de contar para que la cifra sea exacta
+    await closeStaleCheckins(supabase, orgId);
     const current = await fetchCurrentOccupancy(supabase, orgId);
     const capacity = DEFAULT_GYM_CAPACITY;
     const percentage = Math.min(100, Math.round((current / capacity) * 100));
@@ -216,6 +223,51 @@ export async function getMonthlyAttendanceCounts(): Promise<Record<string, numbe
   } catch (error) {
     console.error("[getMonthlyAttendanceCounts] Error:", error);
     return {};
+  }
+}
+
+// Obtiene todos los logs de asistencia de un miembro específico para visualizaciones
+export async function getMemberAttendanceLogs(memberId: string): Promise<AttendanceLog[]> {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "admin") return [];
+
+  const supabase = await createClient();
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+  const { data, error } = await supabase
+    .from("gym_attendance_logs")
+    .select("id, user_id, check_in_at, check_out_at, duration_minutes")
+    .eq("user_id", memberId)
+    .gte("check_in_at", oneYearAgo.toISOString())
+    .order("check_in_at", { ascending: false });
+
+  if (error) {
+    console.error("[getMemberAttendanceLogs] Error:", error);
+    return [];
+  }
+  return (data ?? []) as AttendanceLog[];
+}
+
+// Obtiene el historial de asistencia del usuario autenticado (para el portal)
+export async function getMyAttendanceLogs(limit = 30): Promise<AttendanceLog[]> {
+  const user = await getCurrentUser();
+  if (!user) return [];
+
+  const supabase = await createClient();
+  try {
+    const { data, error } = await supabase
+      .from("gym_attendance_logs")
+      .select("id, user_id, check_in_at, check_out_at, duration_minutes")
+      .eq("user_id", user.id)
+      .order("check_in_at", { ascending: false })
+      .limit(limit);
+
+    if (error) throw new Error(error.message);
+    return (data ?? []) as AttendanceLog[];
+  } catch (error) {
+    console.error("[getMyAttendanceLogs] Error:", error);
+    return [];
   }
 }
 

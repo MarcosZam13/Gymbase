@@ -50,3 +50,6 @@ coverage/
 .idea/
 *.swp
 *.swo
+
+# Claude Code (contiene keys y configuración local)
+.claude/

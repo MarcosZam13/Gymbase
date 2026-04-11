@@ -107,17 +107,59 @@ export function HealthMetricsForm({ userId, profile }: HealthMetricsFormProps): 
       </div>
 
       <div className="space-y-1">
-        <Label htmlFor="injuries_notes">Lesiones / Notas</Label>
+        <div className="flex items-center gap-1.5 mb-1">
+          <label htmlFor="injuries_notes" className="text-sm font-medium leading-none">
+            Lesiones / Notas
+          </label>
+          <span
+            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-medium"
+            style={{ backgroundColor: "#FF5E1415", color: "#FF5E14", border: "1px solid #FF5E1430" }}
+          >
+            <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Solo admin
+          </span>
+        </div>
         <textarea id="injuries_notes" {...register("injuries_notes")} rows={2} className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm" />
       </div>
 
       <div className="space-y-1">
-        <Label htmlFor="trainer_notes">Notas del entrenador</Label>
+        <div className="flex items-center gap-1.5 mb-1">
+          <label htmlFor="trainer_notes" className="text-sm font-medium leading-none">
+            Notas del entrenador
+          </label>
+          <span
+            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-medium"
+            style={{ backgroundColor: "#FF5E1415", color: "#FF5E14", border: "1px solid #FF5E1430" }}
+          >
+            <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Solo admin
+          </span>
+        </div>
         <textarea id="trainer_notes" {...register("trainer_notes")} rows={2} className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm" />
       </div>
 
       <div className="space-y-1">
-        <Label htmlFor="medical_conditions">Condiciones médicas</Label>
+        <div className="flex items-center gap-1.5 mb-1">
+          <label htmlFor="medical_conditions" className="text-sm font-medium leading-none">
+            Condiciones médicas
+          </label>
+          <span
+            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-medium"
+            style={{ backgroundColor: "#FF5E1415", color: "#FF5E14", border: "1px solid #FF5E1430" }}
+          >
+            <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Solo admin
+          </span>
+        </div>
         <textarea id="medical_conditions" {...register("medical_conditions")} rows={2} className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm" />
       </div>
 

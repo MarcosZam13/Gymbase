@@ -180,9 +180,14 @@ export function QRScanner(): React.ReactNode {
             />
           </div>
 
-          <p className="mt-6 text-sm font-medium" style={{ color: "rgba(255,255,255,0.7)" }}>
-            Apunta al código QR del miembro
-          </p>
+          <div className="mt-6 text-center">
+            <p className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.7)" }}>
+              Apunta al código QR del miembro
+            </p>
+            <p className="text-[11px] mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>
+              1er escaneo registra entrada · 2do registra salida
+            </p>
+          </div>
         </div>
       )}
 

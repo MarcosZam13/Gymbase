@@ -87,16 +87,32 @@ export async function insertCheckin(
   return data as AttendanceLog;
 }
 
-// Registra un check-out (cierra el check-in activo)
+// Registra un check-out (cierra el check-in activo y calcula la duración)
 export async function performCheckout(
   supabase: SupabaseClient,
   attendanceId: string
 ): Promise<AttendanceLog> {
-  const { data, error } = await supabase
+  // Obtener check_in_at para calcular la duración antes de actualizar
+  const { data: existing, error: fetchError } = await supabase
     .from("gym_attendance_logs")
-    .update({ check_out_at: new Date().toISOString() })
+    .select("check_in_at")
     .eq("id", attendanceId)
     .is("check_out_at", null)
+    .single();
+
+  if (fetchError) throw new Error(fetchError.message);
+
+  const checkOutAt = new Date();
+  const checkInAt = new Date(existing.check_in_at);
+  const durationMinutes = Math.round((checkOutAt.getTime() - checkInAt.getTime()) / 60000);
+
+  const { data, error } = await supabase
+    .from("gym_attendance_logs")
+    .update({
+      check_out_at: checkOutAt.toISOString(),
+      duration_minutes: durationMinutes,
+    })
+    .eq("id", attendanceId)
     .select("id, user_id, org_id, check_in_at, check_out_at, registered_by, duration_minutes")
     .single();
 
@@ -118,6 +134,42 @@ export async function fetchOpenCheckin(
 
   if (error) throw new Error(error.message);
   return data as AttendanceLog | null;
+}
+
+// Cierra automáticamente los check-ins que llevan más de maxHours horas abiertos.
+// Se llama antes de contar ocupación y antes de procesar un nuevo escaneo,
+// para que check-ins huérfanos no bloqueen al miembro ni inflen el conteo.
+export async function closeStaleCheckins(
+  supabase: SupabaseClient,
+  orgId: string,
+  maxHours: number = 4
+): Promise<void> {
+  const cutoff = new Date(Date.now() - maxHours * 60 * 60 * 1000).toISOString();
+
+  // Obtener los stale para calcular duration_minutes antes de cerrarlos
+  const { data: stale } = await supabase
+    .from("gym_attendance_logs")
+    .select("id, check_in_at")
+    .eq("org_id", orgId)
+    .is("check_out_at", null)
+    .lt("check_in_at", cutoff);
+
+  if (!stale || stale.length === 0) return;
+
+  const now = new Date().toISOString();
+
+  // Cerrar cada uno con su duración real calculada
+  await Promise.all(
+    stale.map((log) => {
+      const durationMinutes = Math.round(
+        (Date.now() - new Date(log.check_in_at).getTime()) / 60000
+      );
+      return supabase
+        .from("gym_attendance_logs")
+        .update({ check_out_at: now, duration_minutes: durationMinutes })
+        .eq("id", log.id);
+    })
+  );
 }
 
 // Obtiene la cantidad de personas actualmente en el gym

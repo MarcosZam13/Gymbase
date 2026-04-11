@@ -9,6 +9,7 @@ import {
   Dumbbell,
   CalendarDays,
   Trophy,
+  TrendingUp,
   BookOpen,
   Users,
   LogOut,
@@ -39,6 +40,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/portal/routines",   label: "Rutinas",   icon: Dumbbell,     flag: "gym_routines" },
   { href: "/portal/calendar",   label: "Clases",    icon: CalendarDays, flag: "gym_calendar" },
   { href: "/portal/challenges", label: "Retos",     icon: Trophy,       flag: "gym_challenges" },
+  { href: "/portal/progress",  label: "Progreso",  icon: TrendingUp,   flag: "gym_health_metrics" },
   { href: "/portal/community",  label: "Comunidad", icon: Users,        flag: "community" },
 ];
 
@@ -96,7 +98,8 @@ export function GymPortalNav({ profile }: GymPortalNavProps): React.ReactNode {
         </Link>
 
         {/* ── Links de navegación ──────────────────────────────────────────── */}
-        <nav className="flex items-center gap-1 flex-1">
+        {/* En mobile los links se ocultan — la navegación va en el bottom nav */}
+        <nav className="hidden md:flex items-center gap-1 flex-1">
           {visibleItems.map(({ href, label, icon: Icon }) => {
             const active = isActive(href);
             return (
