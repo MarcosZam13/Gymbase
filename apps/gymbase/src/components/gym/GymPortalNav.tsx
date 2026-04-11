@@ -25,6 +25,8 @@ import type { Profile } from "@/types/database";
 
 interface GymPortalNavProps {
   profile: Profile | null;
+  // Cuando la membresía no está activa, solo se muestra el link de membresía
+  isActive?: boolean;
 }
 
 interface NavItem {
@@ -44,7 +46,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/portal/community",  label: "Comunidad", icon: Users,        flag: "community" },
 ];
 
-export function GymPortalNav({ profile }: GymPortalNavProps): React.ReactNode {
+export function GymPortalNav({ profile, isActive = true }: GymPortalNavProps): React.ReactNode {
   const pathname = usePathname();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -60,14 +62,16 @@ export function GymPortalNav({ profile }: GymPortalNavProps): React.ReactNode {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const isActive = (href: string): boolean => {
+  // Determina si un link de navegación está activo según el pathname actual
+  const isActivePath = (href: string): boolean => {
     if (href === "/portal/dashboard") return pathname === "/portal/dashboard" || pathname === "/portal";
     return pathname.startsWith(href);
   };
 
-  const visibleItems = NAV_ITEMS.filter(
-    (item) => !item.flag || themeConfig.features[item.flag]
-  );
+  // Sin membresía activa solo se muestra el link de membresía — el resto se oculta
+  const visibleItems = isActive
+    ? NAV_ITEMS.filter((item) => !item.flag || themeConfig.features[item.flag])
+    : [];
 
   const firstName = profile?.full_name?.split(" ")[0] ?? profile?.email ?? "Mi cuenta";
 
@@ -101,7 +105,7 @@ export function GymPortalNav({ profile }: GymPortalNavProps): React.ReactNode {
         {/* En mobile los links se ocultan — la navegación va en el bottom nav */}
         <nav className="hidden md:flex items-center gap-1 flex-1">
           {visibleItems.map(({ href, label, icon: Icon }) => {
-            const active = isActive(href);
+            const active = isActivePath(href);
             return (
               <Link
                 key={href}

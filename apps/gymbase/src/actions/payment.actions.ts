@@ -11,6 +11,7 @@ import {
   createSubscription as coreCreateSubscription,
   getUserSubscription as coreGetUserSubscription,
   getPendingPayments as coreGetPendingPayments,
+  registerManualPayment as coreRegisterManualPayment,
 } from "@core/actions/payment.actions";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -137,7 +138,7 @@ export async function getMemberPayments(memberId: string): Promise<PaymentProofW
   }
 }
 
-const registerManualPaymentSchema = z.object({
+const renewManualSubscriptionSchema = z.object({
   memberId: z.string().uuid(),
   subscriptionId: z.string().uuid(),
   planId: z.string().uuid(),
@@ -146,14 +147,25 @@ const registerManualPaymentSchema = z.object({
   notes: z.string().optional(),
 });
 
-// Registra un pago presencial verificado por el admin — se aprueba directamente
-// sin comprobante digital ya que el admin es quien lo recibe y confirma.
-// Si el admin seleccionó un plan diferente al actual, actualiza la suscripción al nuevo plan.
-export async function registerManualPayment(input: unknown): Promise<ActionResult> {
+// Re-exporta la acción core para el flujo frío desde /admin/payments
+export async function registerManualPayment(input: {
+  userId: string;
+  planId: string;
+  paymentMethod: "efectivo" | "tarjeta" | "transferencia";
+  amount: number;
+  notes?: string;
+}): Promise<ActionResult> {
+  return coreRegisterManualPayment(input);
+}
+
+// Renueva una suscripción existente con un pago presencial (usado desde el perfil del miembro).
+// A diferencia de registerManualPayment, este action opera sobre una suscripción ya existente
+// y puede encolar el nuevo período si aún está vigente (no pierde tiempo pagado).
+export async function renewManualSubscription(input: unknown): Promise<ActionResult> {
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") return { success: false, error: "Sin permisos" };
 
-  const parsed = registerManualPaymentSchema.safeParse(input);
+  const parsed = renewManualSubscriptionSchema.safeParse(input);
   if (!parsed.success) return { success: false, error: "Datos inválidos" };
 
   const { memberId, subscriptionId, planId, amount, paymentMethod, notes } = parsed.data;
@@ -172,6 +184,8 @@ export async function registerManualPayment(input: unknown): Promise<ActionResul
         status: "approved",
         reviewed_by: user.id,
         reviewed_at: new Date().toISOString(),
+        file_url: "",
+        file_path: "",
       });
 
     if (proofError) throw new Error(proofError.message);
@@ -185,7 +199,7 @@ export async function registerManualPayment(input: unknown): Promise<ActionResul
 
     const durationDays = plan?.duration_days ?? 30;
 
-    // Si la suscripción actual todavía está vigente, encolar el nuevo período
+    // Si la suscripción todavía está vigente, encolar el nuevo período
     // para que arranque cuando venza la actual — no se pierde tiempo pagado
     const currentExpiry = currentSub?.expires_at ? new Date(currentSub.expires_at) : null;
     const now = new Date();
@@ -210,7 +224,7 @@ export async function registerManualPayment(input: unknown): Promise<ActionResul
     revalidatePath("/admin/payments");
     return { success: true };
   } catch (error) {
-    console.error("[registerManualPayment] Error:", error);
+    console.error("[renewManualSubscription] Error:", error);
     return { success: false, error: "Error al registrar el pago" };
   }
 }

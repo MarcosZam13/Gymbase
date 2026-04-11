@@ -47,9 +47,11 @@ const STATUS_BADGE: Record<PaymentStatus, { label: string; cls: string }> = {
 
 interface GymPaymentsClientProps {
   initialPayments: PaymentProofWithDetails[];
+  // Slot para inyectar el dialog de pago manual desde el servidor (evita prop drilling de data)
+  manualPaymentSlot?: React.ReactNode;
 }
 
-export function GymPaymentsClient({ initialPayments }: GymPaymentsClientProps): React.ReactNode {
+export function GymPaymentsClient({ initialPayments, manualPaymentSlot }: GymPaymentsClientProps): React.ReactNode {
   const [payments, setPayments] = useState<PaymentProofWithDetails[]>(initialPayments);
   const [filter, setFilter] = useState<FilterStatus>("all");
   const [query, setQuery] = useState("");
@@ -122,6 +124,8 @@ export function GymPaymentsClient({ initialPayments }: GymPaymentsClientProps): 
             </p>
           </div>
           <div className="flex items-center gap-2">
+            {/* Slot para el dialog de pago manual — se monta desde el servidor con los datos ya cargados */}
+            {manualPaymentSlot}
             <div className="flex items-center gap-2 h-[34px] bg-[#111] border border-[#222] rounded-lg px-3 w-[200px]">
               <Search className="w-3.5 h-3.5 text-[#444] flex-shrink-0" />
               <input
@@ -225,14 +229,14 @@ export function GymPaymentsClient({ initialPayments }: GymPaymentsClientProps): 
                         </span>
                       </td>
 
-                      {/* Comprobante */}
+                      {/* Comprobante — los pagos manuales no tienen archivo pero el modal igual muestra los detalles */}
                       <td className="px-4 py-3">
                         <button
                           onClick={() => setViewingProof(proof)}
                           className="h-6 px-2 flex items-center gap-1 bg-[#161616] border border-[#222] rounded text-[10px] text-[#666] hover:text-[#ccc] transition-colors"
                         >
                           <ExternalLink className="w-2.5 h-2.5" />
-                          Ver
+                          {proof.file_url ? "Ver" : "Detalle"}
                         </button>
                       </td>
 
@@ -287,8 +291,17 @@ export function GymPaymentsClient({ initialPayments }: GymPaymentsClientProps): 
             </div>
 
             <div className="p-5">
-              {/* Vista del comprobante */}
-              {viewingProof.file_url.match(/\.(jpg|jpeg|png|webp)$/i) ? (
+              {/* Vista del comprobante — los pagos manuales no tienen archivo digital */}
+              {!viewingProof.file_url || viewingProof.file_url === "" ? (
+                <div className="flex flex-col items-center justify-center h-24 bg-[#0d0d0d] rounded-xl mb-4 gap-2">
+                  <p className="text-[12px] text-[#555]">Pago presencial — sin comprobante digital</p>
+                  {viewingProof.payment_method && (
+                    <span className="text-[10px] bg-[#161616] border border-[#222] rounded px-2 py-0.5 text-[#666]">
+                      {viewingProof.payment_method}
+                    </span>
+                  )}
+                </div>
+              ) : viewingProof.file_url.match(/\.(jpg|jpeg|png|webp)$/i) ? (
                 <div className="relative h-72 bg-[#0d0d0d] rounded-xl overflow-hidden mb-4">
                   <Image
                     src={viewingProof.file_url}

@@ -18,6 +18,8 @@ import type { Profile } from "@/types/database";
 
 interface GymPortalBottomNavProps {
   profile: Profile | null;
+  // Cuando la membresía no está activa, se oculta el bottom nav completamente
+  isActive?: boolean;
 }
 
 interface BottomNavItem {
@@ -36,8 +38,11 @@ const BOTTOM_NAV_ITEMS: BottomNavItem[] = [
   { href: "/portal/profile",   label: "Perfil",   icon: UserCircle },
 ];
 
-export function GymPortalBottomNav({ profile: _ }: GymPortalBottomNavProps): React.ReactNode {
+export function GymPortalBottomNav({ profile: _, isActive: hasMembership = true }: GymPortalBottomNavProps): React.ReactNode {
   const pathname = usePathname();
+
+  // Sin membresía activa no se muestra el bottom nav — el miembro ve solo la pantalla de membresía
+  if (!hasMembership) return null;
 
   const isActive = (href: string): boolean => {
     if (href === "/portal/dashboard")

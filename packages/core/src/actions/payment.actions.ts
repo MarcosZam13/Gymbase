@@ -3,6 +3,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { createClient, getCurrentUser } from "@/lib/supabase/server";
 import {
   uploadProofSchema,
@@ -21,20 +22,23 @@ export async function createSubscription(planId: string): Promise<ActionResult<{
 
   const supabase = await createClient();
 
-  // Verificar que no tenga ya una suscripción activa o pendiente
-  const { data: existing } = await supabase
+  // Verificar suscripciones bloqueantes — rejected/cancelled se ignoran y permiten
+  // crear una nueva (el miembro puede cambiar de plan o reintentar el flujo)
+  const { data: blocking } = await supabase
     .from("subscriptions")
     .select("id, status")
     .eq("user_id", user.id)
-    .in("status", ["active", "pending"])
-    .single();
+    .in("status", ["active", "pending"]);
 
-  if (existing?.status === "active") {
+  const activeSubscription = (blocking ?? []).find((s) => s.status === "active");
+  const pendingSubscription = (blocking ?? []).find((s) => s.status === "pending");
+
+  if (activeSubscription) {
     return { success: false, error: "Ya tienes una membresía activa" };
   }
-  if (existing?.status === "pending") {
-    // Reusar la suscripción pendiente existente en lugar de crear una nueva
-    return { success: true, data: { subscriptionId: existing.id } };
+  if (pendingSubscription) {
+    // Reutilizar la suscripción pendiente — ya tiene comprobante en revisión
+    return { success: true, data: { subscriptionId: pendingSubscription.id } };
   }
 
   const { data, error } = await supabase
@@ -138,6 +142,7 @@ export async function approvePayment(formData: unknown): Promise<ActionResult> {
   }
 
   // Calcular fechas de inicio y expiración
+  // PostgREST retorna el join de membership_plans como array (embeddings siempre son arrays en supabase-js)
   const startsAt = new Date();
   const expiresAt = new Date();
   const durationDays = (subscription.membership_plans as { duration_days: number }[] | null)?.[0]?.duration_days ?? 30;
@@ -245,9 +250,11 @@ export async function getPendingPayments(): Promise<PaymentProofWithDetails[]> {
     return [];
   }
 
-  // Generar signed URLs para cada comprobante (bucket privado, válidas 1 hora)
+  // Generar signed URLs para cada comprobante (bucket privado, válidas 1 hora).
+  // BUG FIX: los pagos manuales presenciales tienen file_path vacío — no intentar generar URL.
   const proofs = await Promise.all(
     (data ?? []).map(async (proof) => {
+      if (!proof.file_path) return proof;
       const { data: signed } = await supabase.storage
         .from(STORAGE_BUCKETS.PAYMENT_PROOFS)
         .createSignedUrl(proof.file_path, 3600);
@@ -290,6 +297,108 @@ export async function cancelSubscription(subscriptionId: string): Promise<Action
   }
 
   revalidatePath("/portal/membership");
+  return { success: true };
+}
+
+// Registra un pago presencial sin comprobante digital (solo admin)
+// Crea una suscripción nueva + payment_proof aprobado en una secuencia atómica.
+// Si el miembro ya tiene una suscripción activa vigente, retorna error para evitar duplicados.
+export async function registerManualPayment(input: {
+  userId: string;
+  planId: string;
+  paymentMethod: "efectivo" | "tarjeta" | "transferencia";
+  amount: number;
+  notes?: string;
+}): Promise<ActionResult> {
+  const user = await getCurrentUser();
+  if (!user) return { success: false, error: "No autenticado" };
+  if (user.role !== "admin") return { success: false, error: "Sin permisos" };
+
+  const schema = z.object({
+    userId: z.string().uuid(),
+    planId: z.string().uuid(),
+    paymentMethod: z.enum(["efectivo", "tarjeta", "transferencia"]),
+    amount: z.number().positive(),
+    notes: z.string().max(500).optional(),
+  });
+
+  const parsed = schema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: "Datos inválidos" };
+  }
+
+  const { userId, planId, paymentMethod, amount, notes } = parsed.data;
+  const supabase = await createClient();
+
+  // Verificar que el miembro no tenga una suscripción activa vigente (expires_at en el futuro)
+  const { data: activeSubs } = await supabase
+    .from("subscriptions")
+    .select("id, expires_at")
+    .eq("user_id", userId)
+    .eq("status", "active");
+
+  const hasActiveValid = (activeSubs ?? []).some(
+    (s) => s.expires_at && new Date(s.expires_at) > new Date()
+  );
+  if (hasActiveValid) {
+    return { success: false, error: "El miembro ya tiene una membresía activa vigente" };
+  }
+
+  // Obtener duración del plan para calcular el vencimiento
+  const { data: plan } = await supabase
+    .from("membership_plans")
+    .select("duration_days")
+    .eq("id", planId)
+    .single();
+
+  if (!plan) {
+    return { success: false, error: "Plan no encontrado" };
+  }
+
+  const startsAt = new Date();
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + plan.duration_days);
+
+  // Crear la suscripción directamente como activa
+  const { data: newSub, error: subError } = await supabase
+    .from("subscriptions")
+    .insert({
+      user_id: userId,
+      plan_id: planId,
+      status: "active",
+      starts_at: startsAt.toISOString(),
+      expires_at: expiresAt.toISOString(),
+    })
+    .select("id")
+    .single();
+
+  if (subError || !newSub) {
+    console.error("[registerManualPayment] Error al crear suscripción:", subError?.message);
+    return { success: false, error: "Error al crear la membresía" };
+  }
+
+  // Registrar el comprobante como aprobado — sin archivo digital ya que es pago presencial
+  const { error: proofError } = await supabase.from("payment_proofs").insert({
+    user_id: userId,
+    subscription_id: newSub.id,
+    amount,
+    payment_method: paymentMethod,
+    notes: notes ?? "Pago presencial registrado por admin",
+    status: "approved",
+    reviewed_by: user.id,
+    reviewed_at: new Date().toISOString(),
+    file_url: "",
+    file_path: "",
+  });
+
+  if (proofError) {
+    console.error("[registerManualPayment] Error al registrar comprobante:", proofError.message);
+    // La suscripción ya fue creada — retornar error para que el admin sepa que el registro de pago falló
+    return { success: false, error: "Membresía creada pero error al registrar el comprobante" };
+  }
+
+  revalidatePath("/admin/payments");
+  revalidatePath("/admin/members");
   return { success: true };
 }
 

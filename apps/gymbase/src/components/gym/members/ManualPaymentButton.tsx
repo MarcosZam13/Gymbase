@@ -4,7 +4,7 @@
 
 import { useState, useTransition } from "react";
 import { DollarSign, Loader2 } from "lucide-react";
-import { registerManualPayment } from "@/actions/payment.actions";
+import { renewManualSubscription } from "@/actions/payment.actions";
 import { formatPrice } from "@/lib/utils";
 import type { MembershipPlan } from "@/types/database";
 
@@ -64,7 +64,7 @@ export function ManualPaymentButton({
   const handleSubmit = () => {
     setError(null);
     startTransition(async () => {
-      const result = await registerManualPayment({
+      const result = await renewManualSubscription({
         memberId,
         subscriptionId,
         planId: selectedPlanId,

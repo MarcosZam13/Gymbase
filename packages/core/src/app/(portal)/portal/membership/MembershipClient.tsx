@@ -42,14 +42,23 @@ export function MembershipClient({ profile, subscription }: MembershipClientProp
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [notes, setNotes] = useState("");
 
-  const status = (subscription?.status ?? "none") as SubscriptionStatus | "none";
+  // Una suscripción "active" con expires_at en el pasado se trata como expirada en la UI
+  const isExpired =
+    subscription?.status === "active" &&
+    !!subscription?.expires_at &&
+    new Date(subscription.expires_at) < new Date();
+
+  const status = isExpired
+    ? ("expired" as SubscriptionStatus)
+    : ((subscription?.status ?? "none") as SubscriptionStatus | "none");
+
   const config = STATUS_CONFIG[status];
   const StatusIcon = config.icon;
 
   // Mostrar el formulario de comprobante solo si hay una suscripción pendiente o rechazada
   const showUploadForm = status === "pending" || status === "rejected";
-  // Permitir cancelar solo si la suscripción está activa o pendiente
-  const canCancel = status === "active" || status === "pending";
+  // Permitir cancelar solo si la suscripción está activa (y vigente) o pendiente
+  const canCancel = (subscription?.status === "active" && !isExpired) || status === "pending";
 
   const handleCancel = async () => {
     if (!subscription) return;
@@ -134,17 +143,33 @@ export function MembershipClient({ profile, subscription }: MembershipClientProp
             </div>
           )}
 
-          {/* Mostrar el motivo de rechazo si aplica */}
+          {/* Estado rechazado — motivo + CTA para elegir plan nuevo desde cero */}
           {status === "rejected" && (() => {
             const proofs = subscription?.payment_proofs as PaymentProof[] | undefined;
             const lastProof = proofs?.[0];
-            return lastProof?.rejection_reason ? (
-              <div className="rounded-md bg-danger/10 border border-danger/20 p-3 text-sm">
-                <p className="font-medium text-danger">Motivo de rechazo:</p>
-                <p className="text-muted-foreground mt-1">{lastProof.rejection_reason}</p>
+            return (
+              <div className="space-y-3">
+                {lastProof?.rejection_reason && (
+                  <div className="rounded-md bg-danger/10 border border-danger/20 p-3 text-sm">
+                    <p className="font-medium text-danger">Motivo de rechazo:</p>
+                    <p className="text-muted-foreground mt-1">{lastProof.rejection_reason}</p>
+                  </div>
+                )}
+                {/* El miembro puede elegir un plan diferente — createSubscription ignora las rechazadas */}
+                <Button asChild size="sm" variant="outline">
+                  <Link href="/portal/plans">Elegir plan</Link>
+                </Button>
               </div>
-            ) : null;
+            );
           })()}
+
+          {status === "expired" && subscription?.expires_at && (
+            <div className="rounded-md bg-danger/10 border border-danger/20 p-3 text-sm">
+              <p className="text-danger font-medium">
+                Tu membresía venció el {formatDate(subscription.expires_at)}
+              </p>
+            </div>
+          )}
 
           {(status === "none" || status === "expired") && (
             <Button asChild size="sm">
