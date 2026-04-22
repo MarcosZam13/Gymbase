@@ -20,6 +20,8 @@ import {
   Trophy,
   ScanLine,
   Zap,
+  Package,
+  ShoppingCart,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -32,6 +34,7 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
   flag?: keyof typeof themeConfig.features;
   badge?: number;
+  badgeNode?: React.ReactNode;
 }
 
 interface NavSection {
@@ -39,8 +42,13 @@ interface NavSection {
   items: NavItem[];
 }
 
+interface GymAdminSidebarProps {
+  inventoryBadgeCount?: number;
+}
+
 // Secciones de navegación — agrupadas por dominio funcional
-const NAV_SECTIONS: NavSection[] = [
+function buildNavSections(inventoryBadgeCount = 0): NavSection[] {
+  return [
   {
     label: "Principal",
     items: [
@@ -57,6 +65,14 @@ const NAV_SECTIONS: NavSection[] = [
       { href: "/admin/calendar",  label: "Calendario", icon: CalendarDays,  flag: "gym_calendar" },
       { href: "/admin/challenges",label: "Retos",      icon: Trophy,        flag: "gym_challenges" },
       { href: "/admin/occupancy", label: "Ocupación",  icon: ScanLine,      flag: "gym_qr_checkin" },
+      {
+        href: "/admin/inventory",
+        label: "Inventario",
+        icon: Package,
+        flag: "gym_inventory",
+        badge: inventoryBadgeCount > 0 ? inventoryBadgeCount : undefined,
+      },
+      { href: "/admin/sales", label: "Ventas", icon: ShoppingCart, flag: "gym_inventory" },
     ],
   },
   {
@@ -72,11 +88,13 @@ const NAV_SECTIONS: NavSection[] = [
       { href: "/admin/settings", label: "Configuración", icon: Settings },
     ],
   },
-];
+  ]
+}
 
-export function GymAdminSidebar(): React.ReactNode {
+export function GymAdminSidebar({ inventoryBadgeCount = 0 }: GymAdminSidebarProps): React.ReactNode {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const NAV_SECTIONS = buildNavSections(inventoryBadgeCount);
 
   const isActive = (href: string): boolean => {
     if (href === "/admin") return pathname === "/admin";

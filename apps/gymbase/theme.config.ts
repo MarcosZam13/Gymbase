@@ -61,6 +61,10 @@ export const themeConfig = {
     gym_challenges: true,
     // Permite a los miembros crear sus propias rutinas personalizadas
     gym_member_custom_routines: true,
+    // Módulo 8 — Inventario de productos del gym
+    gym_inventory: true,
+    // Módulo 9 — Marketplace / Tienda para miembros
+    gym_marketplace: false,
   },
 } as const;
 
