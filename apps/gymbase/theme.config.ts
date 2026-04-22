@@ -65,6 +65,8 @@ export const themeConfig = {
     gym_inventory: true,
     // Módulo 9 — Marketplace / Tienda para miembros
     gym_marketplace: false,
+    // Módulo 10 — Dashboard financiero exclusivo para el rol 'owner'
+    gym_accounting: true,
   },
 } as const;
 
