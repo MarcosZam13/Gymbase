@@ -8,8 +8,8 @@ import Link from "next/link";
 import { Search, Clock, Pencil } from "lucide-react";
 import { Pagination } from "@/components/shared/Pagination";
 import type { MemberWithSubscription, SubscriptionStatus, MembershipPlan } from "@/types/database";
-import type { PaginatedResult } from "@core/types/pagination";
-import type { MemberStatusFilter } from "@core/services/admin.service";
+import type { PaginatedResult } from "@/types/pagination";
+import type { MemberStatusFilter } from "@/services/admin.service";
 import { toOpaqueId } from "@/lib/utils/opaque-id";
 
 function avatarColor(id: string): { bg: string; text: string } {

@@ -1,10 +1,10 @@
 // page.tsx — Panel de moderación de la comunidad para administradores con compose box
 
-import { getAdminPosts } from "@core/actions/community.actions";
-import { getPlans } from "@core/actions/membership.actions";
+import { getAdminPosts } from "@/actions/community.actions";
+import { getPlans } from "@/actions/membership.actions";
 import { formatDate } from "@/lib/utils";
 import { AdminPostComposer } from "@/components/gym/community/AdminPostComposer";
-import CommunityModerationActions from "@core/app/(dashboard)/admin/community/CommunityModerationActions";
+import CommunityModerationActions from "@/app/(dashboard)/admin/community/CommunityModerationActions";
 
 export default async function AdminCommunityPage(): Promise<React.ReactNode> {
   const [posts, plans] = await Promise.all([

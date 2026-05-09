@@ -10,7 +10,7 @@ import { approvePayment, rejectPayment } from "@/actions/payment.actions";
 import { formatDate, formatPrice } from "@/lib/utils";
 import { Pagination } from "@/components/shared/Pagination";
 import type { PaymentProofWithDetails } from "@/types/database";
-import type { PaginatedResult } from "@core/types/pagination";
+import type { PaginatedResult } from "@/types/pagination";
 import type { PaymentStatusFilter } from "@/actions/payment.actions";
 
 type PaymentStatus = "pending" | "approved" | "rejected";

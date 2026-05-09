@@ -3,8 +3,8 @@
 import { Lock, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { getContentForUserPaginated, getMyFavoriteIds } from "@/actions/content.actions";
-import { getUserSubscription } from "@core/actions/payment.actions";
-import { getCategories } from "@core/actions/category.actions";
+import { getUserSubscription } from "@/actions/payment.actions";
+import { getCategories } from "@/actions/category.actions";
 import { PortalContentGrid } from "@/components/gym/content/PortalContentGrid";
 
 const PAGE_SIZE = 12;

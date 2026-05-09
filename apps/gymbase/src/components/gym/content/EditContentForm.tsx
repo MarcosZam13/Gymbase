@@ -9,10 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader2, Video, FileText, FileDown, Link as LinkIcon } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { VideoEmbed } from "./VideoEmbed";
-import { updateContent } from "@core/actions/content.actions";
+import { updateContent } from "@/actions/content.actions";
 import type { MembershipPlan, ContentCategory, ContentType, Content } from "@/types/database";
 
 type VisibleType = "video" | "article" | "file" | "link";

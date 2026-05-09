@@ -9,10 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader2, Video, FileText, FileDown, Link as LinkIcon } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { VideoEmbed } from "./VideoEmbed";
-import { createContent } from "@core/actions/content.actions";
+import { createContent } from "@/actions/content.actions";
 import type { MembershipPlan, ContentCategory, ContentType } from "@/types/database";
 
 // Los cuatro tipos disponibles al crear contenido

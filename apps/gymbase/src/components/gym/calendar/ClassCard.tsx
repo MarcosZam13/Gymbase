@@ -4,9 +4,9 @@
 
 import { useState } from "react";
 import { Clock, MapPin, Users, Loader2 } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Card, CardContent } from "@core/components/ui/card";
-import { Badge } from "@core/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { bookClass, cancelMyBooking } from "@/actions/calendar.actions";
 import type { ScheduledClass, ClassBooking } from "@/types/gym-calendar";
 

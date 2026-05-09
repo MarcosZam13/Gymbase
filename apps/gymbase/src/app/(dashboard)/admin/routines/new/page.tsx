@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { Button } from "@core/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { RoutineForm } from "@/components/gym/routines/RoutineForm";
 
 export default function NewRoutinePage(): React.ReactNode {

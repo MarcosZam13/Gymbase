@@ -6,11 +6,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Plus, Check } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { createClassType } from "@/actions/calendar.actions";
 import { classTypeSchema, type ClassTypeInput } from "@/lib/validations/calendar";
-import { cn } from "@core/lib/utils";
+import { cn } from "@/lib/utils";
 
 // Paleta de 8 colores predefinidos — coincide con el mockup de diseño
 const PRESET_COLORS = [

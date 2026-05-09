@@ -3,7 +3,7 @@
 "use client";
 
 import { useState } from "react";
-import { PostCard } from "@core/components/shared/PostCard";
+import { PostCard } from "@/components/shared/PostCard";
 import type { CommunityPost } from "@/types/database";
 
 const PAGE_SIZE = 10;

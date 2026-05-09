@@ -3,12 +3,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Pencil } from "lucide-react";
-import { Button } from "@core/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { getRoutineById } from "@/actions/routine.actions";
 import { fromOpaqueId } from "@/lib/utils/opaque-id";
 import { getExercises } from "@/actions/exercise.actions";
-import { getPlans } from "@core/actions/membership.actions";
-import { getMembers } from "@core/actions/admin.actions";
+import { getPlans } from "@/actions/membership.actions";
+import { getMembers } from "@/actions/admin.actions";
 import { RoutineBuilderClient } from "@/components/gym/routines/RoutineBuilderClient";
 import { RoutineAssignmentSection } from "@/components/gym/routines/RoutineAssignmentSection";
 

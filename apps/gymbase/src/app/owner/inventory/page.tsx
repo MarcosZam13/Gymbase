@@ -8,7 +8,7 @@ import { SalesReportTable } from "@/components/owner/SalesReportTable";
 import { PeriodSelector } from "@/components/owner/PeriodSelector";
 import { ExportCSVButton } from "@/components/owner/ExportCSVButton";
 import { themeConfig } from "@/lib/theme";
-import type { OwnerPeriod } from "@core/types/owner";
+import type { OwnerPeriod } from "@/types/owner";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("es-CR", {

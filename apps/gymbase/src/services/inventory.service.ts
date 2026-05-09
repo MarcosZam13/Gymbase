@@ -10,8 +10,8 @@ import type {
   ProductSalesSummary,
   InventoryStats,
 } from "@/types/gym-inventory";
-import { buildPaginationRange, buildPaginatedResult } from "@core/types/pagination";
-import type { PaginatedResult } from "@core/types/pagination";
+import { buildPaginationRange, buildPaginatedResult } from "@/types/pagination";
+import type { PaginatedResult } from "@/types/pagination";
 
 // ─── Productos ────────────────────────────────────────────────────────────────
 

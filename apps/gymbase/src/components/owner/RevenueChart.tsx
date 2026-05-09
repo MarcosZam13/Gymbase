@@ -3,7 +3,7 @@
 "use client";
 
 import { useState } from "react";
-import type { CashFlowEntry } from "@core/types/owner";
+import type { CashFlowEntry } from "@/types/owner";
 
 interface RevenueChartProps {
   data: CashFlowEntry[];

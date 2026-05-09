@@ -4,7 +4,7 @@
 
 import { useState, useTransition } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@core/lib/utils";
+import { cn } from "@/lib/utils";
 import { PortalClassCard } from "./PortalClassCard";
 import { getWeekSchedule } from "@/actions/calendar.actions";
 import type { ScheduledClass, ClassBooking, ClassType } from "@/types/gym-calendar";

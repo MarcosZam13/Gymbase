@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { getOrgAppearance } from '@/actions/settings.actions'
 import { AppearanceClient } from '@/components/owner/AppearanceClient'
-import { DEFAULT_ORG_CONFIG } from '@core/types/org-config'
+import { DEFAULT_ORG_CONFIG } from '@/types/org-config'
 import { Paintbrush } from 'lucide-react'
 
 export default async function AppearancePage(): Promise<React.ReactElement> {

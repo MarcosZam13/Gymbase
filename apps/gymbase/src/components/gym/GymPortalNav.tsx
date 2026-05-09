@@ -21,7 +21,7 @@ import {
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { themeConfig } from "@/lib/theme";
-import { signOut } from "@core/actions/auth.actions";
+import { signOut } from "@/actions/auth.actions";
 import type { Profile } from "@/types/database";
 
 interface GymPortalNavProps {
@@ -182,11 +182,11 @@ export function GymPortalNav({ profile, isActive = true, gymName }: GymPortalNav
                 onClick={() => setUserMenuOpen(false)}
                 className="flex items-center gap-2 w-full px-3 py-2.5 text-xs font-medium transition-colors"
                 style={{ color: "var(--gym-text-secondary)" }}
-                onMouseEnter={(e) => {
+                onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
                   (e.currentTarget as HTMLElement).style.backgroundColor = "var(--gym-bg-hover)";
                   (e.currentTarget as HTMLElement).style.color = "var(--gym-text-primary)";
                 }}
-                onMouseLeave={(e) => {
+                onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
                   (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
                   (e.currentTarget as HTMLElement).style.color = "var(--gym-text-secondary)";
                 }}

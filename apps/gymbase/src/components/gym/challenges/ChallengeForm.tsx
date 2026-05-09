@@ -7,13 +7,13 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Search } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
-import { Textarea } from "@core/components/ui/textarea";
-import { Alert, AlertDescription } from "@core/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { createChallenge } from "@/actions/challenge.actions";
 import { createChallengeSchema, type CreateChallengeInput } from "@/lib/validations/challenges";
-import { cn } from "@core/lib/utils";
+import { cn } from "@/lib/utils";
 import type { Exercise, Routine } from "@/types/gym-routines";
 
 // Definición visual de los tipos de reto disponibles

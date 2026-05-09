@@ -5,7 +5,7 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@core/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
 export function GoogleSignInButton() {

@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/></head>
+<body>
+<template id="admin-section-template">
+<div data-composition-id="admin-section" data-width="1920" data-height="1080">
+
+<style>
+[data-composition-id="admin-section"] {
+  font-family: 'DM Sans', sans-serif;
+  background: #0A0A0A;
+  color: #F5F5F5;
+}
+[data-composition-id="admin-section"] .as-scene {
+  position: absolute; top: 0; left: 0;
+  width: 1920px; height: 1080px; overflow: hidden;
+}
+/* ── S1: Title ────────────────────────────────────────── */
+[data-composition-id="admin-section"] .s1-glow {
+  position: absolute; top: -200px; right: -200px;
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(255,94,20,0.15) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="admin-section"] .s1-glow-bl {
+  position: absolute; bottom: -200px; left: -150px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,94,20,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="admin-section"] .s1-bar {
+  position: absolute; right: 0; top: 0;
+  width: 6px; height: 1080px;
+  background: linear-gradient(180deg, rgba(255,94,20,0.3) 0%, #FF5E14 50%, rgba(255,94,20,0.3) 100%);
+  transform-origin: top;
+  box-shadow: 0 0 18px rgba(255,94,20,0.4);
+}
+[data-composition-id="admin-section"] .s1-ghost {
+  position: absolute; top: 50%; left: 40%;
+  transform: translate(-50%, -52%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 380px; font-weight: 900; color: #F5F5F5;
+  letter-spacing: -8px; white-space: nowrap; user-select: none; line-height: 1;
+}
+[data-composition-id="admin-section"] .s1-brand {
+  position: absolute; top: 64px; right: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 700; color: #FF5E14; letter-spacing: 8px;
+}
+[data-composition-id="admin-section"] .s1-rule-h {
+  position: absolute; top: 116px; left: 80px; right: 80px;
+  height: 1px; background: #1E1E1E; transform-origin: left;
+}
+[data-composition-id="admin-section"] .s1-tag {
+  position: absolute; top: 400px; right: 124px;
+  font-size: 16px; color: #8A8A8A; letter-spacing: 5px;
+  text-transform: uppercase; text-align: right;
+}
+[data-composition-id="admin-section"] .s1-title {
+  position: absolute; top: 430px; right: 116px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 172px; font-weight: 900; color: #F5F5F5;
+  line-height: 1; letter-spacing: -2px; text-align: right;
+  text-shadow: 0 0 60px rgba(255,94,20,0.12);
+}
+[data-composition-id="admin-section"] .s1-rule-a {
+  position: absolute; top: 626px; right: 124px;
+  width: 520px; height: 3px;
+  background: linear-gradient(270deg, #FF5E14, rgba(255,94,20,0.3));
+  transform-origin: right;
+  box-shadow: 0 0 12px rgba(255,94,20,0.5);
+}
+[data-composition-id="admin-section"] .s1-tagline {
+  position: absolute; top: 650px; right: 124px;
+  font-size: 38px; color: #F5F5F5; line-height: 1.45; max-width: 680px; text-align: right;
+}
+[data-composition-id="admin-section"] .s1-detail {
+  position: absolute; bottom: 64px; right: 124px;
+  font-size: 17px; color: #8A8A8A; letter-spacing: 3px; text-align: right;
+}
+/* ── S2: Check-in + Members ───────────────────────────── */
+[data-composition-id="admin-section"] #as-s2 { opacity: 0; display: none; }
+[data-composition-id="admin-section"] .s2-left {
+  position: absolute; top: 0; left: 0; width: 760px; height: 1080px;
+  background: #0D0D0D; border-right: 1px solid #1E1E1E; padding: 64px 56px;
+}
+[data-composition-id="admin-section"] .s2-left-hdr {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px; font-weight: 700; color: #8A8A8A; letter-spacing: 5px; margin-bottom: 12px;
+}
+[data-composition-id="admin-section"] .s2-checkin-count {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 80px; font-weight: 900; color: #F5F5F5; line-height: 1; margin-bottom: 8px;
+}
+[data-composition-id="admin-section"] .s2-checkin-sub { font-size: 18px; color: #8A8A8A; margin-bottom: 48px; }
+[data-composition-id="admin-section"] .checkin-row {
+  display: flex; align-items: center; gap: 18px;
+  padding: 18px 0; border-bottom: 1px solid #1A1A1A;
+}
+[data-composition-id="admin-section"] .ci-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; flex-shrink: 0;
+}
+[data-composition-id="admin-section"] .ci-name { font-size: 18px; font-weight: 600; flex: 1; }
+[data-composition-id="admin-section"] .ci-time { font-size: 15px; color: #8A8A8A; }
+[data-composition-id="admin-section"] .ci-check {
+  width: 32px; height: 32px; border-radius: 50%; background: #22C55E;
+  display: flex; align-items: center; justify-content: center; font-size: 18px; color: #0A0A0A; font-weight: 900;
+  box-shadow: 0 0 12px rgba(34,197,94,0.4);
+}
+[data-composition-id="admin-section"] .s2-right {
+  position: absolute; top: 0; left: 760px; right: 0; bottom: 0; padding: 64px 60px;
+}
+[data-composition-id="admin-section"] .s2-right-hdr {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px;
+}
+[data-composition-id="admin-section"] .s2-right-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px; font-weight: 700; color: #8A8A8A; letter-spacing: 5px;
+}
+[data-composition-id="admin-section"] .filter-chips { display: flex; gap: 12px; }
+[data-composition-id="admin-section"] .chip {
+  font-size: 15px; padding: 8px 20px; border-radius: 40px;
+  border: 1px solid #1E1E1E; color: #8A8A8A;
+}
+[data-composition-id="admin-section"] .chip.active {
+  border-color: #FF5E14; color: #FF5E14;
+  background: rgba(255,94,20,0.08);
+  box-shadow: 0 0 12px rgba(255,94,20,0.15);
+}
+[data-composition-id="admin-section"] .member-table-row {
+  display: flex; align-items: center;
+  padding: 22px 28px; background: #111111;
+  border: 1px solid #1E1E1E; border-radius: 14px; margin-bottom: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+[data-composition-id="admin-section"] .mt-avatar {
+  width: 48px; height: 48px; border-radius: 50%; margin-right: 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; flex-shrink: 0;
+}
+[data-composition-id="admin-section"] .mt-name  { font-size: 20px; font-weight: 600; flex: 1; }
+[data-composition-id="admin-section"] .mt-plan  { font-size: 16px; color: #8A8A8A; width: 130px; }
+[data-composition-id="admin-section"] .mt-exp   { font-size: 16px; color: #8A8A8A; width: 160px; text-align: right; }
+[data-composition-id="admin-section"] .badge {
+  font-size: 14px; font-weight: 600; padding: 6px 16px; border-radius: 40px;
+  letter-spacing: 1px; margin-left: 20px;
+}
+[data-composition-id="admin-section"] .badge.ok   { background:rgba(34,197,94,0.12); color:#22C55E; border:1px solid rgba(34,197,94,0.25); }
+[data-composition-id="admin-section"] .badge.warn { background:rgba(250,204,21,0.1); color:#FACC15; border:1px solid rgba(250,204,21,0.25); }
+[data-composition-id="admin-section"] .badge.new  { background:rgba(255,94,20,0.1); color:#FF5E14; border:1px solid rgba(255,94,20,0.25); }
+
+/* ── S3: Gestión Tabs ─────────────────────────────────── */
+[data-composition-id="admin-section"] #as-s3 { opacity: 0; display: none; }
+[data-composition-id="admin-section"] .s3-header {
+  position: absolute; top: 0; left: 0; right: 0; height: 130px;
+  background: #0D0D0D; border-bottom: 1px solid #1E1E1E;
+  display: flex; align-items: flex-end;
+  padding: 0 80px;
+}
+[data-composition-id="admin-section"] .s3-section-lbl {
+  position: absolute; top: 24px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 700; color: #8A8A8A; letter-spacing: 6px;
+}
+[data-composition-id="admin-section"] .s3-tabbar {
+  display: flex; gap: 0; align-items: flex-end; height: 60px;
+}
+[data-composition-id="admin-section"] .s3-tab {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px; font-weight: 700; letter-spacing: 3px;
+  padding: 14px 40px; color: #888888;
+  border-bottom: 3px solid transparent; cursor: default;
+  transition: none;
+}
+[data-composition-id="admin-section"] .s3-tab.active {
+  color: #FF5E14;
+  border-bottom-color: #FF5E14;
+  text-shadow: 0 0 20px rgba(255,94,20,0.4);
+}
+[data-composition-id="admin-section"] .s3-content {
+  position: absolute; top: 130px; left: 0; right: 0; bottom: 0;
+}
+
+/* Rutinas tab */
+[data-composition-id="admin-section"] #tc-rutinas { }
+[data-composition-id="admin-section"] .rt-left {
+  position: absolute; top: 0; left: 0; width: 1100px; bottom: 0;
+  padding: 48px 60px; border-right: 1px solid #1E1E1E;
+}
+[data-composition-id="admin-section"] .rt-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 44px; font-weight: 900; color: #F5F5F5; margin-bottom: 36px; letter-spacing: -1px;
+}
+[data-composition-id="admin-section"] .rt-row {
+  display: flex; align-items: center; gap: 20px;
+  padding: 20px 24px; background: #111111;
+  border: 1px solid #1E1E1E; border-radius: 14px; margin-bottom: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+[data-composition-id="admin-section"] .rt-row.active-row {
+  border-color: rgba(255,94,20,0.3);
+  box-shadow: 0 0 0 1px rgba(255,94,20,0.15), 0 2px 20px rgba(255,94,20,0.08);
+}
+[data-composition-id="admin-section"] .rt-av {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; flex-shrink: 0;
+}
+[data-composition-id="admin-section"] .rt-name  { font-size: 20px; font-weight: 600; flex: 1; }
+[data-composition-id="admin-section"] .rt-plan  { font-size: 15px; color: #8A8A8A; width: 110px; }
+[data-composition-id="admin-section"] .rt-sel {
+  font-size: 16px; color: #FF5E14;
+  background: rgba(255,94,20,0.08); border: 1px solid rgba(255,94,20,0.25);
+  border-radius: 8px; padding: 8px 18px;
+  white-space: nowrap;
+}
+[data-composition-id="admin-section"] .rt-btn {
+  font-size: 15px; font-weight: 700; letter-spacing: 2px;
+  background: #FF5E14; color: #0A0A0A;
+  border-radius: 8px; padding: 10px 20px; white-space: nowrap;
+  box-shadow: 0 0 14px rgba(255,94,20,0.3);
+}
+[data-composition-id="admin-section"] .rt-right {
+  position: absolute; top: 0; right: 0; left: 1100px; bottom: 0;
+  padding: 48px 60px; display: flex; flex-direction: column; gap: 28px;
+}
+[data-composition-id="admin-section"] .rt-stat {
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 14px;
+  padding: 32px 36px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+[data-composition-id="admin-section"] .rt-stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 60px; font-weight: 900; color: #FF5E14; line-height: 1; margin-bottom: 8px;
+}
+[data-composition-id="admin-section"] .rt-stat-lbl { font-size: 16px; color: #8A8A8A; letter-spacing: 3px; }
+
+/* Retos tab */
+[data-composition-id="admin-section"] #tc-retos { opacity: 0; visibility: hidden; }
+[data-composition-id="admin-section"] .re-left {
+  position: absolute; top: 0; left: 0; width: 860px; bottom: 0;
+  padding: 48px 60px; border-right: 1px solid #1E1E1E;
+}
+[data-composition-id="admin-section"] .re-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 44px; font-weight: 900; color: #F5F5F5; margin-bottom: 32px; letter-spacing: -1px;
+}
+[data-composition-id="admin-section"] .re-form-row {
+  display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px;
+}
+[data-composition-id="admin-section"] .re-label {
+  font-size: 14px; color: #8A8A8A; letter-spacing: 3px;
+}
+[data-composition-id="admin-section"] .re-input {
+  background: #111111; border: 1px solid #2A2A2A; border-radius: 10px;
+  padding: 18px 22px; font-size: 20px; color: #F5F5F5;
+  box-shadow: inset 0 1px 0 rgba(0,0,0,0.3);
+}
+[data-composition-id="admin-section"] .re-input.accent {
+  border-color: rgba(255,94,20,0.3);
+  box-shadow: 0 0 0 1px rgba(255,94,20,0.15), inset 0 1px 0 rgba(0,0,0,0.3);
+}
+[data-composition-id="admin-section"] .re-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px;
+}
+[data-composition-id="admin-section"] .re-create-btn {
+  background: #FF5E14; border-radius: 12px;
+  padding: 20px 0; text-align: center;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700;
+  color: #0A0A0A; letter-spacing: 3px;
+  box-shadow: 0 0 24px rgba(255,94,20,0.3), 0 4px 16px rgba(0,0,0,0.4);
+}
+[data-composition-id="admin-section"] .re-right {
+  position: absolute; top: 0; right: 0; left: 860px; bottom: 0;
+  padding: 48px 60px; display: flex; flex-direction: column; gap: 24px;
+}
+[data-composition-id="admin-section"] .re-reto-card {
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 14px;
+  padding: 32px 36px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+[data-composition-id="admin-section"] .re-reto-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 34px; font-weight: 900; color: #F5F5F5; margin-bottom: 10px;
+}
+[data-composition-id="admin-section"] .re-reto-meta { font-size: 16px; color: #8A8A8A; margin-bottom: 18px; }
+[data-composition-id="admin-section"] .re-reto-bar-wrap {
+  background: #1E1E1E; border-radius: 4px; height: 8px; overflow: hidden; margin-bottom: 10px;
+}
+[data-composition-id="admin-section"] .re-reto-bar {
+  height: 100%; background: linear-gradient(90deg, #FF5E14, #FACC15); border-radius: 4px;
+}
+[data-composition-id="admin-section"] .re-reto-pct { font-size: 15px; color: #FF5E14; font-weight: 600; }
+
+/* Clases tab */
+[data-composition-id="admin-section"] #tc-clases { opacity: 0; visibility: hidden; }
+[data-composition-id="admin-section"] .cl-wrap { padding: 40px 60px; }
+[data-composition-id="admin-section"] .cl-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 44px; font-weight: 900; color: #F5F5F5; margin-bottom: 32px; letter-spacing: -1px;
+}
+[data-composition-id="admin-section"] .cl-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
+}
+[data-composition-id="admin-section"] .cl-day-col { display: flex; flex-direction: column; gap: 16px; }
+[data-composition-id="admin-section"] .cl-day-lbl {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 700; color: #8A8A8A; letter-spacing: 4px;
+  padding-bottom: 12px; border-bottom: 1px solid #1E1E1E;
+}
+[data-composition-id="admin-section"] .cl-slot {
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+[data-composition-id="admin-section"] .cl-slot.full {
+  border-color: rgba(250,204,21,0.25);
+  background: rgba(250,204,21,0.04);
+}
+[data-composition-id="admin-section"] .cl-slot.featured {
+  border-color: rgba(255,94,20,0.3);
+  box-shadow: 0 0 0 1px rgba(255,94,20,0.12), 0 2px 16px rgba(255,94,20,0.08);
+}
+[data-composition-id="admin-section"] .cl-time { font-size: 13px; color: #FF5E14; letter-spacing: 2px; font-weight: 600; margin-bottom: 6px; }
+[data-composition-id="admin-section"] .cl-name { font-size: 18px; font-weight: 700; color: #F5F5F5; margin-bottom: 4px; }
+[data-composition-id="admin-section"] .cl-inst { font-size: 13px; color: #BCBCBC; margin-bottom: 8px; }
+[data-composition-id="admin-section"] .cl-cap {
+  font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 20px; display: inline-block;
+}
+[data-composition-id="admin-section"] .cl-cap.ok   { color: #22C55E; background: rgba(34,197,94,0.1); }
+[data-composition-id="admin-section"] .cl-cap.full  { color: #FACC15; background: rgba(250,204,21,0.1); }
+[data-composition-id="admin-section"] .cl-footer {
+  margin-top: 28px; padding-top: 20px; border-top: 1px solid #1E1E1E;
+  font-size: 20px; color: #8A8A8A;
+}
+[data-composition-id="admin-section"] .cl-footer em { color: #FF5E14; font-style: normal; font-weight: 600; }
+
+/* ── S4: Inventario + Salud ───────────────────────────── */
+[data-composition-id="admin-section"] #as-s4 { opacity: 0; display: none; }
+[data-composition-id="admin-section"] .s4-left {
+  position: absolute; top: 0; left: 0; width: 900px; height: 1080px;
+  padding: 64px 60px; border-right: 1px solid #1E1E1E; background: #0D0D0D;
+}
+[data-composition-id="admin-section"] .s4-section-tag {
+  font-size: 16px; color: #FF5E14; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 12px;
+}
+[data-composition-id="admin-section"] .s4-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px; font-weight: 900; color: #F5F5F5; letter-spacing: -1px; margin-bottom: 40px;
+}
+[data-composition-id="admin-section"] .inv-row {
+  display: flex; align-items: center; gap: 20px;
+  padding: 22px 0; border-bottom: 1px solid #1A1A1A;
+}
+[data-composition-id="admin-section"] .inv-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: #1A1A1A; border: 1px solid #2A2A2A;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+[data-composition-id="admin-section"] .inv-name { font-size: 20px; font-weight: 600; flex: 1; }
+[data-composition-id="admin-section"] .inv-qty  { font-size: 17px; color: #8A8A8A; width: 80px; text-align: right; }
+[data-composition-id="admin-section"] .inv-status {
+  font-size: 14px; font-weight: 600; padding: 6px 16px; border-radius: 40px; letter-spacing: 1px;
+}
+[data-composition-id="admin-section"] .inv-status.ok   { background:rgba(34,197,94,0.1); color:#22C55E; border:1px solid rgba(34,197,94,0.25); }
+[data-composition-id="admin-section"] .inv-status.warn { background:rgba(250,204,21,0.08); color:#FACC15; border:1px solid rgba(250,204,21,0.25); }
+
+[data-composition-id="admin-section"] .s4-right {
+  position: absolute; top: 0; right: 0; left: 900px; height: 1080px;
+  padding: 64px 60px;
+}
+[data-composition-id="admin-section"] .s4-metric-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px;
+}
+[data-composition-id="admin-section"] .s4-metric {
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 14px; padding: 32px 28px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+[data-composition-id="admin-section"] .s4-metric.accent {
+  border-top: 3px solid #FF5E14;
+  box-shadow: 0 0 0 1px rgba(255,94,20,0.15), 0 4px 24px rgba(255,94,20,0.1);
+}
+[data-composition-id="admin-section"] .s4-metric-lbl { font-size: 14px; color: #8A8A8A; letter-spacing: 3px; margin-bottom: 12px; }
+[data-composition-id="admin-section"] .s4-metric-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 52px; font-weight: 700; color: #F5F5F5; line-height: 1;
+}
+[data-composition-id="admin-section"] .s4-metric-sub { font-size: 16px; color: #8A8A8A; margin-top: 8px; }
+[data-composition-id="admin-section"] .s4-attn-bar-wrap {
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 14px; padding: 32px 36px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+[data-composition-id="admin-section"] .s4-attn-lbl { font-size: 15px; color: #8A8A8A; letter-spacing: 3px; margin-bottom: 24px; }
+[data-composition-id="admin-section"] .s4-attn-bars {
+  display: flex; align-items: flex-end; gap: 16px; height: 120px;
+}
+[data-composition-id="admin-section"] .s4-attn-col { display: flex; flex-direction: column; align-items: center; gap: 10px; flex: 1; height: 100%; }
+[data-composition-id="admin-section"] .s4-attn-bwrap { flex: 1; width: 100%; display: flex; align-items: flex-end; }
+[data-composition-id="admin-section"] .s4-attn-b {
+  width: 100%; background: #2A2A2A; border-radius: 5px 5px 0 0; transform-origin: bottom;
+}
+[data-composition-id="admin-section"] .s4-attn-b.hi { background: #FF5E14; box-shadow: 0 0 16px rgba(255,94,20,0.3); }
+[data-composition-id="admin-section"] .s4-attn-day { font-size: 13px; color: #8A8A8A; }
+
+/* ── S5: Planes ────────────────────────────────────────── */
+[data-composition-id="admin-section"] #as-s5 { opacity: 0; display: none; }
+[data-composition-id="admin-section"] .s5-glow {
+  position: absolute; bottom: -300px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(255,94,20,0.12) 0%, transparent 65%);
+}
+[data-composition-id="admin-section"] .s5-eyebrow {
+  position: absolute; top: 68px; left: 80px;
+  font-size: 18px; color: #FF5E14; letter-spacing: 5px; text-transform: uppercase;
+}
+[data-composition-id="admin-section"] .s5-heading {
+  position: absolute; top: 108px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 80px; font-weight: 900; color: #F5F5F5; line-height: 1;
+}
+[data-composition-id="admin-section"] .s5-plans {
+  position: absolute; top: 260px; left: 80px; right: 80px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+}
+[data-composition-id="admin-section"] .plan-card {
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 14px; padding: 44px 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+[data-composition-id="admin-section"] .plan-card.featured {
+  border-color: #FF5E14; background: #130E09;
+  box-shadow: 0 0 0 1px rgba(255,94,20,0.3), 0 8px 40px rgba(255,94,20,0.15);
+}
+[data-composition-id="admin-section"] .plan-tag  { font-size: 14px; color: #FF5E14; letter-spacing: 3px; margin-bottom: 12px; }
+[data-composition-id="admin-section"] .plan-name { font-family: 'Barlow Condensed', sans-serif; font-size: 48px; font-weight: 900; color: #F5F5F5; margin-bottom: 8px; }
+[data-composition-id="admin-section"] .plan-price { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 700; color: #FF5E14; margin-bottom: 24px; }
+[data-composition-id="admin-section"] .plan-price span { font-size: 18px; color: #AAAAAA; }
+[data-composition-id="admin-section"] .plan-feature {
+  font-size: 17px; color: #8A8A8A; padding: 8px 0; border-bottom: 1px solid #1A1A1A;
+  display: flex; align-items: center; gap: 10px;
+}
+[data-composition-id="admin-section"] .plan-feature::before {
+  content: ''; display: inline-block; width: 6px; height: 6px;
+  background: #FF5E14; border-radius: 50%; flex-shrink: 0;
+}
+[data-composition-id="admin-section"] .plan-members {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700;
+  color: #F5F5F5; margin-top: 20px;
+}
+[data-composition-id="admin-section"] .plan-members span { font-size: 16px; color: #8A8A8A; font-family: 'DM Sans', sans-serif; font-weight: 400; }
+[data-composition-id="admin-section"] .s5-exit {
+  position: absolute; bottom: 60px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 42px; color: #8A8A8A; letter-spacing: 1px;
+}
+[data-composition-id="admin-section"] .s5-exit em { color: #F5F5F5; font-style: normal; }
+</style>
+
+<!-- Scene 1: ADMIN title (0–2.5s) -->
+<div id="as-s1" class="as-scene">
+  <div class="s1-glow" id="ag1"></div>
+  <div class="s1-glow-bl"></div>
+  <div class="s1-bar" id="ab1"></div>
+  <div class="s1-ghost" id="agh1">ADMIN</div>
+  <div class="s1-rule-h" id="arh"></div>
+  <div class="s1-brand" id="abn">GYMBASE</div>
+  <div class="s1-tag" id="atag">ROL</div>
+  <div class="s1-title" id="at1">ADMIN</div>
+  <div class="s1-rule-a" id="ar1"></div>
+  <div class="s1-tagline" id="atl">Operación sin fricción, todo en un solo lugar.</div>
+  <div class="s1-detail" id="adet">CHECK-INS · MIEMBROS · RUTINAS · CLASES · INVENTARIO</div>
+</div>
+
+<!-- Scene 2: Check-in + Members (2.5–10.5s) -->
+<div id="as-s2" class="as-scene">
+  <div class="s2-left" id="as2l">
+    <div class="s2-left-hdr">CHECK-IN HOY</div>
+    <div class="s2-checkin-count" id="ci-count">0</div>
+    <div class="s2-checkin-sub">check-ins · 3 pendientes</div>
+    <div class="checkin-row" id="ci0"><div class="ci-avatar" style="background:#1E2D1A;color:#22C55E;">LR</div><div class="ci-name">Laura Rodríguez</div><div class="ci-time">06:12</div><div class="ci-check">✓</div></div>
+    <div class="checkin-row" id="ci1"><div class="ci-avatar" style="background:#2D1A0E;color:#FF5E14;">CM</div><div class="ci-name">Carlos Mora</div><div class="ci-time">06:38</div><div class="ci-check">✓</div></div>
+    <div class="checkin-row" id="ci2"><div class="ci-avatar" style="background:#1A1A2D;color:#818CF8;">SF</div><div class="ci-name">Sofía Fonseca</div><div class="ci-time">07:05</div><div class="ci-check">✓</div></div>
+    <div class="checkin-row" id="ci3"><div class="ci-avatar" style="background:#2D2200;color:#FACC15;">DA</div><div class="ci-name">Diego Araya</div><div class="ci-time">07:14</div><div class="ci-check">✓</div></div>
+    <div class="checkin-row" id="ci4"><div class="ci-avatar" style="background:#1E2D1A;color:#22C55E;">VP</div><div class="ci-name">Valeria Peñas</div><div class="ci-time">07:31</div><div class="ci-check">✓</div></div>
+  </div>
+  <div class="s2-right" id="as2r">
+    <div class="s2-right-hdr">
+      <div class="s2-right-title">MIEMBROS</div>
+      <div class="filter-chips">
+        <div class="chip active">Activos</div>
+        <div class="chip">Vencidos</div>
+        <div class="chip">Nuevos</div>
+      </div>
+    </div>
+    <div class="member-table-row" id="mr0"><div class="mt-avatar" style="background:#2D1A0E;color:#FF5E14;">JV</div><div class="mt-name">Jorge Vargas</div><div class="mt-plan">Plan Pro</div><div class="mt-exp">Vence 31 Jul</div><div class="badge ok">ACTIVO</div></div>
+    <div class="member-table-row" id="mr1"><div class="mt-avatar" style="background:#1E2D1A;color:#22C55E;">AM</div><div class="mt-name">Ana Montero</div><div class="mt-plan">Plan Básico</div><div class="mt-exp">Vence 15 Jul</div><div class="badge warn">POR VENCER</div></div>
+    <div class="member-table-row" id="mr2"><div class="mt-avatar" style="background:#1A1A2D;color:#818CF8;">RP</div><div class="mt-name">Roberto Pérez</div><div class="mt-plan">Plan Elite</div><div class="mt-exp">Vence 30 Ago</div><div class="badge ok">ACTIVO</div></div>
+    <div class="member-table-row" id="mr3"><div class="mt-avatar" style="background:#2D1A0E;color:#FF5E14;">KS</div><div class="mt-name">Karla Solano</div><div class="mt-plan">Plan Pro</div><div class="mt-exp">Nuevo</div><div class="badge new">NUEVO</div></div>
+    <div class="member-table-row" id="mr4"><div class="mt-avatar" style="background:#2D2200;color:#FACC15;">MB</div><div class="mt-name">Miguel Blanco</div><div class="mt-plan">Plan Básico</div><div class="mt-exp">Vence 20 Jul</div><div class="badge ok">ACTIVO</div></div>
+  </div>
+</div>
+
+<!-- Scene 3: Gestión Tabs (10.5–25s) -->
+<div id="as-s3" class="as-scene">
+  <div class="s3-header">
+    <div class="s3-section-lbl">GESTIÓN DE OPERACIONES</div>
+    <div class="s3-tabbar">
+      <div class="s3-tab active" id="tab-rt">RUTINAS</div>
+      <div class="s3-tab" id="tab-re">RETOS</div>
+      <div class="s3-tab" id="tab-cl">CLASES</div>
+    </div>
+  </div>
+  <div class="s3-content">
+    <!-- Tab: Rutinas -->
+    <div id="tc-rutinas">
+      <div class="rt-left" id="rtl">
+        <div class="rt-heading">Asignación de Rutinas</div>
+        <div class="rt-row active-row" id="rr0">
+          <div class="rt-av" style="background:#2D1A0E;color:#FF5E14;">JV</div>
+          <div class="rt-name">Jorge Vargas</div>
+          <div class="rt-plan">Plan Pro</div>
+          <div class="rt-sel">Fuerza Básica ▾</div>
+          <div class="rt-btn">ASIGNAR</div>
+        </div>
+        <div class="rt-row" id="rr1">
+          <div class="rt-av" style="background:#1E2D1A;color:#22C55E;">AM</div>
+          <div class="rt-name">Ana Montero</div>
+          <div class="rt-plan">Básico</div>
+          <div class="rt-sel">Cardio AM ▾</div>
+          <div class="rt-btn">ASIGNAR</div>
+        </div>
+        <div class="rt-row" id="rr2">
+          <div class="rt-av" style="background:#1A1A2D;color:#818CF8;">RP</div>
+          <div class="rt-name">Roberto Pérez</div>
+          <div class="rt-plan">Elite</div>
+          <div class="rt-sel">Potencia ▾</div>
+          <div class="rt-btn">ASIGNAR</div>
+        </div>
+        <div class="rt-row" id="rr3">
+          <div class="rt-av" style="background:#2D2200;color:#FACC15;">DA</div>
+          <div class="rt-name">Diego Araya</div>
+          <div class="rt-plan">Plan Pro</div>
+          <div class="rt-sel">Sin asignar ▾</div>
+          <div class="rt-btn">ASIGNAR</div>
+        </div>
+      </div>
+      <div class="rt-right" id="rtr">
+        <div class="rt-stat">
+          <div class="rt-stat-val">47</div>
+          <div class="rt-stat-lbl">RUTINAS DISPONIBLES</div>
+        </div>
+        <div class="rt-stat">
+          <div class="rt-stat-val">18</div>
+          <div class="rt-stat-lbl">MIEMBROS CON RUTINA ACTIVA</div>
+        </div>
+        <div class="rt-stat" style="border-top:3px solid #FF5E14;box-shadow:0 0 0 1px rgba(255,94,20,0.15),0 4px 24px rgba(255,94,20,0.1);">
+          <div class="rt-stat-val" style="font-size:40px;color:#F5F5F5;">3 asignadas hoy</div>
+          <div class="rt-stat-lbl">PROGRESO DE HOY</div>
+        </div>
+      </div>
+    </div>
+    <!-- Tab: Retos -->
+    <div id="tc-retos">
+      <div class="re-left" id="rel">
+        <div class="re-heading">Crear Reto</div>
+        <div class="re-form-row">
+          <div class="re-label">NOMBRE DEL RETO</div>
+          <div class="re-input accent">Julio Fit Challenge</div>
+        </div>
+        <div class="re-grid">
+          <div class="re-form-row">
+            <div class="re-label">DURACIÓN</div>
+            <div class="re-input">30 días</div>
+          </div>
+          <div class="re-form-row">
+            <div class="re-label">OBJETIVO</div>
+            <div class="re-input">20 sesiones</div>
+          </div>
+        </div>
+        <div class="re-form-row" style="margin-bottom:32px;">
+          <div class="re-label">PLANES PARTICIPANTES</div>
+          <div class="re-input">Plan Pro · Plan Elite</div>
+        </div>
+        <div class="re-create-btn" id="re-btn">+ CREAR RETO</div>
+      </div>
+      <div class="re-right" id="rer">
+        <div class="re-heading" style="font-size:36px;">Retos Activos</div>
+        <div class="re-reto-card">
+          <div class="re-reto-name">Reto 30 Días</div>
+          <div class="re-reto-meta">34 participantes · 18 días restantes</div>
+          <div class="re-reto-bar-wrap"><div class="re-reto-bar" id="rb0" style="width:0%"></div></div>
+          <div class="re-reto-pct" id="rb0pct">0% completado</div>
+        </div>
+        <div class="re-reto-card">
+          <div class="re-reto-name">Reto Cardio</div>
+          <div class="re-reto-meta">22 participantes · 5 días restantes</div>
+          <div class="re-reto-bar-wrap"><div class="re-reto-bar" id="rb1" style="width:0%"></div></div>
+          <div class="re-reto-pct" id="rb1pct">0% completado</div>
+        </div>
+      </div>
+    </div>
+    <!-- Tab: Clases -->
+    <div id="tc-clases">
+      <div class="cl-wrap" id="clw">
+        <div class="cl-heading">Horario de Clases — Semana Actual</div>
+        <div class="cl-grid">
+          <div class="cl-day-col">
+            <div class="cl-day-lbl">LUN</div>
+            <div class="cl-slot featured"><div class="cl-time">06:00</div><div class="cl-name">Funcional</div><div class="cl-inst">Sara G.</div><div class="cl-cap ok">8/12</div></div>
+            <div class="cl-slot full"><div class="cl-time">18:00</div><div class="cl-name">Spinning</div><div class="cl-inst">Carlos M.</div><div class="cl-cap full">LLENO 10/10</div></div>
+          </div>
+          <div class="cl-day-col">
+            <div class="cl-day-lbl">MAR</div>
+            <div class="cl-slot"><div class="cl-time">07:00</div><div class="cl-name">Yoga</div><div class="cl-inst">María V.</div><div class="cl-cap ok">6/15</div></div>
+            <div class="cl-slot featured"><div class="cl-time">19:00</div><div class="cl-name">CrossFit</div><div class="cl-inst">Jorge A.</div><div class="cl-cap ok">11/12</div></div>
+          </div>
+          <div class="cl-day-col">
+            <div class="cl-day-lbl">MIÉ</div>
+            <div class="cl-slot"><div class="cl-time">06:00</div><div class="cl-name">Funcional</div><div class="cl-inst">Sara G.</div><div class="cl-cap ok">7/12</div></div>
+            <div class="cl-slot"><div class="cl-time">18:00</div><div class="cl-name">Zumba</div><div class="cl-inst">Paula R.</div><div class="cl-cap ok">9/20</div></div>
+          </div>
+          <div class="cl-day-col">
+            <div class="cl-day-lbl">JUE</div>
+            <div class="cl-slot"><div class="cl-time">07:00</div><div class="cl-name">Yoga</div><div class="cl-inst">María V.</div><div class="cl-cap ok">8/15</div></div>
+            <div class="cl-slot full"><div class="cl-time">19:00</div><div class="cl-name">CrossFit</div><div class="cl-inst">Jorge A.</div><div class="cl-cap full">LLENO 12/12</div></div>
+          </div>
+          <div class="cl-day-col">
+            <div class="cl-day-lbl">VIE</div>
+            <div class="cl-slot featured"><div class="cl-time">06:00</div><div class="cl-name">Funcional</div><div class="cl-inst">Sara G.</div><div class="cl-cap ok">10/12</div></div>
+            <div class="cl-slot"><div class="cl-time">18:00</div><div class="cl-name">Spinning</div><div class="cl-inst">Carlos M.</div><div class="cl-cap ok">7/10</div></div>
+          </div>
+        </div>
+        <div class="cl-footer">Próxima clase destacada: <em>CrossFit · Martes 19:00 · 1 lugar disponible</em></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 4: Inventario + Salud (25–30s) -->
+<div id="as-s4" class="as-scene">
+  <div class="s4-left" id="as4l">
+    <div class="s4-section-tag">Inventario</div>
+    <div class="s4-heading">EQUIPOS Y ESTADO</div>
+    <div class="inv-row" id="iv0"><div class="inv-icon">🏋️</div><div class="inv-name">Barras Olímpicas</div><div class="inv-qty">× 8</div><div class="inv-status ok">ÓPTIMO</div></div>
+    <div class="inv-row" id="iv1"><div class="inv-icon">🚴</div><div class="inv-name">Treadmills</div><div class="inv-qty">× 6</div><div class="inv-status warn">MANTENIMIENTO</div></div>
+    <div class="inv-row" id="iv2"><div class="inv-icon">💪</div><div class="inv-name">Kettlebells</div><div class="inv-qty">× 24</div><div class="inv-status ok">ÓPTIMO</div></div>
+    <div class="inv-row" id="iv3"><div class="inv-icon">🚲</div><div class="inv-name">Bikes Estáticas</div><div class="inv-qty">× 12</div><div class="inv-status warn">1 EN REVISIÓN</div></div>
+    <div class="inv-row" id="iv4"><div class="inv-icon">🔩</div><div class="inv-name">Rack de Mancuernas</div><div class="inv-qty">× 3</div><div class="inv-status ok">ÓPTIMO</div></div>
+  </div>
+  <div class="s4-right" id="as4r">
+    <div class="s4-section-tag">Salud de Miembros</div>
+    <div class="s4-heading">MÉTRICAS CLAVE</div>
+    <div class="s4-metric-grid">
+      <div class="s4-metric accent">
+        <div class="s4-metric-lbl">PESO PROMEDIO</div>
+        <div class="s4-metric-val" id="sm0">0 kg</div>
+        <div class="s4-metric-sub">+0.3 kg este mes</div>
+      </div>
+      <div class="s4-metric">
+        <div class="s4-metric-lbl">IMC PROMEDIO</div>
+        <div class="s4-metric-val" id="sm1">0</div>
+        <div class="s4-metric-sub">Rango saludable</div>
+      </div>
+      <div class="s4-metric">
+        <div class="s4-metric-lbl">ASISTENCIA 7 DÍAS</div>
+        <div class="s4-metric-val" id="sm2">0%</div>
+        <div class="s4-metric-sub">+4% vs semana anterior</div>
+      </div>
+      <div class="s4-metric">
+        <div class="s4-metric-lbl">RIESGO CHURN</div>
+        <div class="s4-metric-val" style="color:#FACC15;" id="sm3">0</div>
+        <div class="s4-metric-sub">miembros sin asistir 14d</div>
+      </div>
+    </div>
+    <div class="s4-attn-bar-wrap" id="as4bars">
+      <div class="s4-attn-lbl">ASISTENCIA POR DÍA — ÚLTIMA SEMANA</div>
+      <div class="s4-attn-bars">
+        <div class="s4-attn-col"><div class="s4-attn-bwrap"><div class="s4-attn-b" id="ab0" style="height:62%"></div></div><div class="s4-attn-day">L</div></div>
+        <div class="s4-attn-col"><div class="s4-attn-bwrap"><div class="s4-attn-b" id="ab1" style="height:78%"></div></div><div class="s4-attn-day">M</div></div>
+        <div class="s4-attn-col"><div class="s4-attn-bwrap"><div class="s4-attn-b" id="ab2" style="height:55%"></div></div><div class="s4-attn-day">X</div></div>
+        <div class="s4-attn-col"><div class="s4-attn-bwrap"><div class="s4-attn-b" id="ab3" style="height:88%"></div></div><div class="s4-attn-day">J</div></div>
+        <div class="s4-attn-col"><div class="s4-attn-bwrap"><div class="s4-attn-b hi" id="ab4" style="height:100%"></div></div><div class="s4-attn-day">V</div></div>
+        <div class="s4-attn-col"><div class="s4-attn-bwrap"><div class="s4-attn-b" id="ab5" style="height:45%"></div></div><div class="s4-attn-day">S</div></div>
+        <div class="s4-attn-col"><div class="s4-attn-bwrap"><div class="s4-attn-b" id="ab6" style="height:30%"></div></div><div class="s4-attn-day">D</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 5: Planes (30–34s) -->
+<div id="as-s5" class="as-scene">
+  <div class="s5-glow" data-layout-allow-overflow></div>
+  <div class="s5-eyebrow" id="as5ey">Administración de Planes</div>
+  <div class="s5-heading" id="as5hd">TODO EN UN SOLO LUGAR</div>
+  <div class="s5-plans" id="as5pl">
+    <div class="plan-card" id="pc0">
+      <div class="plan-tag">BÁSICO</div>
+      <div class="plan-name">Básico</div>
+      <div class="plan-price">₡15,000 <span>/ mes</span></div>
+      <div class="plan-feature">Acceso ilimitado</div>
+      <div class="plan-feature">App del miembro</div>
+      <div class="plan-feature">Rutinas básicas</div>
+      <div class="plan-members">38 <span>miembros activos</span></div>
+    </div>
+    <div class="plan-card featured" id="pc1">
+      <div class="plan-tag">MÁS POPULAR</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">₡28,000 <span>/ mes</span></div>
+      <div class="plan-feature">Todo lo de Básico</div>
+      <div class="plan-feature">Retos y desafíos</div>
+      <div class="plan-feature">Clases en vivo</div>
+      <div class="plan-members">71 <span>miembros activos</span></div>
+    </div>
+    <div class="plan-card" id="pc2">
+      <div class="plan-tag">PREMIUM</div>
+      <div class="plan-name">Elite</div>
+      <div class="plan-price">₡45,000 <span>/ mes</span></div>
+      <div class="plan-feature">Todo lo de Pro</div>
+      <div class="plan-feature">Nutrición personalizada</div>
+      <div class="plan-feature">Coach dedicado</div>
+      <div class="plan-members">33 <span>miembros activos</span></div>
+    </div>
+  </div>
+  <div class="s5-exit" id="as5ex">Gestiona sin esfuerzo. <em>Crece sin límites.</em></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+// admin-section — Administración: check-ins, gestión operativa, inventario y planes
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+
+// ── S1: ADMIN TITLE (0–2.5s) ────────────────────────────────
+tl.fromTo('#ag1',  {opacity:0}, {opacity:1, duration:1.2, ease:'power2.out'}, 0.1);
+tl.fromTo('#ab1',  {scaleY:0}, {scaleY:1, duration:0.9, ease:'expo.out'}, 0.1);
+tl.fromTo('#agh1', {opacity:0}, {opacity:0.06, duration:1.5, ease:'power1.out'}, 0.28);
+tl.fromTo('#arh',  {scaleX:0}, {scaleX:1, duration:0.7, ease:'power3.out'}, 0.22);
+tl.fromTo('#abn',  {x:24, opacity:0}, {x:0, opacity:1, duration:0.42, ease:'power3.out'}, 0.28);
+tl.fromTo('#atag', {opacity:0}, {opacity:1, duration:0.3, ease:'power2.out'}, 0.5);
+tl.fromTo('#at1',  {x:90, opacity:0}, {x:0, opacity:1, duration:0.55, ease:'expo.out'}, 0.58);
+tl.fromTo('#ar1',  {scaleX:0}, {scaleX:1, duration:0.5, ease:'power3.out'}, 0.9);
+tl.fromTo('#atl',  {y:22, opacity:0}, {y:0, opacity:1, duration:0.55, ease:'power2.out'}, 1.05);
+tl.fromTo('#adet', {opacity:0}, {opacity:1, duration:0.45, ease:'power1.out'}, 1.38);
+
+// ── TRANSICIÓN S1→S2 (t=2.1s) ───────────────────────────────
+tl.set('#as-s2', {display:'block', opacity:0}, 2.05);
+tl.fromTo('#as-s2', {opacity:0}, {opacity:1, duration:0.5, ease:'power2.inOut'}, 2.1);
+tl.set('#as-s1', {opacity:0, visibility:'hidden'}, 2.6);
+
+// ── S2: CHECK-IN + MIEMBROS (2.5–10.5s) ─────────────────────
+tl.fromTo('#as2l', {x:-40, opacity:0}, {x:0, opacity:1, duration:0.55, ease:'expo.out'}, 2.65);
+tl.fromTo('#as2r', {x:40, opacity:0}, {x:0, opacity:1, duration:0.55, ease:'expo.out'}, 2.75);
+var ciObj = {v:0};
+tl.to(ciObj, {v:12, duration:1.2, ease:'power3.out', onUpdate:function(){ document.getElementById('ci-count').textContent=Math.round(ciObj.v); }}, 2.9);
+tl.fromTo(['#ci0','#ci1','#ci2','#ci3','#ci4'],
+  {x:-20, opacity:0}, {x:0, opacity:1, duration:0.35, stagger:0.14, ease:'power2.out'}, 3.0);
+tl.fromTo(['#mr0','#mr1','#mr2','#mr3','#mr4'],
+  {x:24, opacity:0}, {x:0, opacity:1, duration:0.38, stagger:0.12, ease:'power2.out'}, 3.1);
+
+// ── TRANSICIÓN S2→S3 (t=10.0s) ──────────────────────────────
+tl.set('#as-s3', {display:'block', opacity:0}, 9.95);
+tl.fromTo('#as-s3', {opacity:0}, {opacity:1, duration:0.5, ease:'power2.inOut'}, 10.0);
+tl.set('#as-s2', {display:'none'}, 10.5);
+
+// ── S3: GESTIÓN TABS (10.5–25s) ──────────────────────────────
+// Encabezado y tab inicial entran
+tl.fromTo('#as-s3 .s3-section-lbl', {y:-16, opacity:0}, {y:0, opacity:1, duration:0.4, ease:'power2.out'}, 10.55);
+// Tab: Rutinas content
+tl.fromTo('#rtl', {x:-36, opacity:0}, {x:0, opacity:1, duration:0.5, ease:'expo.out'}, 10.65);
+tl.fromTo('#rtr', {x:36, opacity:0}, {x:0, opacity:1, duration:0.5, ease:'expo.out'}, 10.75);
+tl.fromTo(['#rr0','#rr1','#rr2','#rr3'],
+  {y:24, opacity:0}, {y:0, opacity:1, duration:0.38, stagger:0.12, ease:'power3.out'}, 10.85);
+
+// ── SWITCH: Rutinas → Retos (t=15.0s) ────────────────────────
+// Actualizar tab activo
+tl.set('#tab-rt', {color:'#888888', borderBottomColor:'transparent', textShadow:'none'}, 14.8);
+tl.set('#tab-re', {color:'#FF5E14', borderBottomColor:'#FF5E14', textShadow:'0 0 20px rgba(255,94,20,0.4)'}, 14.8);
+// Slide out Rutinas, slide in Retos
+tl.to('#rtl', {x:-60, opacity:0, duration:0.35, ease:'power2.in'}, 14.8);
+tl.to('#rtr', {x:60, opacity:0, duration:0.35, ease:'power2.in'}, 14.85);
+tl.set('#tc-retos', {opacity:1, visibility:'visible'}, 15.3);
+tl.fromTo('#rel', {x:-50, opacity:0}, {x:0, opacity:1, duration:0.45, ease:'expo.out'}, 15.3);
+tl.fromTo('#rer', {x:50, opacity:0}, {x:0, opacity:1, duration:0.45, ease:'expo.out'}, 15.4);
+// Barras de retos animadas
+var rb0Obj={v:0}, rb1Obj={v:0};
+tl.to(rb0Obj, {v:68, duration:1.2, ease:'power3.out', onUpdate:function(){
+  document.getElementById('rb0').style.width=rb0Obj.v+'%';
+  document.getElementById('rb0pct').textContent=Math.round(rb0Obj.v)+'% completado';
+}}, 15.7);
+tl.to(rb1Obj, {v:83, duration:1.0, ease:'power3.out', onUpdate:function(){
+  document.getElementById('rb1').style.width=rb1Obj.v+'%';
+  document.getElementById('rb1pct').textContent=Math.round(rb1Obj.v)+'% completado';
+}}, 15.9);
+// Botón pulsa
+var btnRep = Math.ceil(4.5 / 1.0);
+tl.fromTo('#re-btn', {scale:1}, {scale:1.03, yoyo:true, repeat:btnRep, duration:0.5, ease:'sine.inOut'}, 16.5);
+
+// ── SWITCH: Retos → Clases (t=19.5s) ─────────────────────────
+tl.set('#tab-re', {color:'#888888', borderBottomColor:'transparent', textShadow:'none'}, 19.3);
+tl.set('#tab-cl', {color:'#FF5E14', borderBottomColor:'#FF5E14', textShadow:'0 0 20px rgba(255,94,20,0.4)'}, 19.3);
+tl.to('#rel', {x:-60, opacity:0, duration:0.35, ease:'power2.in'}, 19.3);
+tl.to('#rer', {x:60, opacity:0, duration:0.35, ease:'power2.in'}, 19.35);
+tl.set('#tc-clases', {opacity:1, visibility:'visible'}, 19.8);
+tl.fromTo('#clw', {y:30, opacity:0}, {y:0, opacity:1, duration:0.5, ease:'expo.out'}, 19.8);
+// Slots de clases en cascada
+tl.fromTo('#as-s3 .cl-slot',
+  {y:20, opacity:0}, {y:0, opacity:1, duration:0.3, stagger:0.06, ease:'power2.out'}, 20.1);
+
+// ── TRANSICIÓN S3→S4 (t=24.5s) ──────────────────────────────
+tl.set('#as-s4', {display:'block', opacity:0}, 24.45);
+tl.fromTo('#as-s4', {opacity:0}, {opacity:1, duration:0.5, ease:'power2.inOut'}, 24.5);
+tl.set('#as-s3', {display:'none'}, 25.0);
+
+// ── S4: INVENTARIO + SALUD (25–30s) ─────────────────────────
+tl.fromTo('#as4l', {x:-36, opacity:0}, {x:0, opacity:1, duration:0.5, ease:'expo.out'}, 25.1);
+tl.fromTo('#as4r', {x:36, opacity:0}, {x:0, opacity:1, duration:0.5, ease:'expo.out'}, 25.2);
+tl.fromTo(['#iv0','#iv1','#iv2','#iv3','#iv4'],
+  {x:-20, opacity:0}, {x:0, opacity:1, duration:0.34, stagger:0.1, ease:'power2.out'}, 25.4);
+// Contadores de salud
+var sm0Obj={v:0}, sm1Obj={v:0}, sm2Obj={v:0}, sm3Obj={v:0};
+tl.to(sm0Obj, {v:72.4, duration:1.0, ease:'power3.out', onUpdate:function(){ document.getElementById('sm0').textContent=sm0Obj.v.toFixed(1)+' kg'; }}, 25.5);
+tl.to(sm1Obj, {v:24.2, duration:1.0, ease:'power3.out', onUpdate:function(){ document.getElementById('sm1').textContent=sm1Obj.v.toFixed(1); }}, 25.62);
+tl.to(sm2Obj, {v:68,   duration:1.1, ease:'power3.out', onUpdate:function(){ document.getElementById('sm2').textContent=Math.round(sm2Obj.v)+'%'; }}, 25.74);
+tl.to(sm3Obj, {v:8,    duration:0.9, ease:'power3.out', onUpdate:function(){ document.getElementById('sm3').textContent=Math.round(sm3Obj.v); }}, 25.86);
+// Barras de asistencia
+tl.fromTo(['#ab0','#ab1','#ab2','#ab3','#ab4','#ab5','#ab6'],
+  {scaleY:0, transformOrigin:'bottom'},
+  {scaleY:1, duration:0.6, ease:'power3.out', stagger:0.08}, 26.8);
+
+// ── TRANSICIÓN S4→S5 (t=29.5s) ──────────────────────────────
+tl.set('#as-s5', {display:'block', opacity:0}, 29.45);
+tl.fromTo('#as-s5', {opacity:0}, {opacity:1, duration:0.5, ease:'power2.inOut'}, 29.5);
+tl.set('#as-s4', {display:'none'}, 30.0);
+
+// ── S5: PLANES (30–34s) ───────────────────────────────────────
+tl.fromTo('#as5ey', {opacity:0}, {opacity:1, duration:0.4, ease:'power2.out'}, 30.1);
+tl.fromTo('#as5hd', {x:-36, opacity:0}, {x:0, opacity:1, duration:0.55, ease:'expo.out'}, 30.2);
+tl.fromTo('#pc0', {y:40, opacity:0}, {y:0, opacity:1, duration:0.48, ease:'power3.out'}, 30.5);
+tl.fromTo('#pc1', {y:40, opacity:0}, {y:0, opacity:1, duration:0.48, ease:'back.out(1.3)'}, 30.68);
+tl.fromTo('#pc2', {y:40, opacity:0}, {y:0, opacity:1, duration:0.48, ease:'power3.out'}, 30.86);
+tl.fromTo('#as5ex', {y:20, opacity:0}, {y:0, opacity:1, duration:0.55, ease:'power2.out'}, 32.2);
+
+window.__timelines['admin-section'] = tl;
+</script>
+
+</div>
+</template>
+</body>
+</html>

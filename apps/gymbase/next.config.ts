@@ -31,9 +31,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@memberbase/core'],
-
-  // Fija el workspace root para evitar que Turbopack detecte C:\Users\luisy\package-lock.json
+  // Turbopack detecta el workspace root desde lockfiles — apuntarlo al monorepo correcto
   turbopack: {
     root: path.resolve(__dirname, '../..'),
   },

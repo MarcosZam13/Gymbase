@@ -15,8 +15,8 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { getCurrentUser } from "@/lib/supabase/server";
-import { getUserSubscription } from "@core/actions/payment.actions";
-import { getContentForUser } from "@core/actions/content.actions";
+import { getUserSubscription } from "@/actions/payment.actions";
+import { getContentForUser } from "@/actions/content.actions";
 import { getMyQR, getOccupancy } from "@/actions/checkin.actions";
 import { getMyRoutine, getRoutineById } from "@/actions/routine.actions";
 import { getWeekSchedule, getMyBookings } from "@/actions/calendar.actions";

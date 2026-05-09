@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/></head>
+<body>
+<template id="owner-section-template">
+<div data-composition-id="owner-section" data-width="1920" data-height="1080">
+
+<style>
+[data-composition-id="owner-section"] {
+  font-family: 'DM Sans', sans-serif;
+  background: #0A0A0A;
+  color: #F5F5F5;
+}
+[data-composition-id="owner-section"] .os-scene {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1920px; height: 1080px;
+  overflow: hidden;
+}
+/* ── Scene 1: Title ──────────────────────────────────── */
+[data-composition-id="owner-section"] .s1-glow {
+  position: absolute;
+  top: -300px; left: -300px;
+  width: 900px; height: 900px;
+  background: radial-gradient(circle, rgba(255,94,20,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="owner-section"] .s1-glow-br {
+  position: absolute;
+  bottom: -250px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(255,94,20,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="owner-section"] .s1-bar {
+  position: absolute;
+  left: 0; top: 0;
+  width: 6px; height: 1080px;
+  background: linear-gradient(180deg, #FF5E14 0%, rgba(255,94,20,0.15) 100%);
+  transform-origin: top;
+  box-shadow: 0 0 18px rgba(255,94,20,0.4);
+}
+[data-composition-id="owner-section"] .s1-ghost {
+  position: absolute;
+  top: 50%; left: 58%;
+  transform: translate(-50%, -52%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 420px;
+  font-weight: 900;
+  color: #FF5E14;
+  letter-spacing: -8px;
+  white-space: nowrap;
+  user-select: none;
+  line-height: 1;
+}
+[data-composition-id="owner-section"] .s1-corner {
+  position: absolute;
+  width: 52px; height: 52px;
+}
+[data-composition-id="owner-section"] .s1-corner.tr {
+  top: 48px; right: 72px;
+  border-top: 2px solid rgba(255,94,20,0.35); border-right: 2px solid rgba(255,94,20,0.35);
+}
+[data-composition-id="owner-section"] .s1-corner.br {
+  bottom: 48px; right: 72px;
+  border-bottom: 2px solid #1E1E1E; border-right: 2px solid #1E1E1E;
+}
+[data-composition-id="owner-section"] .s1-brand {
+  position: absolute;
+  top: 64px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 700;
+  color: #FF5E14; letter-spacing: 8px;
+}
+[data-composition-id="owner-section"] .s1-tag {
+  position: absolute;
+  top: 390px; left: 124px;
+  font-size: 16px; color: #8A8A8A; letter-spacing: 5px; text-transform: uppercase;
+}
+[data-composition-id="owner-section"] .s1-title {
+  position: absolute;
+  top: 418px; left: 116px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 172px; font-weight: 900; color: #F5F5F5;
+  line-height: 1; letter-spacing: -2px;
+  text-shadow: 0 0 60px rgba(255,94,20,0.15);
+}
+[data-composition-id="owner-section"] .s1-rule {
+  position: absolute;
+  top: 614px; left: 124px;
+  width: 560px; height: 3px;
+  background: linear-gradient(90deg, #FF5E14, rgba(255,94,20,0.3));
+  transform-origin: left;
+  box-shadow: 0 0 12px rgba(255,94,20,0.5);
+}
+[data-composition-id="owner-section"] .s1-tagline {
+  position: absolute;
+  top: 638px; left: 124px;
+  font-size: 38px; color: #F5F5F5; line-height: 1.45; max-width: 680px;
+}
+[data-composition-id="owner-section"] .s1-detail {
+  position: absolute;
+  bottom: 64px; left: 124px;
+  font-size: 17px; color: #8A8A8A; letter-spacing: 3px;
+}
+/* ── Scene 2: Dashboard ──────────────────────────────── */
+[data-composition-id="owner-section"] #os-s2 { opacity: 0; display: none; }
+[data-composition-id="owner-section"] .s2-bg-grid {
+  position: absolute;
+  top: 0; left: 0; width: 1920px; height: 1080px;
+  background-image: linear-gradient(rgba(255,94,20,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,94,20,0.04) 1px, transparent 1px);
+  background-size: 100px 100px;
+  pointer-events: none;
+}
+[data-composition-id="owner-section"] .s2-glow-r {
+  position: absolute;
+  top: 50%; right: -300px;
+  transform: translateY(-50%);
+  width: 750px; height: 750px;
+  background: radial-gradient(circle, rgba(255,94,20,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="owner-section"] .s2-hdr-title {
+  position: absolute;
+  top: 64px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px; font-weight: 700; color: #8A8A8A; letter-spacing: 6px;
+}
+[data-composition-id="owner-section"] .s2-live {
+  position: absolute;
+  top: 56px; right: 80px;
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: 40px; padding: 10px 22px;
+  box-shadow: 0 0 20px rgba(34,197,94,0.1);
+}
+[data-composition-id="owner-section"] .s2-live-dot {
+  width: 10px; height: 10px;
+  background: #22C55E; border-radius: 50%;
+  box-shadow: 0 0 8px rgba(34,197,94,0.8);
+}
+[data-composition-id="owner-section"] .s2-live-txt {
+  font-size: 17px; font-weight: 600; color: #22C55E; letter-spacing: 2px;
+}
+[data-composition-id="owner-section"] .s2-cards {
+  position: absolute;
+  top: 164px; left: 80px; right: 80px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+[data-composition-id="owner-section"] .kpi-card {
+  background: #111111;
+  border: 1px solid #1E1E1E;
+  border-radius: 14px;
+  padding: 36px 32px 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+[data-composition-id="owner-section"] .kpi-card.accent {
+  border-top: 3px solid #FF5E14;
+  box-shadow: 0 0 0 1px rgba(255,94,20,0.2), 0 4px 32px rgba(255,94,20,0.12), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+[data-composition-id="owner-section"] .kpi-lbl {
+  font-size: 15px; color: #8A8A8A; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 18px;
+}
+[data-composition-id="owner-section"] .kpi-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 64px; font-weight: 700; color: #F5F5F5;
+  line-height: 1; font-variant-numeric: tabular-nums; margin-bottom: 12px;
+}
+[data-composition-id="owner-section"] .kpi-sub { font-size: 18px; }
+[data-composition-id="owner-section"] .kpi-sub.up   { color: #22C55E; }
+[data-composition-id="owner-section"] .kpi-sub.muted { color: #8A8A8A; }
+[data-composition-id="owner-section"] .s2-bottom {
+  position: absolute;
+  bottom: 60px; left: 80px; right: 80px;
+  padding-top: 22px;
+  border-top: 1px solid #1E1E1E;
+  display: flex; justify-content: space-between; align-items: center;
+}
+[data-composition-id="owner-section"] .s2-ts { font-size: 16px; color: #8A8A8A; letter-spacing: 2px; }
+[data-composition-id="owner-section"] .s2-proj { font-size: 20px; color: #F5F5F5; }
+[data-composition-id="owner-section"] .s2-proj em { color: #FF5E14; font-style: normal; font-weight: 600; }
+/* ── Scene 3: Revenue Chart ──────────────────────────── */
+[data-composition-id="owner-section"] #os-s3 { opacity: 0; display: none; }
+[data-composition-id="owner-section"] .s3-glow-l {
+  position: absolute;
+  top: -200px; left: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(255,94,20,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="owner-section"] .s3-eyebrow {
+  position: absolute;
+  top: 70px; left: 80px;
+  font-size: 18px; color: #FF5E14; letter-spacing: 5px; text-transform: uppercase;
+}
+[data-composition-id="owner-section"] .s3-heading {
+  position: absolute;
+  top: 108px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 80px; font-weight: 900; color: #F5F5F5; line-height: 1; letter-spacing: -1px;
+}
+[data-composition-id="owner-section"] .s3-badge {
+  position: absolute;
+  top: 110px; right: 80px;
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.28);
+  border-radius: 14px; padding: 24px 36px; text-align: right;
+  box-shadow: 0 0 24px rgba(34,197,94,0.08);
+}
+[data-composition-id="owner-section"] .s3-badge-lbl { font-size: 15px; color: #8A8A8A; letter-spacing: 3px; margin-bottom: 8px; }
+[data-composition-id="owner-section"] .s3-badge-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px; font-weight: 700; color: #22C55E;
+}
+[data-composition-id="owner-section"] .s3-chart {
+  position: absolute;
+  bottom: 160px; left: 80px; right: 80px;
+  height: 440px;
+  display: flex; align-items: flex-end; gap: 24px;
+}
+[data-composition-id="owner-section"] .chart-col {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 14px; height: 100%;
+}
+[data-composition-id="owner-section"] .chart-bar-wrap {
+  flex: 1; width: 100%; display: flex; align-items: flex-end;
+}
+[data-composition-id="owner-section"] .chart-bar {
+  width: 100%;
+  background: #1E1E1E;
+  border-radius: 8px 8px 0 0;
+  transform-origin: bottom;
+}
+[data-composition-id="owner-section"] .chart-bar.hi { background: #2A2A2A; }
+[data-composition-id="owner-section"] .chart-bar.cur {
+  background: #FF5E14;
+  box-shadow: 0 0 24px rgba(255,94,20,0.35), 0 -4px 16px rgba(255,94,20,0.2);
+}
+[data-composition-id="owner-section"] .chart-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px; font-weight: 700; color: #F5F5F5;
+}
+[data-composition-id="owner-section"] .chart-mo { font-size: 16px; color: #8A8A8A; letter-spacing: 2px; }
+[data-composition-id="owner-section"] .s3-quote {
+  position: absolute;
+  bottom: 60px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 38px; color: #8A8A8A; letter-spacing: 1px;
+}
+[data-composition-id="owner-section"] .s3-quote em { color: #F5F5F5; font-style: normal; }
+
+/* ── Scene 4: White-Label Stinger ────────────────────── */
+[data-composition-id="owner-section"] #os-s4 { opacity: 0; display: none; }
+[data-composition-id="owner-section"] .s4-grid {
+  position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;
+  background-image: linear-gradient(rgba(255,94,20,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,94,20,0.03) 1px, transparent 1px);
+  background-size: 80px 80px; pointer-events: none;
+}
+[data-composition-id="owner-section"] .s4-ghost {
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -52%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 340px; font-weight: 900;
+  color: #FF5E14; opacity: 0.04;
+  white-space: nowrap; letter-spacing: -6px; user-select: none;
+}
+[data-composition-id="owner-section"] .s4-eyebrow {
+  position: absolute;
+  top: 68px; left: 80px;
+  font-size: 18px; color: #FF5E14; letter-spacing: 5px; text-transform: uppercase;
+}
+[data-composition-id="owner-section"] .s4-heading {
+  position: absolute;
+  top: 106px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 90px; font-weight: 900; color: #F5F5F5; line-height: 1; letter-spacing: -1px;
+}
+[data-composition-id="owner-section"] .s4-sub {
+  position: absolute;
+  top: 220px; left: 80px;
+  font-size: 30px; color: #8A8A8A; max-width: 700px; line-height: 1.5;
+}
+[data-composition-id="owner-section"] .s4-brands {
+  position: absolute;
+  top: 340px; left: 80px; right: 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+[data-composition-id="owner-section"] .brand-tile {
+  background: #111111;
+  border: 1px solid #1E1E1E;
+  border-radius: 20px;
+  padding: 44px 40px 36px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+  display: flex; flex-direction: column; gap: 16px;
+}
+[data-composition-id="owner-section"] .bt-color-bar {
+  width: 48px; height: 6px; border-radius: 3px;
+}
+[data-composition-id="owner-section"] .bt-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px; font-weight: 900; color: #F5F5F5;
+  letter-spacing: -1px; line-height: 1;
+}
+[data-composition-id="owner-section"] .bt-tag {
+  font-size: 15px; color: #8A8A8A; letter-spacing: 3px;
+}
+[data-composition-id="owner-section"] .bt-chips {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px;
+}
+[data-composition-id="owner-section"] .bt-chip {
+  font-size: 13px; padding: 5px 14px; border-radius: 40px;
+  border: 1px solid #2A2A2A; color: #C0C0C0;
+}
+[data-composition-id="owner-section"] .s4-footer {
+  position: absolute;
+  bottom: 64px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 42px; color: #8A8A8A; letter-spacing: 1px;
+}
+[data-composition-id="owner-section"] .s4-footer em { color: #FF5E14; font-style: normal; }
+</style>
+
+<!-- Scene 1: OWNER title (0–2.5s) -->
+<div id="os-s1" class="os-scene">
+  <div class="s1-glow" id="os-glow1"></div>
+  <div class="s1-glow-br"></div>
+  <div class="s1-bar" id="os-bar1"></div>
+  <div class="s1-ghost" id="os-ghost1">OWNER</div>
+  <div class="s1-corner tr" id="os-ctr"></div>
+  <div class="s1-corner br" id="os-cbr"></div>
+  <div class="s1-brand" id="os-brand1">GYMBASE</div>
+  <div class="s1-tag" id="os-tag1">ROL</div>
+  <div class="s1-title" id="os-title1">OWNER</div>
+  <div class="s1-rule" id="os-rule1"></div>
+  <div class="s1-tagline" id="os-tl1">El control total del negocio, en tiempo real.</div>
+  <div class="s1-detail" id="os-det1">FINANZAS · MIEMBROS · PROYECCIONES · ANALYTICS</div>
+</div>
+
+<!-- Scene 2: Dashboard KPIs (2.5–8s) -->
+<div id="os-s2" class="os-scene">
+  <div class="s2-bg-grid"></div>
+  <div class="s2-glow-r" data-layout-allow-overflow></div>
+  <div class="s2-hdr-title" id="os-s2hdr">DASHBOARD EJECUTIVO</div>
+  <div class="s2-live" id="os-s2live">
+    <div class="s2-live-dot" id="os-ldot"></div>
+    <div class="s2-live-txt">EN VIVO</div>
+  </div>
+  <div class="s2-cards" id="os-s2cards">
+    <div class="kpi-card accent">
+      <div class="kpi-lbl">Ingresos del Mes</div>
+      <div class="kpi-val" id="kv-rev">₡0</div>
+      <div class="kpi-sub up">+12% vs mes anterior</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Miembros Activos</div>
+      <div class="kpi-val" id="kv-mem">0</div>
+      <div class="kpi-sub up">+8 nuevos este mes</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Retención</div>
+      <div class="kpi-val" id="kv-ret">0%</div>
+      <div class="kpi-sub muted">Meta: 90% · Excelente</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Ocupación</div>
+      <div class="kpi-val" id="kv-occ">0%</div>
+      <div class="kpi-sub up">vs meta 75%</div>
+    </div>
+  </div>
+  <div class="s2-bottom" id="os-s2bot">
+    <div class="s2-ts">Actualizado: Julio 2025 · 09:41 AM</div>
+    <div class="s2-proj">Proyección mensual: <em>₡3.1M</em></div>
+  </div>
+</div>
+
+<!-- Scene 3: Revenue chart (8–13.5s) -->
+<div id="os-s3" class="os-scene">
+  <div class="s3-glow-l" data-layout-allow-overflow></div>
+  <div class="s3-eyebrow" id="os-s3ey">Análisis de Ingresos</div>
+  <div class="s3-heading" id="os-s3hd">CRECIMIENTO MENSUAL</div>
+  <div class="s3-badge" id="os-s3bg">
+    <div class="s3-badge-lbl">CRECIMIENTO ANUAL</div>
+    <div class="s3-badge-val">+34%</div>
+  </div>
+  <div class="s3-chart" id="os-s3ch">
+    <div class="chart-col">
+      <div class="chart-val" id="cv0">₡1.8M</div>
+      <div class="chart-bar-wrap"><div class="chart-bar" id="cb0" style="height:57%"></div></div>
+      <div class="chart-mo" id="cm0">FEB</div>
+    </div>
+    <div class="chart-col">
+      <div class="chart-val" id="cv1">₡2.2M</div>
+      <div class="chart-bar-wrap"><div class="chart-bar hi" id="cb1" style="height:70%"></div></div>
+      <div class="chart-mo" id="cm1">MAR</div>
+    </div>
+    <div class="chart-col">
+      <div class="chart-val" id="cv2">₡2.0M</div>
+      <div class="chart-bar-wrap"><div class="chart-bar" id="cb2" style="height:63%"></div></div>
+      <div class="chart-mo" id="cm2">ABR</div>
+    </div>
+    <div class="chart-col">
+      <div class="chart-val" id="cv3">₡2.5M</div>
+      <div class="chart-bar-wrap"><div class="chart-bar hi" id="cb3" style="height:80%"></div></div>
+      <div class="chart-mo" id="cm3">MAY</div>
+    </div>
+    <div class="chart-col">
+      <div class="chart-val" id="cv4">₡2.7M</div>
+      <div class="chart-bar-wrap"><div class="chart-bar hi" id="cb4" style="height:87%"></div></div>
+      <div class="chart-mo" id="cm4">JUN</div>
+    </div>
+    <div class="chart-col">
+      <div class="chart-val" id="cv5">₡2.8M</div>
+      <div class="chart-bar-wrap"><div class="chart-bar cur" id="cb5" style="height:100%"></div></div>
+      <div class="chart-mo" id="cm5">JUL ▲</div>
+    </div>
+  </div>
+  <div class="s3-quote" id="os-s3q">Tu negocio. <em>Tus datos.</em> Tu control.</div>
+</div>
+
+<!-- Scene 4: White-Label Stinger (13.5–20s) -->
+<div id="os-s4" class="os-scene">
+  <div class="s4-grid"></div>
+  <div class="s4-ghost">WHITE LABEL</div>
+  <div class="s4-eyebrow" id="os-s4ey">Personalización total</div>
+  <div class="s4-heading" id="os-s4hd">TU MARCA. TU IDENTIDAD.</div>
+  <div class="s4-sub" id="os-s4sub">Personaliza colores, logo y nombre de la app para cada cliente. Sin código.</div>
+  <div class="s4-brands" id="os-s4br">
+    <div class="brand-tile" id="bt0">
+      <div class="bt-color-bar" style="background:#3B82F6;box-shadow:0 0 14px rgba(59,130,246,0.5);"></div>
+      <div class="bt-name" style="color:#3B82F6;">FIT PRO</div>
+      <div class="bt-tag">PLAN BÁSICO · 38 MIEMBROS</div>
+      <div class="bt-chips">
+        <div class="bt-chip">Azul Océano</div>
+        <div class="bt-chip">Logo propio</div>
+      </div>
+    </div>
+    <div class="brand-tile" id="bt1">
+      <div class="bt-color-bar" style="background:#22C55E;box-shadow:0 0 14px rgba(34,197,94,0.5);"></div>
+      <div class="bt-name" style="color:#22C55E;">IRON CLUB</div>
+      <div class="bt-tag">PLAN PRO · 71 MIEMBROS</div>
+      <div class="bt-chips">
+        <div class="bt-chip">Verde Élite</div>
+        <div class="bt-chip">Logo propio</div>
+      </div>
+    </div>
+    <div class="brand-tile" id="bt2" style="border-color:rgba(255,94,20,0.3);box-shadow:0 0 0 1px rgba(255,94,20,0.15),0 4px 32px rgba(255,94,20,0.1),inset 0 1px 0 rgba(255,255,255,0.04);">
+      <div class="bt-color-bar" style="background:#FF5E14;box-shadow:0 0 14px rgba(255,94,20,0.6);"></div>
+      <div class="bt-name" style="color:#FF5E14;">ELITE GYM</div>
+      <div class="bt-tag">PLAN ELITE · 33 MIEMBROS</div>
+      <div class="bt-chips">
+        <div class="bt-chip">Naranja Fuego</div>
+        <div class="bt-chip">Logo propio</div>
+      </div>
+    </div>
+  </div>
+  <div class="s4-footer" id="os-s4ft">Una sola plataforma. <em>Infinitas identidades.</em></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+// owner-section — Panel del propietario: dashboard, crecimiento y white-label stinger
+// S1: 0–2.5s | S2: 2.5–8.0s | S3: 8.0–13.5s | S4: 13.5–20s
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+
+// ── S1: OWNER TITLE (0–2.5s) ────────────────────────────────
+tl.fromTo('#os-glow1',  {opacity:0}, {opacity:1, duration:1.2, ease:'power2.out'}, 0.1);
+tl.fromTo('#os-bar1',   {scaleY:0},  {scaleY:1, duration:0.9, ease:'expo.out'}, 0.1);
+tl.fromTo('#os-ghost1', {opacity:0}, {opacity:0.06, duration:1.5, ease:'power1.out'}, 0.25);
+tl.fromTo('#os-ctr',    {opacity:0}, {opacity:1, duration:0.4, ease:'power2.out'}, 0.32);
+tl.fromTo('#os-cbr',    {opacity:0}, {opacity:1, duration:0.4, ease:'power2.out'}, 0.44);
+tl.fromTo('#os-brand1', {x:-24, opacity:0}, {x:0, opacity:1, duration:0.42, ease:'power3.out'}, 0.28);
+tl.fromTo('#os-tag1',   {opacity:0}, {opacity:1, duration:0.3, ease:'power2.out'}, 0.5);
+tl.fromTo('#os-title1', {x:-90, opacity:0}, {x:0, opacity:1, duration:0.55, ease:'expo.out'}, 0.58);
+tl.fromTo('#os-rule1',  {scaleX:0}, {scaleX:1, duration:0.5, ease:'power3.out'}, 0.9);
+tl.fromTo('#os-tl1',    {y:22, opacity:0}, {y:0, opacity:1, duration:0.55, ease:'power2.out'}, 1.05);
+tl.fromTo('#os-det1',   {opacity:0}, {opacity:1, duration:0.45, ease:'power1.out'}, 1.38);
+
+// ── TRANSICIÓN S1→S2 (t=2.1s) ───────────────────────────────
+tl.set('#os-s2', {display:'block', opacity:0}, 2.05);
+tl.fromTo('#os-s2', {opacity:0}, {opacity:1, duration:0.5, ease:'power2.inOut'}, 2.1);
+tl.set('#os-s1', {opacity:0, visibility:'hidden'}, 2.6);
+
+// ── S2: DASHBOARD (2.5–12s) ─────────────────────────────────
+tl.fromTo('#os-s2hdr',   {x:-28, opacity:0}, {x:0, opacity:1, duration:0.5, ease:'expo.out'}, 2.65);
+tl.fromTo('#os-s2live',  {scale:0, opacity:0}, {scale:1, opacity:1, duration:0.4, ease:'back.out(2)'}, 2.88);
+var liveRep = Math.ceil(5.0 / 0.8);
+tl.fromTo('#os-ldot', {scale:1}, {scale:1.65, yoyo:true, repeat:liveRep, duration:0.4, ease:'sine.inOut'}, 3.0);
+tl.fromTo('#os-s2cards', {y:44, opacity:0}, {y:0, opacity:1, duration:0.65, ease:'power3.out'}, 3.15);
+
+// Contadores animados — deterministas via onUpdate
+var rObj={v:0}, mObj={v:0}, retObj={v:0}, occObj={v:0};
+tl.to(rObj,   {v:2847500, duration:1.5, ease:'power3.out', onUpdate:function(){ document.getElementById('kv-rev').textContent='₡'+Math.round(rObj.v).toLocaleString(); }}, 3.35);
+tl.to(mObj,   {v:142,     duration:1.2, ease:'power3.out', onUpdate:function(){ document.getElementById('kv-mem').textContent=Math.round(mObj.v); }}, 3.5);
+tl.to(retObj, {v:94.2,    duration:1.3, ease:'expo.out',   onUpdate:function(){ document.getElementById('kv-ret').textContent=retObj.v.toFixed(1)+'%'; }}, 3.6);
+tl.to(occObj, {v:78,      duration:1.1, ease:'power3.out', onUpdate:function(){ document.getElementById('kv-occ').textContent=Math.round(occObj.v)+'%'; }}, 3.7);
+tl.fromTo('#os-s2bot', {y:18, opacity:0}, {y:0, opacity:1, duration:0.5, ease:'power2.out'}, 5.5);
+
+// ── TRANSICIÓN S2→S3 (t=8.0s) ───────────────────────────────
+tl.set('#os-s3', {display:'block', opacity:0}, 7.95);
+tl.fromTo('#os-s3', {opacity:0}, {opacity:1, duration:0.5, ease:'power2.inOut'}, 8.0);
+tl.set('#os-s2', {display:'none'}, 8.5);
+
+// ── S3: REVENUE CHART (8–13.5s) ─────────────────────────────
+tl.fromTo('#os-s3ey', {opacity:0}, {opacity:1, duration:0.4, ease:'power2.out'}, 8.1);
+tl.fromTo('#os-s3hd', {x:-32, opacity:0}, {x:0, opacity:1, duration:0.55, ease:'expo.out'}, 8.2);
+tl.fromTo('#os-s3bg', {x:40, opacity:0}, {x:0, opacity:1, duration:0.5, ease:'back.out(1.5)'}, 8.35);
+tl.fromTo('#os-s3ch', {opacity:0}, {opacity:1, duration:0.3, ease:'power2.out'}, 8.45);
+tl.fromTo([document.getElementById('cb0'),document.getElementById('cb1'),document.getElementById('cb2'),document.getElementById('cb3'),document.getElementById('cb4'),document.getElementById('cb5')],
+  {scaleY:0, transformOrigin:'bottom'},
+  {scaleY:1, duration:0.75, ease:'power3.out', stagger:0.1},
+8.55);
+tl.fromTo([document.getElementById('cv0'),document.getElementById('cv1'),document.getElementById('cv2'),document.getElementById('cv3'),document.getElementById('cv4'),document.getElementById('cv5')],
+  {opacity:0, y:10}, {opacity:1, y:0, duration:0.3, stagger:0.09, ease:'power2.out'}, 9.5);
+tl.fromTo([document.getElementById('cm0'),document.getElementById('cm1'),document.getElementById('cm2'),document.getElementById('cm3'),document.getElementById('cm4'),document.getElementById('cm5')],
+  {opacity:0}, {opacity:1, duration:0.25, stagger:0.08, ease:'power2.out'}, 9.75);
+tl.fromTo('#os-s3q', {y:18, opacity:0}, {y:0, opacity:1, duration:0.6, ease:'power2.out'}, 11.0);
+
+// ── TRANSICIÓN S3→S4 (t=13.5s) ─────────────────────────────
+tl.set('#os-s4', {display:'block', opacity:0}, 13.45);
+tl.fromTo('#os-s4', {opacity:0}, {opacity:1, duration:0.5, ease:'power2.inOut'}, 13.5);
+tl.set('#os-s3', {display:'none'}, 14.0);
+
+// ── S4: WHITE-LABEL STINGER (13.5–20s) ──────────────────────
+tl.fromTo('#os-s4ey', {opacity:0}, {opacity:1, duration:0.35, ease:'power2.out'}, 13.6);
+tl.fromTo('#os-s4hd', {x:-36, opacity:0}, {x:0, opacity:1, duration:0.55, ease:'expo.out'}, 13.72);
+tl.fromTo('#os-s4sub', {y:16, opacity:0}, {y:0, opacity:1, duration:0.45, ease:'power2.out'}, 14.02);
+// Brand tiles aparecen en cascada rápida
+tl.fromTo('#bt0', {x:-50, opacity:0}, {x:0, opacity:1, duration:0.45, ease:'expo.out'}, 14.2);
+tl.fromTo('#bt1', {x:-50, opacity:0}, {x:0, opacity:1, duration:0.45, ease:'expo.out'}, 14.45);
+tl.fromTo('#bt2', {x:-50, opacity:0}, {x:0, opacity:1, duration:0.45, ease:'expo.out'}, 14.7);
+// Tile destacado pulsa levemente
+var tileRep = Math.ceil(5.0 / 0.8);
+tl.fromTo('#bt2', {scale:1}, {scale:1.02, yoyo:true, repeat:tileRep, duration:0.4, ease:'sine.inOut'}, 15.15);
+tl.fromTo('#os-s4ft', {y:16, opacity:0}, {y:0, opacity:1, duration:0.5, ease:'power2.out'}, 15.35);
+// Tiles flotan sutilmente (16.0s → 19.5s)
+var floatRep = Math.ceil(3.5 / 2.0);
+tl.fromTo('#bt0', {y:0}, {y:-6, yoyo:true, repeat:floatRep, duration:1.0, ease:'sine.inOut'}, 16.0);
+tl.fromTo('#bt1', {y:0}, {y:-5, yoyo:true, repeat:floatRep, duration:1.0, ease:'sine.inOut'}, 16.3);
+tl.fromTo('#bt2', {y:0}, {y:-7, yoyo:true, repeat:floatRep, duration:1.0, ease:'sine.inOut'}, 16.15);
+// Ghost text respira
+var ghostRep2 = Math.ceil(4.0 / 2.0);
+tl.fromTo('#os-s4 .s4-ghost', {opacity:0.04}, {opacity:0.08, yoyo:true, repeat:ghostRep2, duration:1.0, ease:'sine.inOut'}, 16.0);
+
+window.__timelines['owner-section'] = tl;
+</script>
+
+</div>
+</template>
+</body>
+</html>

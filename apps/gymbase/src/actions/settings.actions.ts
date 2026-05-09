@@ -5,8 +5,8 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient, getCurrentUser, getOrgId, createAdminClient } from "@/lib/supabase/server";
-import { DEFAULT_ORG_CONFIG } from "@core/types/org-config";
-import type { OrgConfig } from "@core/types/org-config";
+import { DEFAULT_ORG_CONFIG } from "@/types/org-config";
+import type { OrgConfig } from "@/types/org-config";
 import type { ActionResult } from "@/types/database";
 
 // Schema de validación para actualizar la configuración del gym
@@ -64,7 +64,8 @@ export async function getPublicOrgInfo(): Promise<{
   sinpe_number: string | null;
   sinpe_name: string | null;
 } | null> {
-  const supabase = await createClient();
+  // Usamos admin client porque miembros no tienen RLS access a la tabla organizations
+  const supabase = createAdminClient();
   try {
     const orgId = await getOrgId();
     const { data, error } = await supabase

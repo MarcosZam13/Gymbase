@@ -4,9 +4,9 @@
 
 import { useState } from "react";
 import { LogOut, Loader2 } from "lucide-react";
-import { Badge } from "@core/components/ui/badge";
-import { Button } from "@core/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@core/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { checkOut } from "@/actions/checkin.actions";
 import type { AttendanceLogWithProfile } from "@/types/gym-checkin";
 

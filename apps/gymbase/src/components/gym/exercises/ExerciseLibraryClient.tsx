@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import {
   Plus, Search, Pencil, Trash2, Video, Timer, Repeat, Dumbbell,
 } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { removeExercise } from "@/actions/exercise.actions";
 import { ExerciseForm } from "@/components/gym/exercises/ExerciseForm";
 import type { Exercise, DifficultyLevel } from "@/types/gym-routines";

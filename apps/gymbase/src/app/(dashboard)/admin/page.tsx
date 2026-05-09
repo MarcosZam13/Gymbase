@@ -17,7 +17,7 @@ import {
   FileCheck,
 } from "lucide-react";
 import Link from "next/link";
-import { getAdminStats } from "@core/actions/admin.actions";
+import { getAdminStats } from "@/actions/admin.actions";
 import { getOccupancy, getAttendanceLogs, getWeeklyAttendanceTrend } from "@/actions/checkin.actions";
 import { getExpiringMembershipsCount } from "@/actions/member.actions";
 import { getWeekSchedule } from "@/actions/calendar.actions";
@@ -317,7 +317,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactNode> {
                     className="text-xs font-medium px-2 py-0.5 rounded-full"
                     style={{ backgroundColor: "rgba(34,197,94,0.1)", color: "#22C55E" }}
                   >
-                    {cls.capacity_limit ? `${cls.capacity_limit} cupos` : "Abierta"}
+                    {cls.max_capacity ? `${cls.max_capacity} cupos` : "Abierta"}
                   </span>
                 </div>
               ))}

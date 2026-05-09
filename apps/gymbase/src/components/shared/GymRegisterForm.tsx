@@ -9,11 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
 import { registerMember } from "@/actions/register.actions";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
-import { Label } from "@core/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@core/components/ui/card";
-import { Alert, AlertDescription } from "@core/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const formSchema = z.object({
   full_name: z.string().min(2, "El nombre debe tener al menos 2 caracteres").max(100),

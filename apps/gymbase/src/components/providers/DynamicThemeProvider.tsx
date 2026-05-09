@@ -2,7 +2,7 @@
 
 'use client'
 
-import type { OrgConfig } from '@core/types/org-config'
+import type { OrgConfig } from '@/types/org-config'
 
 interface DynamicThemeProviderProps {
   config: {

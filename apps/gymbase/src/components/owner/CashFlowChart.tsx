@@ -3,7 +3,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import type { CashFlowEntry } from "@core/types/owner";
+import type { CashFlowEntry } from "@/types/owner";
 
 interface TooltipState {
   x: number;

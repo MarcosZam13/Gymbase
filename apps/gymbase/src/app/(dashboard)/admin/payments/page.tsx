@@ -1,8 +1,8 @@
 // page.tsx — Gestión de pagos con paginación server-side y filtros por URL params
 
 import { getAllPaymentsAdmin, getPendingPaymentsCount } from "@/actions/payment.actions";
-import { getPlans } from "@core/actions/membership.actions";
-import { getMembers } from "@core/actions/admin.actions";
+import { getPlans } from "@/actions/membership.actions";
+import { getMembers } from "@/actions/admin.actions";
 import { GymPaymentsClient } from "@/components/gym/payments/GymPaymentsClient";
 import { ManualPaymentDialog } from "@/components/gym/payments/ManualPaymentDialog";
 import type { PaymentStatusFilter } from "@/actions/payment.actions";

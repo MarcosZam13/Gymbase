@@ -13,7 +13,7 @@ import type {
   AttendanceReport,
   SalesReport,
   RevenueComparison,
-} from "@core/types/owner";
+} from "@/types/owner";
 
 // ─── Helpers de fecha ─────────────────────────────────────────────────────────
 
@@ -102,6 +102,7 @@ export async function getOwnerDashboardStats(
       attendanceRes,
       inventoryProductsRes,
       topProductsRes,
+      expensesRes,
     ] = await Promise.all([
       // Ingresos de membresías — período actual
       supabase
@@ -162,7 +163,15 @@ export async function getOwnerDashboardStats(
       supabase
         .from("gym_sale_items")
         .select("product_id, quantity, unit_price, subtotal, product:gym_inventory_products!inner(name, org_id)")
-        .eq("gym_inventory_products.org_id", orgId),
+        .eq("product.org_id", orgId),
+
+      // Egresos del período
+      supabase
+        .from("gym_expenses")
+        .select("amount")
+        .eq("org_id", orgId)
+        .gte("expense_date", from.toISOString().split("T")[0])
+        .lte("expense_date", to.toISOString().split("T")[0]),
     ]);
 
     // Calcular ingresos actuales
@@ -176,6 +185,8 @@ export async function getOwnerDashboardStats(
     );
     const salesCurrent = (salesCurrentRes.data ?? []).reduce((sum, s) => sum + Number(s.total_amount), 0);
     const totalCurrent = membershipCurrent + salesCurrent;
+    const expensesTotal = (expensesRes.data ?? []).reduce((sum, e) => sum + Number(e.amount), 0);
+    const netTotal = totalCurrent - expensesTotal;
 
     // Calcular ingresos anteriores
     const membershipPrev = (membershipPrevRes.data ?? []).reduce(
@@ -247,6 +258,8 @@ export async function getOwnerDashboardStats(
           previous: totalPrev,
           membership: membershipCurrent,
           sales: salesCurrent,
+          expenses: expensesTotal,
+          net: netTotal,
         },
         members: {
           active: activeCount,

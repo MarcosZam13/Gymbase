@@ -4,9 +4,9 @@
 
 import { useState, useRef, useTransition } from "react";
 import { Pin, ImageIcon, X, ChevronDown, ChevronUp, Users } from "lucide-react";
-import { createPostAction, uploadPostCover } from "@core/actions/community.actions";
+import { createPostAction, uploadPostCover } from "@/actions/community.actions";
 import { toast } from "sonner";
-import type { MembershipPlan } from "@core/types/database";
+import type { MembershipPlan } from "@/types/database";
 
 interface AdminPostComposerProps {
   plans: MembershipPlan[];

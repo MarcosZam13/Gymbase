@@ -8,7 +8,7 @@ import {
   CreditCard, Clock, Dumbbell, User, CheckCircle2,
   AlertTriangle, Receipt,
 } from "lucide-react";
-import { getMemberById } from "@core/actions/admin.actions";
+import { getMemberById } from "@/actions/admin.actions";
 import { formatDate, formatPrice } from "@/lib/utils";
 import { fromOpaqueId, toOpaqueId } from "@/lib/utils/opaque-id";
 import { getHealthProfile, getHealthHistory, getProgressPhotos } from "@/actions/health.actions";
@@ -25,7 +25,7 @@ import { MemberRoutineStack } from "@/components/gym/routines/MemberRoutineStack
 import { MemberProfileEditForm } from "@/components/gym/members/MemberProfileEditForm";
 import { ManualPaymentButton } from "@/components/gym/members/ManualPaymentButton";
 import { getMemberPayments } from "@/actions/payment.actions";
-import { getPlans } from "@core/actions/membership.actions";
+import { getPlans } from "@/actions/membership.actions";
 import { themeConfig } from "@/lib/theme";
 import type { SubscriptionStatus } from "@/types/database";
 

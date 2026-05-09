@@ -1,8 +1,8 @@
 // page.tsx — Vista de planes disponibles para el cliente con flujo de suscripción
 
-import { PlansPortalClient } from "@core/app/(portal)/portal/plans/PlansPortalClient";
-import { getPlans } from "@core/actions/membership.actions";
-import { getUserSubscription } from "@core/actions/payment.actions";
+import { PlansPortalClient } from "@/app/(portal)/portal/plans/PlansPortalClient";
+import { getPlans } from "@/actions/membership.actions";
+import { getUserSubscription } from "@/actions/payment.actions";
 import { getPublicOrgInfo } from "@/actions/settings.actions";
 
 export default async function PortalPlansPage(): Promise<React.ReactNode> {

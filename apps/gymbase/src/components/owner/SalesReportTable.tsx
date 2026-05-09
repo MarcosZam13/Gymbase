@@ -1,6 +1,6 @@
 // SalesReportTable.tsx — Tabla de reporte de ventas con badge de margen por producto
 
-import type { SalesReport } from "@core/types/owner";
+import type { SalesReport } from "@/types/owner";
 import { themeConfig } from "@/lib/theme";
 
 interface SalesReportTableProps {

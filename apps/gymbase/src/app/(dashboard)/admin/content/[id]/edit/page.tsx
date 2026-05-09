@@ -3,8 +3,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { getPlans } from "@core/actions/membership.actions";
-import { getCategories } from "@core/actions/category.actions";
+import { getPlans } from "@/actions/membership.actions";
+import { getCategories } from "@/actions/category.actions";
 import { getContentByIdForAdmin } from "@/actions/content.actions";
 import { EditContentForm } from "@/components/gym/content/EditContentForm";
 

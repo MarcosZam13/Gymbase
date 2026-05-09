@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920, height=1080"/>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body {
+      width: 1920px; height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+      font-family: 'DM Sans', sans-serif;
+      color: #F5F5F5;
+    }
+    #root {
+      position: relative;
+      width: 1920px; height: 1080px;
+      overflow: hidden;
+      background: #0A0A0A;
+    }
+    .root-scene {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1920px; height: 1080px;
+      overflow: hidden;
+    }
+    /* ─── Intro ─────────────────────────────────── */
+    #cs-svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1920px; height: 1080px;
+    }
+    #intro-glow {
+      position: absolute;
+      top: 32%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1100px; height: 680px;
+      background: radial-gradient(ellipse, rgba(255,94,20,0.11) 0%, transparent 62%);
+      pointer-events: none;
+    }
+    #intro-glow-logo {
+      position: absolute;
+      bottom: 80px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 420px;
+      background: radial-gradient(ellipse, rgba(255,94,20,0.2) 0%, transparent 65%);
+      pointer-events: none;
+      opacity: 0;
+    }
+    #logo-wrap {
+      position: absolute;
+      bottom: 150px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    #logo-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 168px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -5px;
+      white-space: nowrap;
+      text-shadow: 0 0 100px rgba(255,94,20,0.22);
+    }
+    #logo-gym  { color: #F5F5F5; }
+    #logo-base { color: #FF5E14; }
+    #logo-rule {
+      width: 340px; height: 3px;
+      background: linear-gradient(90deg, transparent 0%, #FF5E14 40%, #FF5E14 60%, transparent 100%);
+      transform-origin: center;
+      box-shadow: 0 0 18px rgba(255,94,20,0.65);
+    }
+    #logo-tagline {
+      font-size: 32px;
+      color: #8A8A8A;
+      letter-spacing: 5px;
+      white-space: nowrap;
+    }
+    /* Corners — accent orange on active pair */
+    #intro-corner-tl {
+      position: absolute; top:48px; left:60px; width:56px; height:56px;
+      border-top:2px solid rgba(255,94,20,0.5); border-left:2px solid rgba(255,94,20,0.5);
+    }
+    #intro-corner-br {
+      position: absolute; bottom:48px; right:60px; width:56px; height:56px;
+      border-bottom:2px solid rgba(255,94,20,0.5); border-right:2px solid rgba(255,94,20,0.5);
+    }
+    #intro-corner-tr {
+      position: absolute; top:48px; right:60px; width:56px; height:56px;
+      border-top:2px solid #1E1E1E; border-right:2px solid #1E1E1E;
+    }
+    #intro-corner-bl {
+      position: absolute; bottom:48px; left:60px; width:56px; height:56px;
+      border-bottom:2px solid #1E1E1E; border-left:2px solid #1E1E1E;
+    }
+    /* ─── Outro ─────────────────────────────────── */
+    #outro-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1200px; height: 720px;
+      background: radial-gradient(ellipse, rgba(255,94,20,0.14) 0%, transparent 65%);
+    }
+    #outro-content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
+    #outro-label {
+      font-size: 18px;
+      color: #FF5E14;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+    }
+    #outro-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 158px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -4px;
+      white-space: nowrap;
+      text-shadow: 0 0 80px rgba(255,94,20,0.2);
+    }
+    #outro-logo .gym  { color: #F5F5F5; }
+    #outro-logo .base { color: #FF5E14; }
+    #outro-rule {
+      width: 300px; height: 3px;
+      background: linear-gradient(90deg, transparent, #FF5E14, transparent);
+      transform-origin: center;
+      box-shadow: 0 0 16px rgba(255,94,20,0.6);
+    }
+    #outro-tagline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 64px;
+      font-weight: 700;
+      color: #F5F5F5;
+      letter-spacing: 1px;
+    }
+    #outro-sub {
+      font-size: 24px;
+      color: #8A8A8A;
+      max-width: 860px;
+      text-align: center;
+      line-height: 1.55;
+    }
+    #outro-cta {
+      margin-top: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 36px;
+      color: #FF5E14;
+      letter-spacing: 6px;
+    }
+    #outro-corner-tl { position:absolute; top:48px; left:60px; width:56px; height:56px; border-top:2px solid rgba(255,94,20,0.5); border-left:2px solid rgba(255,94,20,0.5); }
+    #outro-corner-tr { position:absolute; top:48px; right:60px; width:56px; height:56px; border-top:2px solid rgba(255,94,20,0.5); border-right:2px solid rgba(255,94,20,0.5); }
+    #outro-corner-bl { position:absolute; bottom:48px; left:60px; width:56px; height:56px; border-bottom:2px solid #1E1E1E; border-left:2px solid #1E1E1E; }
+    #outro-corner-br { position:absolute; bottom:48px; right:60px; width:56px; height:56px; border-bottom:2px solid rgba(255,94,20,0.5); border-right:2px solid rgba(255,94,20,0.5); }
+    /* Transition overlay */
+    #tx-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1920px; height: 1080px;
+      background: #0A0A0A;
+      opacity: 0;
+      z-index: 9999;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"
+       data-composition-id="main"
+       data-start="0"
+       data-duration="103"
+       data-width="1920"
+       data-height="1080">
+
+  <!-- ── INTRO (0–8s) ─────────────────────────────────────── -->
+  <div id="intro" class="root-scene clip" data-start="0" data-duration="8" data-track-index="0" style="z-index:1;background:#0A0A0A;">
+    <div id="intro-glow"></div>
+    <div id="intro-glow-logo"></div>
+    <div id="intro-corner-tl"></div>
+    <div id="intro-corner-br"></div>
+    <div id="intro-corner-tr"></div>
+    <div id="intro-corner-bl"></div>
+    <!-- Constelación: "Mancuerna" — discos, barra y agarre central -->
+    <svg id="cs-svg" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="node-glow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="5.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="node-glow-lg" x="-120%" y="-120%" width="340%" height="340%">
+          <feGaussianBlur stdDeviation="11" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="line-glow" x="-20%" y="-200%" width="140%" height="500%">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+    </svg>
+    <div id="logo-wrap">
+      <div id="logo-text"><span id="logo-gym">GYM</span><span id="logo-base">BASE</span></div>
+      <div id="logo-rule"></div>
+      <div id="logo-tagline">Tu gimnasio. Tu plataforma.</div>
+    </div>
+  </div>
+
+  <!-- ── OWNER (8–28s) ────────────────────────────────────── -->
+  <div id="owner-clip"
+       data-composition-id="owner-section"
+       data-composition-src="compositions/owner-section.html"
+       data-start="8"
+       data-duration="20"
+       data-width="1920"
+       data-height="1080"
+       data-track-index="1"
+       class="clip"
+       style="position:absolute;top:0;left:0;z-index:2;">
+  </div>
+
+  <!-- ── ADMIN (28–64s) ───────────────────────────────────── -->
+  <div id="admin-clip"
+       data-composition-id="admin-section"
+       data-composition-src="compositions/admin-section.html"
+       data-start="28"
+       data-duration="36"
+       data-width="1920"
+       data-height="1080"
+       data-track-index="1"
+       class="clip"
+       style="position:absolute;top:0;left:0;z-index:2;">
+  </div>
+
+  <!-- ── MEMBER (64–99s) ──────────────────────────────────── -->
+  <div id="member-clip"
+       data-composition-id="member-section"
+       data-composition-src="compositions/member-section.html"
+       data-start="64"
+       data-duration="35"
+       data-width="1920"
+       data-height="1080"
+       data-track-index="1"
+       class="clip"
+       style="position:absolute;top:0;left:0;z-index:2;">
+  </div>
+
+  <!-- ── OUTRO (99–103s) ───────────────────────────────────── -->
+  <div id="outro" class="root-scene clip" data-start="99" data-duration="4" data-track-index="0" style="z-index:1;background:#0A0A0A;opacity:0;">
+    <div id="outro-glow"></div>
+    <div id="outro-corner-tl"></div>
+    <div id="outro-corner-tr"></div>
+    <div id="outro-corner-bl"></div>
+    <div id="outro-corner-br"></div>
+    <div id="outro-content">
+      <div id="outro-label">La plataforma definitiva</div>
+      <div id="outro-logo"><span class="gym">GYM</span><span class="base">BASE</span></div>
+      <div id="outro-rule"></div>
+      <div id="outro-tagline">Potencia tu gimnasio.</div>
+      <div id="outro-sub">La plataforma todo-en-uno para dueños, administradores y miembros.</div>
+      <div id="outro-cta">GYMBASE.APP</div>
+    </div>
+  </div>
+
+    <div id="tx-overlay"></div>
+</div>
+
+<script>
+// index.html — Composición raíz: intro con constelación (mancuerna), secciones y outro
+(function() {
+  // ── Constelación "Mancuerna" ────────────────────────────
+  // Discos en forma de diamante a los extremos, barra central, agarre con knurling
+  // 20 nodos · 23 aristas · simétrica, icónica y reconocible
+  var N = [
+    [380, 440],   // 0 — Borde exterior izq (LARGE — peso máximo)
+    [450, 380],   // 1 — Esquina superior izq (MEDIUM)
+    [520, 440],   // 2 — Cara interior izq (MEDIUM)
+    [450, 500],   // 3 — Esquina inferior izq (MEDIUM)
+    [600, 440],   // 4 — Inicio barra izq
+    [720, 442],   // 5 — Barra tramo izq
+    [840, 444],   // 6 — Borde agarre izq (MEDIUM)
+    [960, 446],   // 7 — Centro de agarre (LARGE — focal, brilla intenso)
+    [1080, 444],  // 8 — Borde agarre der (MEDIUM)
+    [1200, 442],  // 9 — Barra tramo der
+    [1320, 440],  // 10 — Fin barra der
+    [1400, 440],  // 11 — Cara interior der (MEDIUM)
+    [1470, 380],  // 12 — Esquina superior der (MEDIUM)
+    [1540, 440],  // 13 — Borde exterior der (LARGE — peso máximo)
+    [1470, 500],  // 14 — Esquina inferior der (MEDIUM)
+    [425, 420],   // 15 — Anillo interior izq (detalle)
+    [920, 458],   // 16 — Knurling agarre izq (textura)
+    [1000, 458],  // 17 — Knurling agarre der (textura)
+    [1495, 420],  // 18 — Anillo interior der (detalle)
+    [960, 420],   // 19 — Brillo superior centro (acento)
+  ];
+
+  var E = [
+    // Disco izq — forma de diamante
+    [0,1],[1,2],[0,3],[3,2],
+    // Barra izquierda
+    [2,4],[4,5],
+    // Agarre central
+    [5,6],[6,7],[7,8],[8,9],
+    // Barra derecha
+    [9,10],
+    // Conexión a disco derecho + diamante
+    [10,11],[11,12],[12,13],[11,14],[14,13],
+    // Anillos interiores (detalle placas)
+    [0,15],[15,1],[13,18],[18,12],
+    // Knurling del agarre (rombo textura)
+    [7,16],[7,17],[16,17],
+    // Brillo central
+    [7,19],[19,1],[19,12],
+  ];
+
+  var LARGE  = [0, 7, 13];                    // Placas exteriores + centro agarre
+  var MEDIUM = [1, 2, 3, 6, 8, 11, 12, 14];  // Esquinas, caras interiores, bordes agarre
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('cs-svg');
+
+  // Aristas — primero para que queden detrás de los nodos
+  E.forEach(function(e, i) {
+    var x1=N[e[0]][0], y1=N[e[0]][1], x2=N[e[1]][0], y2=N[e[1]][1];
+    var len = Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2)) + 4;
+    var isPrimary = i < 16;
+    var line = document.createElementNS(NS,'line');
+    line.setAttribute('x1',x1); line.setAttribute('y1',y1);
+    line.setAttribute('x2',x2); line.setAttribute('y2',y2);
+    line.setAttribute('stroke','#FF5E14');
+    line.setAttribute('stroke-width', isPrimary ? '1.5' : '1');
+    line.setAttribute('stroke-opacity', isPrimary ? '0.3' : '0.14');
+    line.setAttribute('stroke-dasharray', len);
+    line.setAttribute('stroke-dashoffset', len);
+    line.setAttribute('id','cel'+i);
+    if (isPrimary) { line.setAttribute('filter','url(#line-glow)'); }
+    svg.appendChild(line);
+  });
+
+  // Nodos — encima de aristas
+  N.forEach(function(n, i) {
+    var isLarge  = LARGE.indexOf(i)  !== -1;
+    var isMedium = MEDIUM.indexOf(i) !== -1;
+    var r  = isLarge ? 7   : (isMedium ? 5   : 3.5);
+    var rh = isLarge ? 24  : (isMedium ? 16  : 11);
+    var g = document.createElementNS(NS,'g');
+    g.setAttribute('id','cng'+i);
+    var halo = document.createElementNS(NS,'circle');
+    halo.setAttribute('cx',n[0]); halo.setAttribute('cy',n[1]); halo.setAttribute('r',rh);
+    halo.setAttribute('fill', isLarge ? 'rgba(255,94,20,0.2)' : 'rgba(255,94,20,0.1)');
+    halo.setAttribute('class','cn-halo-class');
+    var dot = document.createElementNS(NS,'circle');
+    dot.setAttribute('cx',n[0]); dot.setAttribute('cy',n[1]); dot.setAttribute('r',r);
+    dot.setAttribute('fill','#FF5E14');
+    dot.setAttribute('filter', isLarge ? 'url(#node-glow-lg)' : 'url(#node-glow)');
+    g.appendChild(halo); g.appendChild(dot);
+    svg.appendChild(g);
+  });
+
+  // ── Timeline principal ───────────────────────────────────
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  // Corners del intro
+  tl.fromTo('#intro-corner-tl', {opacity:0},{opacity:1, duration:0.45, ease:'power2.out'}, 0.12);
+  tl.fromTo('#intro-corner-br', {opacity:0},{opacity:1, duration:0.45, ease:'power2.out'}, 0.22);
+  tl.fromTo('#intro-corner-tr', {opacity:0},{opacity:1, duration:0.35, ease:'power2.out'}, 0.32);
+  tl.fromTo('#intro-corner-bl', {opacity:0},{opacity:1, duration:0.35, ease:'power2.out'}, 0.42);
+
+  // Nodos aparecen escalonados (0.12s → ~1.5s)
+  N.forEach(function(n, i) {
+    var isLarge = LARGE.indexOf(i) !== -1;
+    tl.fromTo('#cng'+i,
+      {opacity:0, scale:0, svgOrigin: n[0]+' '+n[1]},
+      {opacity:1, scale:1, duration: isLarge ? 0.42 : 0.28, ease:'back.out(2.2)'},
+      0.12 + i * 0.07
+    );
+  });
+
+  // Aristas se dibujan (1.1s → ~2.5s)
+  E.forEach(function(e, i) {
+    var x1=N[e[0]][0], y1=N[e[0]][1], x2=N[e[1]][0], y2=N[e[1]][1];
+    var len = Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2)) + 4;
+    tl.fromTo('#cel'+i,
+      {strokeDashoffset: len},
+      {strokeDashoffset: 0, duration:0.5, ease:'power2.out'},
+      1.1 + i * 0.05
+    );
+  });
+
+  // Pulso suave de los halos — finito y seekable
+  var breatheRep = Math.ceil(4.5 / 1.2);
+  tl.to('.cn-halo-class', {opacity:0.04, yoyo:true, repeat:breatheRep, duration:0.6, ease:'sine.inOut'}, 2.7);
+
+  // Constelación se atenúa para dar protagonismo al logo
+  tl.to('#cs-svg', {opacity:0.42, duration:0.9, ease:'power2.inOut'}, 3.3);
+
+  // Glow del logo aparece justo antes que el texto
+  tl.fromTo('#intro-glow-logo', {opacity:0},{opacity:1, duration:0.75, ease:'power2.out'}, 3.25);
+
+  // Logo — entrada dramática con escala + traslación
+  tl.fromTo('#logo-text',    {y:65, opacity:0, scale:0.9}, {y:0, opacity:1, scale:1, duration:0.85, ease:'expo.out'}, 3.65);
+  tl.fromTo('#logo-rule',    {scaleX:0}, {scaleX:1, duration:0.55, ease:'power3.out'}, 4.28);
+  tl.fromTo('#logo-tagline', {y:18, opacity:0}, {y:0, opacity:1, duration:0.5, ease:'power2.out'}, 4.56);
+
+  // ── TRANSICIÓN INTRO → OWNER (t=7.3s) ───────────────────
+  tl.fromTo('#tx-overlay', {opacity:0},{opacity:1, duration:0.7, ease:'power2.in'}, 7.3);
+  tl.set('#intro', {opacity:0, visibility:'hidden'}, 8.0);
+  tl.fromTo('#tx-overlay', {opacity:1},{opacity:0, duration:0.7, ease:'power2.out'}, 8.0);
+
+  // ── TRANSICIÓN OWNER → ADMIN (t=27.3s) ──────────────────
+  tl.fromTo('#tx-overlay', {opacity:0},{opacity:1, duration:0.7, ease:'power2.in'}, 27.3);
+  tl.fromTo('#tx-overlay', {opacity:1},{opacity:0, duration:0.7, ease:'power2.out'}, 28.0);
+
+  // ── TRANSICIÓN ADMIN → MEMBER (t=63.3s) ─────────────────
+  tl.fromTo('#tx-overlay', {opacity:0},{opacity:1, duration:0.7, ease:'power2.in'}, 63.3);
+  tl.fromTo('#tx-overlay', {opacity:1},{opacity:0, duration:0.7, ease:'power2.out'}, 64.0);
+
+  // ── TRANSICIÓN MEMBER → OUTRO (t=98.3s) ─────────────────
+  tl.fromTo('#tx-overlay', {opacity:0},{opacity:1, duration:0.7, ease:'power2.in'}, 98.3);
+  tl.set('#outro', {opacity:1}, 99.0);
+  tl.fromTo('#tx-overlay', {opacity:1},{opacity:0, duration:0.7, ease:'power2.out'}, 99.0);
+
+  // ── OUTRO (99–103s) ──────────────────────────────────────
+  tl.fromTo('#outro-corner-tl', {opacity:0},{opacity:1, duration:0.4, ease:'power2.out'}, 99.15);
+  tl.fromTo('#outro-corner-tr', {opacity:0},{opacity:1, duration:0.4, ease:'power2.out'}, 99.25);
+  tl.fromTo('#outro-corner-bl', {opacity:0},{opacity:1, duration:0.4, ease:'power2.out'}, 99.25);
+  tl.fromTo('#outro-corner-br', {opacity:0},{opacity:1, duration:0.4, ease:'power2.out'}, 99.15);
+  tl.fromTo('#outro-label',    {y:-22, opacity:0},{y:0, opacity:1, duration:0.45, ease:'power3.out'}, 99.35);
+  tl.fromTo('#outro-logo',     {scale:0.84, opacity:0},{scale:1, opacity:1, duration:0.78, ease:'expo.out'}, 99.55);
+  tl.fromTo('#outro-rule',     {scaleX:0},{scaleX:1, duration:0.52, ease:'power3.out'}, 100.1);
+  tl.fromTo('#outro-tagline',  {y:26, opacity:0},{y:0, opacity:1, duration:0.55, ease:'power2.out'}, 100.25);
+  tl.fromTo('#outro-sub',      {y:16, opacity:0},{y:0, opacity:1, duration:0.5, ease:'power2.out'}, 100.65);
+  tl.fromTo('#outro-cta',      {y:12, opacity:0},{y:0, opacity:1, duration:0.5, ease:'back.out(1.5)'}, 101.0);
+  // Fade final a negro
+  tl.fromTo('#root', {backgroundColor:'#0A0A0A'},{backgroundColor:'#000000', duration:0.8, ease:'power2.in'}, 102.1);
+
+  window.__timelines['main'] = tl;
+})();
+</script>
+</body>
+</html>

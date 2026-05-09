@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { Button } from "@core/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { getRoutineById } from "@/actions/routine.actions";
 import { RoutineForm } from "@/components/gym/routines/RoutineForm";
 import { fromOpaqueId, toOpaqueId } from "@/lib/utils/opaque-id";

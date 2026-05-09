@@ -34,7 +34,7 @@ import type {
   SalePaymentMethod,
   InventoryStats,
 } from "@/types/gym-inventory";
-import type { PaginatedResult } from "@core/types/pagination";
+import type { PaginatedResult } from "@/types/pagination";
 
 // ─── createProduct ────────────────────────────────────────────────────────────
 

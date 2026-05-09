@@ -6,7 +6,7 @@ import { MembershipTable } from "@/components/owner/MembershipTable";
 import { PeriodSelector } from "@/components/owner/PeriodSelector";
 import { ExportCSVButton } from "@/components/owner/ExportCSVButton";
 import { themeConfig } from "@/lib/theme";
-import type { OwnerPeriod } from "@core/types/owner";
+import type { OwnerPeriod } from "@/types/owner";
 
 // Donut chart SVG nativo — distribución de miembros activos por plan
 function DonutChart({

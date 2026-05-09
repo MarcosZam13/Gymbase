@@ -3,14 +3,14 @@
 'use client'
 
 import { useState, useTransition, useEffect } from 'react'
-import { DESIGN_PRESETS } from '@core/types/design-presets'
-import type { OrgConfig, DesignPreset } from '@core/types/org-config'
+import { DESIGN_PRESETS } from '@/types/design-presets'
+import type { OrgConfig, DesignPreset } from '@/types/org-config'
 import { saveOrgAppearance } from '@/actions/settings.actions'
 import { applyThemeToDOM } from '@/lib/theme-vars'
 import { toast } from 'sonner'
-import { Button } from '@core/components/ui/button'
-import { Input } from '@core/components/ui/input'
-import { Label } from '@core/components/ui/label'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Check, Save, Palette, Link2 } from 'lucide-react'
 
 interface AppearanceClientProps {

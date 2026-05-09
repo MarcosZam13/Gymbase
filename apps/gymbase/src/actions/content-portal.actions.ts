@@ -3,7 +3,7 @@
 
 "use server";
 
-import { createClient, getCurrentUser } from "@core/lib/supabase/server";
+import { createClient, getCurrentUser } from "@/lib/supabase/server";
 import type { ActionResult } from "@/types/database";
 
 // ─── Tracking de vistas ───────────────────────────────────────────────────────

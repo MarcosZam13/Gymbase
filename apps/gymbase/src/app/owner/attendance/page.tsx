@@ -5,7 +5,7 @@ import { getAttendanceReport } from "@/actions/owner.actions";
 import { AttendanceHeatmap } from "@/components/owner/AttendanceHeatmap";
 import { PeriodSelector } from "@/components/owner/PeriodSelector";
 import { ExportCSVButton } from "@/components/owner/ExportCSVButton";
-import type { OwnerPeriod } from "@core/types/owner";
+import type { OwnerPeriod } from "@/types/owner";
 
 interface PageProps {
   searchParams: Promise<{ period?: string }>;

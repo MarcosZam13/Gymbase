@@ -8,7 +8,7 @@ import { ChevronDown, ChevronUp, ShoppingCart } from "lucide-react";
 import { RegisterSaleModal } from "./RegisterSaleModal";
 import { Pagination } from "@/components/shared/Pagination";
 import type { Sale, SalePaymentMethod, InventoryProduct } from "@/types/gym-inventory";
-import type { PaginatedResult } from "@core/types/pagination";
+import type { PaginatedResult } from "@/types/pagination";
 
 const METHOD_LABELS: Record<SalePaymentMethod, string> = {
   cash:  "Efectivo",

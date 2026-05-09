@@ -6,15 +6,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@core/components/ui/select";
-import { Alert, AlertDescription } from "@core/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { scheduleClass } from "@/actions/calendar.actions";
 import { scheduleClassSchema, type ScheduleClassInput } from "@/lib/validations/calendar";
 import type { ClassType } from "@/types/gym-calendar";
 import type { AdminProfile } from "@/actions/settings.actions";
-import { cn } from "@core/lib/utils";
+import { cn } from "@/lib/utils";
 import { localToUtcISO } from "@/lib/time";
 
 // Duraciones predefinidas en minutos — las más comunes en gyms

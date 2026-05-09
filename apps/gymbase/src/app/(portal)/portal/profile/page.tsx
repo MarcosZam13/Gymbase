@@ -9,7 +9,7 @@ import { getProgressChartData } from "@/actions/progress.actions";
 import { QRDisplay } from "@/components/gym/checkin/QRDisplay";
 import { MiniLineChart } from "@/components/gym/health/MiniLineChart";
 import { MemberProgressPhotoUpload } from "@/components/gym/health/MemberProgressPhotoUpload";
-import { signOut } from "@core/actions/auth.actions";
+import { signOut } from "@/actions/auth.actions";
 import {
   CheckCircle,
   Clock,

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { Button } from "@core/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { getRoutines } from "@/actions/routine.actions";
 import { getExercises } from "@/actions/exercise.actions";
 import { RoutineList } from "@/components/gym/routines/RoutineList";

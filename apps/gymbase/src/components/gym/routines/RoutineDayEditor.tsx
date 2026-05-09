@@ -4,9 +4,9 @@
 
 import { useState } from "react";
 import { Plus, Trash2, Loader2, GripVertical, ChevronDown, ChevronUp, Layers } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
-import { Label } from "@core/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { addExercise, removeExerciseAction, updateExerciseDefaultSetsAction } from "@/actions/routine.actions";
 import type { RoutineDay, RoutineExercise, Exercise, DefaultSetConfig } from "@/types/gym-routines";
 

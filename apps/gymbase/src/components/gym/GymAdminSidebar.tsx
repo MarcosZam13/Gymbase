@@ -28,7 +28,7 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { themeConfig } from "@/lib/theme";
-import { signOut } from "@core/actions/auth.actions";
+import { signOut } from "@/actions/auth.actions";
 
 interface NavItem {
   href: string;
@@ -208,11 +208,11 @@ export function GymAdminSidebar({ inventoryBadgeCount = 0, userRole }: GymAdminS
             onClick={() => setMobileOpen(false)}
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors"
             style={{ color: "var(--gym-text-muted)", borderLeft: "3px solid transparent" }}
-            onMouseEnter={(e) => {
+            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
               (e.currentTarget as HTMLElement).style.color = "#FF5E14";
               (e.currentTarget as HTMLElement).style.backgroundColor = "#FF5E1415";
             }}
-            onMouseLeave={(e) => {
+            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
               (e.currentTarget as HTMLElement).style.color = "var(--gym-text-muted)";
               (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
             }}

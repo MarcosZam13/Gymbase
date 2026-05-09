@@ -3,15 +3,15 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Pin } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Badge } from "@core/components/ui/badge";
-import { Separator } from "@core/components/ui/separator";
-import { getPostById } from "@core/actions/community.actions";
-import { getUserSubscription } from "@core/actions/payment.actions";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { getPostById } from "@/actions/community.actions";
+import { getUserSubscription } from "@/actions/payment.actions";
 import { getCurrentUser } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
-import CommentForm from "@core/app/(portal)/portal/community/[id]/CommentForm";
-import { DeletePostButton } from "@core/app/(portal)/portal/community/[id]/DeletePostButton";
+import CommentForm from "@/app/(portal)/portal/community/[id]/CommentForm";
+import { DeletePostButton } from "@/app/(portal)/portal/community/[id]/DeletePostButton";
 
 interface PostDetailPageProps {
   params: Promise<{ id: string }>;

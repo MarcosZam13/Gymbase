@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/></head>
+<body>
+<template id="member-section-template">
+<div data-composition-id="member-section" data-width="1920" data-height="1080">
+
+<style>
+[data-composition-id="member-section"] {
+  font-family: 'DM Sans', sans-serif;
+  background: #0A0A0A; color: #F5F5F5;
+}
+[data-composition-id="member-section"] .ms-scene {
+  position: absolute; top: 0; left: 0;
+  width: 1920px; height: 1080px; overflow: hidden;
+}
+/* ── S1: Title ───────────────────────────────────────── */
+[data-composition-id="member-section"] .s1-glow {
+  position: absolute; bottom: -300px; left: 50%;
+  transform: translateX(-50%);
+  width: 1000px; height: 700px;
+  background: radial-gradient(ellipse, rgba(255,94,20,0.14) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="member-section"] .s1-glow-tl {
+  position: absolute; top: -200px; left: -100px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,94,20,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="member-section"] .s1-ghost {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -54%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 340px; font-weight: 900; color: #F5F5F5;
+  white-space: nowrap; user-select: none; line-height: 1; letter-spacing: -6px;
+}
+[data-composition-id="member-section"] .s1-brand {
+  position: absolute; top: 64px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 700; color: #FF5E14; letter-spacing: 8px; white-space: nowrap;
+}
+[data-composition-id="member-section"] .s1-rule-top {
+  position: absolute; top: 110px; left: 80px; right: 80px;
+  height: 1px; background: #1E1E1E; transform-origin: center;
+}
+[data-composition-id="member-section"] .s1-tag {
+  position: absolute; top: 420px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px; color: #8A8A8A; letter-spacing: 5px;
+  text-transform: uppercase; white-space: nowrap;
+}
+[data-composition-id="member-section"] .s1-title {
+  position: absolute; top: 448px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 172px; font-weight: 900; color: #F5F5F5;
+  white-space: nowrap; line-height: 1; letter-spacing: -2px;
+  text-shadow: 0 0 60px rgba(255,94,20,0.12);
+}
+[data-composition-id="member-section"] .s1-rule-b {
+  position: absolute; top: 640px; left: 50%;
+  transform: translateX(-50%);
+  width: 520px; height: 3px;
+  background: linear-gradient(90deg, transparent, #FF5E14, transparent);
+  transform-origin: center;
+  box-shadow: 0 0 14px rgba(255,94,20,0.55);
+}
+[data-composition-id="member-section"] .s1-tagline {
+  position: absolute; top: 666px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 36px; color: #F5F5F5; white-space: nowrap; text-align: center;
+}
+[data-composition-id="member-section"] .s1-detail {
+  position: absolute; bottom: 64px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 17px; color: #8A8A8A; letter-spacing: 3px; white-space: nowrap;
+}
+/* ── S2: Phone Layout ────────────────────────────────── */
+[data-composition-id="member-section"] #ms-s2 { opacity: 0; display: none; }
+[data-composition-id="member-section"] .ctx-glow {
+  position: absolute; top: 50%; left: -200px;
+  transform: translateY(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,94,20,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="member-section"] .ctx-divider {
+  position: absolute; top: 80px; left: 860px;
+  width: 1px; height: 920px; background: #1E1E1E;
+}
+/* Context panels — all stacked, only one visible */
+[data-composition-id="member-section"] .ctx-panel {
+  position: absolute; top: 0; left: 0; width: 860px; height: 1080px;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 100px 0 80px;
+}
+[data-composition-id="member-section"] .ctx-eyebrow {
+  font-size: 16px; color: #FF5E14; letter-spacing: 5px;
+  text-transform: uppercase; margin-bottom: 16px;
+}
+[data-composition-id="member-section"] .ctx-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 72px; font-weight: 900; color: #F5F5F5; line-height: 1.05; margin-bottom: 28px;
+}
+[data-composition-id="member-section"] .ctx-body {
+  font-size: 24px; color: #8A8A8A; line-height: 1.55; max-width: 580px;
+}
+[data-composition-id="member-section"] .ctx-stat-row { display: flex; gap: 32px; margin-top: 40px; }
+[data-composition-id="member-section"] .ctx-stat { display: flex; flex-direction: column; gap: 6px; }
+[data-composition-id="member-section"] .ctx-stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 52px; font-weight: 900; color: #FF5E14; line-height: 1;
+}
+[data-composition-id="member-section"] .ctx-stat-lbl { font-size: 16px; color: #8A8A8A; letter-spacing: 2px; }
+/* Phone frame */
+[data-composition-id="member-section"] .phone-wrap {
+  position: absolute; left: 1140px; top: 45%;
+  transform: translateY(-50%);
+  width: 380px; height: 780px;
+  background: #111111; border-radius: 44px;
+  border: 8px solid #222222; overflow: hidden;
+  box-shadow: 0 0 60px rgba(255,94,20,0.18), 0 0 0 1px rgba(255,94,20,0.1), 0 60px 160px rgba(0,0,0,0.9);
+}
+[data-composition-id="member-section"] .phone-notch {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  width: 90px; height: 24px; background: #0A0A0A; border-radius: 12px; z-index: 20;
+}
+[data-composition-id="member-section"] .phone-status {
+  position: absolute; top: 16px; left: 20px; right: 20px;
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: #F5F5F5; font-weight: 600; z-index: 10;
+}
+[data-composition-id="member-section"] .phone-screen {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: #0A0A0A; overflow: hidden;
+}
+/* Dashboard screen */
+[data-composition-id="member-section"] #ps-dash { padding: 52px 20px 20px; }
+[data-composition-id="member-section"] .ph-app-bar {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+}
+[data-composition-id="member-section"] .ph-app-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px; font-weight: 700; color: #FF5E14; letter-spacing: 2px;
+}
+[data-composition-id="member-section"] .ph-notif {
+  width: 32px; height: 32px; border-radius: 50%; background: #1E1E1E;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+[data-composition-id="member-section"] .ph-greeting {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px; font-weight: 700; color: #F5F5F5; margin-bottom: 4px;
+}
+[data-composition-id="member-section"] .ph-sub { font-size: 13px; color: #8A8A8A; margin-bottom: 20px; }
+[data-composition-id="member-section"] .ph-card {
+  background: linear-gradient(135deg, #1A0A04 0%, #2D1205 100%);
+  border: 1px solid rgba(255,94,20,0.3); border-radius: 16px; padding: 20px; margin-bottom: 16px;
+  box-shadow: 0 0 20px rgba(255,94,20,0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+[data-composition-id="member-section"] .ph-card-tag { font-size: 11px; color: #FF5E14; letter-spacing: 3px; margin-bottom: 8px; }
+[data-composition-id="member-section"] .ph-card-plan {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 700; color: #F5F5F5; margin-bottom: 12px;
+}
+[data-composition-id="member-section"] .ph-card-row { display: flex; justify-content: space-between; align-items: flex-end; }
+[data-composition-id="member-section"] .ph-card-status { font-size: 12px; font-weight: 600; color: #22C55E; letter-spacing: 2px; }
+[data-composition-id="member-section"] .ph-card-exp { font-size: 11px; color: #8A8A8A; }
+[data-composition-id="member-section"] .ph-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px;
+}
+[data-composition-id="member-section"] .ph-stat {
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 12px; padding: 14px 10px; text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+[data-composition-id="member-section"] .ph-stat-val {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 700;
+  color: #FF5E14; line-height: 1; margin-bottom: 4px;
+}
+[data-composition-id="member-section"] .ph-stat-lbl { font-size: 10px; color: #8A8A8A; letter-spacing: 1px; }
+[data-composition-id="member-section"] .ph-next {
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 12px;
+  padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+[data-composition-id="member-section"] .ph-next-lbl { font-size: 11px; color: #8A8A8A; letter-spacing: 2px; }
+[data-composition-id="member-section"] .ph-next-val { font-size: 14px; font-weight: 600; color: #F5F5F5; }
+[data-composition-id="member-section"] .ph-next-time {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: #FF5E14;
+}
+/* Workout screen */
+[data-composition-id="member-section"] #ps-workout {
+  padding: 52px 20px 20px; transform: translateY(780px);
+}
+[data-composition-id="member-section"] .wk-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+[data-composition-id="member-section"] .wk-back { font-size: 18px; color: #FF5E14; }
+[data-composition-id="member-section"] .wk-title {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: #F5F5F5;
+}
+[data-composition-id="member-section"] .wk-progress-wrap {
+  background: #1E1E1E; border-radius: 4px; height: 5px; margin-bottom: 6px; overflow: hidden;
+}
+[data-composition-id="member-section"] .wk-progress-bar {
+  height: 100%; background: #FF5E14; border-radius: 4px; width: 0%;
+  box-shadow: 0 0 8px rgba(255,94,20,0.5);
+}
+[data-composition-id="member-section"] .wk-progress-lbl { font-size: 11px; color: #8A8A8A; letter-spacing: 2px; margin-bottom: 16px; }
+[data-composition-id="member-section"] .wk-rule { height: 1px; background: #1E1E1E; margin-bottom: 12px; }
+[data-composition-id="member-section"] .ex-row {
+  display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #141414;
+}
+[data-composition-id="member-section"] .ex-icon { font-size: 16px; width: 24px; text-align: center; flex-shrink: 0; }
+[data-composition-id="member-section"] .ex-check {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+[data-composition-id="member-section"] .ex-check.done { background: #22C55E; color: #0A0A0A; font-size: 16px; font-weight: 900; box-shadow: 0 0 10px rgba(34,197,94,0.4); }
+[data-composition-id="member-section"] .ex-check.active { background: rgba(255,94,20,0.15); border: 2px solid #FF5E14; color: #FF5E14; box-shadow: 0 0 10px rgba(255,94,20,0.3); }
+[data-composition-id="member-section"] .ex-check.todo { background: #1E1E1E; color: #8A8A8A; }
+[data-composition-id="member-section"] .ex-name { font-size: 15px; font-weight: 600; flex: 1; }
+[data-composition-id="member-section"] .ex-name.done { color: #8A8A8A; text-decoration: line-through; }
+[data-composition-id="member-section"] .ex-name.active { color: #FF5E14; }
+[data-composition-id="member-section"] .ex-sets { font-size: 13px; color: #8A8A8A; }
+[data-composition-id="member-section"] .wk-btn {
+  margin-top: 14px; background: #FF5E14; border-radius: 12px; padding: 14px;
+  text-align: center; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px; font-weight: 700; color: #0A0A0A; letter-spacing: 2px;
+  box-shadow: 0 0 20px rgba(255,94,20,0.35);
+}
+/* Challenge screen */
+[data-composition-id="member-section"] #ps-challenge {
+  padding: 52px 20px 20px; transform: translateY(780px);
+  display: flex; flex-direction: column; align-items: center;
+}
+[data-composition-id="member-section"] .ch-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 700; color: #F5F5F5; margin-bottom: 20px; align-self: flex-start;
+}
+[data-composition-id="member-section"] .ch-ring-wrap {
+  position: relative; width: 160px; height: 160px; margin-bottom: 16px;
+}
+[data-composition-id="member-section"] .ch-ring {
+  width: 160px; height: 160px; border-radius: 50%;
+  background: conic-gradient(#FF5E14 0deg, #FF5E14 0deg, #1E1E1E 0deg);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 30px rgba(255,94,20,0.2);
+}
+[data-composition-id="member-section"] .ch-ring-inner {
+  width: 116px; height: 116px; border-radius: 50%; background: #0A0A0A;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+[data-composition-id="member-section"] .ch-ring-pct {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; color: #FF5E14; line-height: 1;
+}
+[data-composition-id="member-section"] .ch-ring-lbl { font-size: 10px; color: #8A8A8A; letter-spacing: 2px; }
+[data-composition-id="member-section"] .ch-name {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700;
+  color: #F5F5F5; text-align: center; margin-bottom: 4px;
+}
+[data-composition-id="member-section"] .ch-sub { font-size: 12px; color: #8A8A8A; margin-bottom: 14px; text-align: center; }
+[data-composition-id="member-section"] .ch-prog-wrap {
+  width: 100%; background: #1E1E1E; border-radius: 4px; height: 8px; margin-bottom: 16px; overflow: hidden;
+}
+[data-composition-id="member-section"] .ch-prog-bar {
+  height: 100%; background: linear-gradient(90deg, #FF5E14 0%, #FACC15 100%); border-radius: 4px; width: 0%;
+}
+[data-composition-id="member-section"] .ch-next-lbl { font-size: 11px; color: #8A8A8A; letter-spacing: 2px; margin-bottom: 8px; align-self: flex-start; }
+[data-composition-id="member-section"] .ch-next-item {
+  width: 100%; background: #111111; border: 1px solid #1E1E1E; border-radius: 10px;
+  padding: 10px 14px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+[data-composition-id="member-section"] .ch-next-ico { font-size: 18px; }
+[data-composition-id="member-section"] .ch-next-txt { font-size: 13px; font-weight: 600; color: #8A8A8A; flex: 1; }
+[data-composition-id="member-section"] .ch-badge {
+  width: 100%; background: linear-gradient(135deg, #2D1A00, #1A0E00);
+  border: 1px solid rgba(250,204,21,0.35); border-radius: 14px; padding: 16px;
+  display: flex; align-items: center; gap: 14px; margin-top: 4px;
+  box-shadow: 0 0 20px rgba(250,204,21,0.12);
+}
+[data-composition-id="member-section"] .ch-badge-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(250,204,21,0.15); border: 2px solid rgba(250,204,21,0.4);
+  display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+  box-shadow: 0 0 14px rgba(250,204,21,0.2);
+}
+[data-composition-id="member-section"] .ch-badge-info .lbl { font-size: 11px; color: #FACC15; letter-spacing: 3px; margin-bottom: 4px; }
+[data-composition-id="member-section"] .ch-badge-info .name { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: #F5F5F5; }
+[data-composition-id="member-section"] .ch-badge-info .sub { font-size: 12px; color: #8A8A8A; }
+
+/* Exit quote */
+[data-composition-id="member-section"] .exit-quote {
+  position: absolute; bottom: 60px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 42px; color: #8A8A8A; letter-spacing: 1px;
+}
+[data-composition-id="member-section"] .exit-quote em { color: #F5F5F5; font-style: normal; }
+
+/* ── S3: Progress Analytics ──────────────────────────── */
+[data-composition-id="member-section"] #ms-s3 { opacity: 0; display: none; }
+[data-composition-id="member-section"] .s3-glow-tl {
+  position: absolute; top: -200px; left: -100px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(255,94,20,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="member-section"] .s3-glow-br {
+  position: absolute; bottom: -250px; right: -150px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,94,20,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+[data-composition-id="member-section"] .s3-grid {
+  position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;
+  background-image: linear-gradient(rgba(255,94,20,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,94,20,0.03) 1px, transparent 1px);
+  background-size: 80px 80px; pointer-events: none;
+}
+[data-composition-id="member-section"] .s3-left {
+  position: absolute; top: 0; left: 0; width: 860px; height: 1080px;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 80px 0 80px; border-right: 1px solid #1E1E1E;
+}
+[data-composition-id="member-section"] .s3-eyebrow {
+  font-size: 16px; color: #FF5E14; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 16px;
+}
+[data-composition-id="member-section"] .s3-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 62px; font-weight: 900; color: #F5F5F5; line-height: 1.05; margin-bottom: 24px;
+  max-width: 100%;
+}
+[data-composition-id="member-section"] .s3-body {
+  font-size: 24px; color: #8A8A8A; line-height: 1.55; max-width: 540px; margin-bottom: 44px;
+}
+[data-composition-id="member-section"] .s3-stats {
+  display: flex; gap: 36px;
+}
+[data-composition-id="member-section"] .s3-stat { display: flex; flex-direction: column; gap: 6px; }
+[data-composition-id="member-section"] .s3-stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px; font-weight: 900; color: #FF5E14; line-height: 1;
+}
+[data-composition-id="member-section"] .s3-stat-lbl { font-size: 14px; color: #8A8A8A; letter-spacing: 2px; }
+/* Health row */
+[data-composition-id="member-section"] .s3-health-row { display: flex; gap: 32px; margin-top: 28px; }
+[data-composition-id="member-section"] .s3-health-stat { display: flex; flex-direction: column; gap: 6px; }
+[data-composition-id="member-section"] .s3-health-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 48px; font-weight: 900; color: #22C55E; line-height: 1;
+}
+[data-composition-id="member-section"] .s3-health-lbl { font-size: 14px; color: #8A8A8A; letter-spacing: 2px; }
+[data-composition-id="member-section"] .s3-right {
+  position: absolute; top: 0; left: 860px; right: 0; height: 1080px;
+  padding: 56px 60px; display: flex; flex-direction: column; gap: 36px;
+}
+/* Chart panels */
+[data-composition-id="member-section"] .s3-chart-panel {
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 16px; padding: 28px 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+[data-composition-id="member-section"] .s3-chart-panel.accent {
+  border-top: 3px solid #FF5E14;
+  box-shadow: 0 0 0 1px rgba(255,94,20,0.15), 0 4px 28px rgba(255,94,20,0.08);
+}
+[data-composition-id="member-section"] .s3-chart-label { font-size: 14px; color: #8A8A8A; letter-spacing: 3px; margin-bottom: 20px; }
+[data-composition-id="member-section"] .s3-bar-chart {
+  display: flex; align-items: flex-end; gap: 12px; height: 120px;
+}
+[data-composition-id="member-section"] .s3-bar-col {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%;
+}
+[data-composition-id="member-section"] .s3-bar-wrap { flex: 1; width: 100%; display: flex; align-items: flex-end; }
+[data-composition-id="member-section"] .s3-bar {
+  width: 100%; background: #2A2A2A; border-radius: 5px 5px 0 0; transform-origin: bottom;
+}
+[data-composition-id="member-section"] .s3-bar.hi {
+  background: #FF5E14;
+  box-shadow: 0 0 16px rgba(255,94,20,0.35), 0 -3px 10px rgba(255,94,20,0.2);
+}
+[data-composition-id="member-section"] .s3-bar.med { background: #3D2010; }
+[data-composition-id="member-section"] .s3-bar-val {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: #F5F5F5;
+}
+[data-composition-id="member-section"] .s3-bar-mo { font-size: 12px; color: #8A8A8A; }
+[data-composition-id="member-section"] .s3-trend-row {
+  display: flex; align-items: center; gap: 24px; padding: 20px 28px;
+  background: #111111; border: 1px solid #1E1E1E; border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+[data-composition-id="member-section"] .s3-trend-lbl { font-size: 15px; color: #8A8A8A; letter-spacing: 3px; flex-shrink: 0; }
+[data-composition-id="member-section"] .s3-trend-bar-wrap {
+  flex: 1; background: #1E1E1E; border-radius: 4px; height: 10px; overflow: hidden;
+}
+[data-composition-id="member-section"] .s3-trend-bar {
+  height: 100%; background: linear-gradient(90deg, #FF5E14, #FACC15); border-radius: 4px; width: 0%;
+  box-shadow: 0 0 10px rgba(255,94,20,0.4);
+}
+[data-composition-id="member-section"] .s3-trend-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px; font-weight: 900; color: #FF5E14; flex-shrink: 0;
+}
+[data-composition-id="member-section"] .s3-quote {
+  position: absolute; bottom: 56px; left: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 40px; color: #8A8A8A; letter-spacing: 1px;
+}
+[data-composition-id="member-section"] .s3-quote em { color: #F5F5F5; font-style: normal; }
+</style>
+
+<!-- Scene 1: MIEMBRO title (0–2.5s) -->
+<div id="ms-s1" class="ms-scene">
+  <div class="s1-glow" id="mg1"></div>
+  <div class="s1-glow-tl"></div>
+  <div class="s1-ghost" id="mgh1">MIEMBRO</div>
+  <div class="s1-brand" id="mbn">GYMBASE</div>
+  <div class="s1-rule-top" id="mrt"></div>
+  <div class="s1-tag" id="mtag">ROL</div>
+  <div class="s1-title" id="mt1">MIEMBRO</div>
+  <div class="s1-rule-b" id="mrb"></div>
+  <div class="s1-tagline" id="mtl">Tu progreso, en el bolsillo.</div>
+  <div class="s1-detail" id="mdet">RUTINAS · RETOS · PROGRESO · MEMBRESÍA</div>
+</div>
+
+<!-- Scene 2: Phone layout (2.5–27.5s) -->
+<div id="ms-s2" class="ms-scene">
+  <div class="ctx-glow" data-layout-allow-overflow></div>
+  <div class="ctx-divider" id="m-div"></div>
+
+  <!-- Context A: Dashboard (2.5–11s) -->
+  <div class="ctx-panel" id="ctx-a">
+    <div class="ctx-eyebrow">Tu membresía activa</div>
+    <div class="ctx-heading">TU GIMNASIO EN TU BOLSILLO</div>
+    <div class="ctx-body">Consulta tu membresía, estadísticas y próxima clase, desde donde estés.</div>
+    <div class="ctx-stat-row">
+      <div class="ctx-stat"><div class="ctx-stat-val" id="cs-days">0</div><div class="ctx-stat-lbl">DÍAS ACTIVO</div></div>
+      <div class="ctx-stat"><div class="ctx-stat-val" id="cs-wr">0</div><div class="ctx-stat-lbl">RUTINAS ESTA SEMANA</div></div>
+      <div class="ctx-stat"><div class="ctx-stat-val" id="cs-str">0</div><div class="ctx-stat-lbl">DÍAS DE RACHA</div></div>
+    </div>
+  </div>
+  <!-- Context B: Workout (11–19.5s) -->
+  <div class="ctx-panel" id="ctx-b" style="opacity:0;visibility:hidden;">
+    <div class="ctx-eyebrow">Rutinas personalizadas</div>
+    <div class="ctx-heading">ENTRENA CON PROPÓSITO</div>
+    <div class="ctx-body">Cada ejercicio, cada serie, cada rep. Tu rutina te guía paso a paso hasta completar el objetivo.</div>
+    <div class="ctx-stat-row">
+      <div class="ctx-stat"><div class="ctx-stat-val">47</div><div class="ctx-stat-lbl">RUTINAS DISPONIBLES</div></div>
+      <div class="ctx-stat"><div class="ctx-stat-val">3/5</div><div class="ctx-stat-lbl">COMPLETADO HOY</div></div>
+    </div>
+  </div>
+  <!-- Context C: Challenges (19.5–27.5s) -->
+  <div class="ctx-panel" id="ctx-c" style="opacity:0;visibility:hidden;">
+    <div class="ctx-eyebrow">Retos y logros</div>
+    <div class="ctx-heading">COMPITE. LOGRA. SUPÉRATE.</div>
+    <div class="ctx-body">Retos que te mantienen motivado y logros que celebran tu progreso real.</div>
+    <div class="ctx-stat-row">
+      <div class="ctx-stat"><div class="ctx-stat-val">18</div><div class="ctx-stat-lbl">DÍAS DEL RETO</div></div>
+      <div class="ctx-stat"><div class="ctx-stat-val">60%</div><div class="ctx-stat-lbl">COMPLETADO</div></div>
+      <div class="ctx-stat"><div class="ctx-stat-val">3</div><div class="ctx-stat-lbl">LOGROS DESBLOQUEADOS</div></div>
+    </div>
+  </div>
+
+  <div class="exit-quote" id="m-exit" style="opacity:0">Tu cuerpo es el resultado. <em>Tu app, el camino.</em></div>
+
+  <!-- Phone frame -->
+  <div class="phone-wrap" id="m-phone" data-layout-allow-overflow>
+    <div class="phone-notch"></div>
+    <div class="phone-status"><span>9:41</span><span>●●● 100%</span></div>
+    <!-- Dashboard screen -->
+    <div class="phone-screen" id="ps-dash">
+      <div class="ph-app-bar">
+        <div class="ph-app-logo">GYMBASE</div>
+        <div class="ph-notif">🔔</div>
+      </div>
+      <div class="ph-greeting">Hola, Carlos 👋</div>
+      <div class="ph-sub">Martes, 8 de julio · Plan Pro activo</div>
+      <div class="ph-card">
+        <div class="ph-card-tag">MEMBRESÍA</div>
+        <div class="ph-card-plan">Plan Pro</div>
+        <div class="ph-card-row">
+          <div class="ph-card-status">● ACTIVO</div>
+          <div class="ph-card-exp">Vence: 31 Jul 2025</div>
+        </div>
+      </div>
+      <div class="ph-stats">
+        <div class="ph-stat"><div class="ph-stat-val" id="ph-d">0</div><div class="ph-stat-lbl">RUTINAS</div></div>
+        <div class="ph-stat"><div class="ph-stat-val" id="ph-w">0</div><div class="ph-stat-lbl">DÍAS</div></div>
+        <div class="ph-stat"><div class="ph-stat-val" id="ph-s">0</div><div class="ph-stat-lbl">RACHA</div></div>
+      </div>
+      <div class="ph-next">
+        <div><div class="ph-next-lbl">PRÓXIMA CLASE</div><div class="ph-next-val">Funcional · Estudio B</div></div>
+        <div class="ph-next-time">7:00 PM</div>
+      </div>
+    </div>
+    <!-- Workout screen — starts below phone (slide in) -->
+    <div class="phone-screen" id="ps-workout">
+      <div class="wk-header">
+        <div class="wk-back">←</div>
+        <div class="wk-title">Rutina de Fuerza</div>
+      </div>
+      <div class="wk-progress-wrap"><div class="wk-progress-bar" id="wk-bar"></div></div>
+      <div class="wk-progress-lbl">PROGRESO · 3 DE 5 EJERCICIOS</div>
+      <div class="wk-rule"></div>
+      <div class="ex-row"><div class="ex-icon">🏋️</div><div class="ex-check done">✓</div><div class="ex-name done">Sentadillas</div><div class="ex-sets">4×12</div></div>
+      <div class="ex-row"><div class="ex-icon">💪</div><div class="ex-check done">✓</div><div class="ex-name done">Press de Banca</div><div class="ex-sets">4×10</div></div>
+      <div class="ex-row"><div class="ex-icon">🔗</div><div class="ex-check done">✓</div><div class="ex-name done">Remo con Barra</div><div class="ex-sets">4×10</div></div>
+      <div class="ex-row" id="ex-active"><div class="ex-icon">⚡</div><div class="ex-check active">▶</div><div class="ex-name active">Peso Muerto</div><div class="ex-sets">4×8</div></div>
+      <div class="ex-row"><div class="ex-icon">🔄</div><div class="ex-check todo">○</div><div class="ex-name">Pull-ups</div><div class="ex-sets">3×10</div></div>
+      <div class="wk-btn" id="wk-btn">COMPLETAR SERIE</div>
+    </div>
+    <!-- Challenge screen — starts below phone (slide in) -->
+    <div class="phone-screen" id="ps-challenge">
+      <div class="ch-title">Retos Activos</div>
+      <div class="ch-ring-wrap">
+        <div class="ch-ring" id="ch-ring">
+          <div class="ch-ring-inner">
+            <div class="ch-ring-pct" id="ch-pct">0%</div>
+            <div class="ch-ring-lbl">COMPLETADO</div>
+          </div>
+        </div>
+      </div>
+      <div class="ch-name">Reto 30 Días</div>
+      <div class="ch-sub">18 de 30 sesiones completadas</div>
+      <div class="ch-prog-wrap"><div class="ch-prog-bar" id="ch-bar"></div></div>
+      <div class="ch-next-lbl">PRÓXIMOS LOGROS</div>
+      <div class="ch-next-item"><div class="ch-next-ico">🎯</div><div class="ch-next-txt">Guerrero de 21 días</div><div style="font-size:12px;color:#FF5E14;">3 días</div></div>
+      <div class="ch-next-item"><div class="ch-next-ico">🔥</div><div class="ch-next-txt">Mes Completo</div><div style="font-size:12px;color:#8A8A8A;">12 días</div></div>
+      <div class="ch-badge" id="ch-badge-el" style="opacity:0;transform:scale(0.8)">
+        <div class="ch-badge-icon">🏆</div>
+        <div class="ch-badge-info">
+          <div class="lbl">LOGRO DESBLOQUEADO</div>
+          <div class="name">Semana Perfecta</div>
+          <div class="sub">7 días consecutivos completados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene 3: Progress Analytics (27.5–35s) -->
+<div id="ms-s3" class="ms-scene">
+  <div class="s3-glow-tl" data-layout-allow-overflow></div>
+  <div class="s3-glow-br" data-layout-allow-overflow></div>
+  <div class="s3-grid"></div>
+  <div class="s3-left">
+    <div class="s3-eyebrow" id="s3ey">Seguimiento de Progreso</div>
+    <div class="s3-heading" id="s3hd">TU TRANSFORMACIÓN EN DATOS</div>
+    <div class="s3-body" id="s3bd">Cada sesión registrada. Cada PR celebrado. Tu progreso, visual y claro.</div>
+    <div class="s3-stats" id="s3sts">
+      <div class="s3-stat"><div class="s3-stat-val" id="s3-pr">0</div><div class="s3-stat-lbl">PRs ESTE MES</div></div>
+      <div class="s3-stat"><div class="s3-stat-val" id="s3-kg">0</div><div class="s3-stat-lbl">KG PRESS BANCA</div></div>
+      <div class="s3-stat"><div class="s3-stat-val" id="s3-pct">0</div><div class="s3-stat-lbl">% MEJORA FUERZA</div></div>
+    </div>
+    <div class="s3-health-row" id="s3hr">
+      <div class="s3-health-stat"><div class="s3-health-val" id="s3-hw">0</div><div class="s3-health-lbl">PESO (kg)</div></div>
+      <div class="s3-health-stat"><div class="s3-health-val" id="s3-hm">0</div><div class="s3-health-lbl">MASA MUSCULAR (kg)</div></div>
+      <div class="s3-health-stat"><div class="s3-health-val" id="s3-hf">0</div><div class="s3-health-lbl">% GRASA</div></div>
+    </div>
+  </div>
+  <div class="s3-right">
+    <!-- Fuerza chart -->
+    <div class="s3-chart-panel accent" id="s3c1">
+      <div class="s3-chart-label">FUERZA — PRESS DE BANCA (kg)</div>
+      <div class="s3-bar-chart">
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar med" id="sb0" style="height:52%"></div></div><div class="s3-bar-val">65</div><div class="s3-bar-mo">Ene</div></div>
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar med" id="sb1" style="height:60%"></div></div><div class="s3-bar-val">75</div><div class="s3-bar-mo">Feb</div></div>
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar med" id="sb2" style="height:68%"></div></div><div class="s3-bar-val">85</div><div class="s3-bar-mo">Mar</div></div>
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar med" id="sb3" style="height:72%"></div></div><div class="s3-bar-val">90</div><div class="s3-bar-mo">Abr</div></div>
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar med" id="sb4" style="height:80%"></div></div><div class="s3-bar-val">100</div><div class="s3-bar-mo">May</div></div>
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar hi" id="sb5" style="height:92%"></div></div><div class="s3-bar-val" style="color:#FF5E14;">115</div><div class="s3-bar-mo">Jun</div></div>
+      </div>
+    </div>
+    <!-- Asistencia chart -->
+    <div class="s3-chart-panel" id="s3c2">
+      <div class="s3-chart-label">ASISTENCIA SEMANAL — SESIONES POR SEMANA</div>
+      <div class="s3-bar-chart">
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar" id="ab0s" style="height:75%"></div></div><div class="s3-bar-val">3</div><div class="s3-bar-mo">Sem 1</div></div>
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar" id="ab1s" style="height:100%"></div></div><div class="s3-bar-val">4</div><div class="s3-bar-mo">Sem 2</div></div>
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar" id="ab2s" style="height:50%"></div></div><div class="s3-bar-val">2</div><div class="s3-bar-mo">Sem 3</div></div>
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar" id="ab3s" style="height:75%"></div></div><div class="s3-bar-val">3</div><div class="s3-bar-mo">Sem 4</div></div>
+        <div class="s3-bar-col"><div class="s3-bar-wrap"><div class="s3-bar hi" id="ab4s" style="height:100%"></div></div><div class="s3-bar-val" style="color:#FF5E14;">4</div><div class="s3-bar-mo">Sem 5</div></div>
+      </div>
+    </div>
+    <!-- Trend row -->
+    <div class="s3-trend-row" id="s3tr">
+      <div class="s3-trend-lbl">RACHA ACTUAL</div>
+      <div class="s3-trend-bar-wrap"><div class="s3-trend-bar" id="s3-tbar"></div></div>
+      <div class="s3-trend-val" id="s3-tv">0 días</div>
+    </div>
+  </div>
+  <div class="s3-quote" id="s3q">Tu mejor versión. <em>Medida, no imaginada.</em></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+// member-section — Sección del miembro: dashboard, rutinas, retos y analytics de progreso
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+
+// ── S1: MIEMBRO TITLE (0–2.5s) ──────────────────────────────
+tl.fromTo('#mg1',  {opacity:0}, {opacity:1, duration:1.2, ease:'power2.out'}, 0.1);
+tl.fromTo('#mgh1', {opacity:0}, {opacity:0.06, duration:1.5, ease:'power1.out'}, 0.2);
+tl.fromTo('#mbn',  {y:-20, opacity:0}, {y:0, opacity:1, duration:0.4, ease:'power3.out'}, 0.28);
+tl.fromTo('#mrt',  {scaleX:0}, {scaleX:1, duration:0.6, ease:'power3.out'}, 0.28);
+tl.fromTo('#mtag', {opacity:0}, {opacity:1, duration:0.3, ease:'power2.out'}, 0.52);
+tl.fromTo('#mt1',  {y:60, opacity:0}, {y:0, opacity:1, duration:0.6, ease:'expo.out'}, 0.62);
+tl.fromTo('#mrb',  {scaleX:0}, {scaleX:1, duration:0.5, ease:'power3.out'}, 0.96);
+tl.fromTo('#mtl',  {y:20, opacity:0}, {y:0, opacity:1, duration:0.55, ease:'power2.out'}, 1.1);
+tl.fromTo('#mdet', {opacity:0}, {opacity:1, duration:0.45, ease:'power1.out'}, 1.42);
+
+// ── TRANSICIÓN S1→S2 (t=2.1s) ───────────────────────────────
+tl.set('#ms-s2', {display:'block', opacity:0}, 2.05);
+tl.fromTo('#ms-s2', {opacity:0}, {opacity:1, duration:0.5, ease:'power2.inOut'}, 2.1);
+tl.set('#ms-s1', {opacity:0, visibility:'hidden'}, 2.6);
+
+// ── SUB-BEAT A: DASHBOARD (2.5–11s) ─────────────────────────
+tl.fromTo('#m-div', {scaleY:0, transformOrigin:'top'}, {scaleY:1, duration:0.7, ease:'expo.out'}, 2.65);
+tl.fromTo('#ctx-a', {x:-36, opacity:0}, {x:0, opacity:1, duration:0.6, ease:'expo.out'}, 2.75);
+tl.fromTo('#m-phone', {x:120, opacity:0}, {x:0, opacity:1, duration:0.7, ease:'expo.out'}, 2.85);
+
+// Contadores contexto
+var dObj={v:0}, wrObj={v:0}, strObj={v:0};
+tl.to(dObj,   {v:47, duration:1.2, ease:'power3.out', onUpdate:function(){ document.getElementById('cs-days').textContent=Math.round(dObj.v); }}, 3.1);
+tl.to(wrObj,  {v:5,  duration:0.8, ease:'power3.out', onUpdate:function(){ document.getElementById('cs-wr').textContent=Math.round(wrObj.v); }}, 3.25);
+tl.to(strObj, {v:12, duration:1.0, ease:'power3.out', onUpdate:function(){ document.getElementById('cs-str').textContent=Math.round(strObj.v); }}, 3.35);
+
+// Contadores dentro del phone
+var phd={v:0}, phw={v:0}, phs={v:0};
+tl.to(phd, {v:5,  duration:0.9, ease:'power3.out', onUpdate:function(){ document.getElementById('ph-d').textContent=Math.round(phd.v); }}, 3.2);
+tl.to(phw, {v:5,  duration:0.7, ease:'power3.out', onUpdate:function(){ document.getElementById('ph-w').textContent=Math.round(phw.v); }}, 3.35);
+tl.to(phs, {v:12, duration:1.0, ease:'power3.out', onUpdate:function(){ document.getElementById('ph-s').textContent=Math.round(phs.v); }}, 3.45);
+
+// ── TRANSICIÓN A→B: WORKOUT — slide (t=10.6s) ───────────────
+// Dash se desliza hacia arriba (sale del phone), workout sube desde abajo
+tl.to('#ps-dash',    {y:-780, duration:0.45, ease:'power2.in'}, 10.6);
+tl.to('#ps-workout', {y:0,    duration:0.5,  ease:'expo.out'},  10.88);
+// Contexto — slides
+tl.to('#ctx-a',   {x:-50, opacity:0, duration:0.35, ease:'power2.in'}, 10.6);
+tl.set('#ctx-a',  {visibility:'hidden'}, 10.95);
+tl.set('#ctx-b',  {opacity:1, visibility:'visible', x:60}, 10.96);
+tl.to('#ctx-b',   {x:0, opacity:1, duration:0.45, ease:'expo.out'}, 10.96);
+
+// ── SUB-BEAT B: WORKOUT (11–19.5s) ──────────────────────────
+tl.fromTo('#wk-bar', {width:'0%'}, {width:'60%', duration:1.0, ease:'power3.out'}, 11.1);
+var exRep = Math.ceil(8.5 / 1.2);
+tl.fromTo('#ex-active', {backgroundColor:'rgba(255,94,20,0)'}, {backgroundColor:'rgba(255,94,20,0.06)', yoyo:true, repeat:exRep, duration:0.6, ease:'sine.inOut'}, 11.4);
+var btnRep = Math.ceil(8 / 1.4);
+tl.fromTo('#wk-btn', {scale:1}, {scale:1.04, yoyo:true, repeat:btnRep, duration:0.7, ease:'sine.inOut'}, 12.0);
+
+// ── TRANSICIÓN B→C: CHALLENGES — slide (t=19.1s) ────────────
+tl.to('#ps-workout',   {y:-780, duration:0.45, ease:'power2.in'},  19.1);
+tl.to('#ps-challenge', {y:0,    duration:0.5,  ease:'expo.out'},   19.38);
+tl.to('#ctx-b',   {x:-50, opacity:0, duration:0.35, ease:'power2.in'}, 19.1);
+tl.set('#ctx-b',  {visibility:'hidden'}, 19.45);
+tl.set('#ctx-c',  {opacity:1, visibility:'visible', x:60}, 19.46);
+tl.to('#ctx-c',   {x:0, opacity:1, duration:0.45, ease:'expo.out'}, 19.46);
+
+// ── SUB-BEAT C: CHALLENGES (19.5–27.5s) ─────────────────────
+tl.fromTo('#ch-bar', {width:'0%'}, {width:'60%', duration:1.2, ease:'power3.out'}, 19.6);
+// Anillo de progreso animado
+var ringObj = {v:0};
+tl.to(ringObj, {
+  v: 60,
+  duration: 1.6,
+  ease: 'power3.out',
+  onUpdate: function() {
+    var deg = Math.round(ringObj.v * 3.6);
+    document.getElementById('ch-pct').textContent = Math.round(ringObj.v) + '%';
+    document.getElementById('ch-ring').style.background =
+      'conic-gradient(#FF5E14 0deg, #FF5E14 ' + deg + 'deg, #1E1E1E ' + deg + 'deg)';
+  }
+}, 19.6);
+// Badge de logro con impacto
+tl.fromTo('#ch-badge-el', {scale:0.7, opacity:0}, {scale:1, opacity:1, duration:0.65, ease:'back.out(2.5)'}, 22.0);
+// Frase de salida
+tl.fromTo('#m-exit', {y:16, opacity:0}, {y:0, opacity:1, duration:0.6, ease:'power2.out'}, 24.5);
+
+// ── TRANSICIÓN S2→S3 (t=27.0s) ──────────────────────────────
+tl.set('#ms-s3', {display:'block', opacity:0}, 26.95);
+tl.fromTo('#ms-s3', {opacity:0}, {opacity:1, duration:0.5, ease:'power2.inOut'}, 27.0);
+tl.set('#ms-s2', {display:'none'}, 27.5);
+
+// ── S3: PROGRESS ANALYTICS (27.5–35s) ────────────────────────
+tl.fromTo('#s3ey', {opacity:0}, {opacity:1, duration:0.4, ease:'power2.out'}, 27.6);
+tl.fromTo('#s3hd', {x:-36, opacity:0}, {x:0, opacity:1, duration:0.55, ease:'expo.out'}, 27.72);
+tl.fromTo('#s3bd', {y:16, opacity:0}, {y:0, opacity:1, duration:0.5, ease:'power2.out'}, 27.95);
+
+// Contadores de stats
+var prObj={v:0}, kgObj={v:0}, pctObj={v:0};
+tl.to(prObj,  {v:7,    duration:1.0, ease:'power3.out', onUpdate:function(){ document.getElementById('s3-pr').textContent=Math.round(prObj.v); }}, 28.1);
+tl.to(kgObj,  {v:115,  duration:1.2, ease:'power3.out', onUpdate:function(){ document.getElementById('s3-kg').textContent=Math.round(kgObj.v); }}, 28.2);
+tl.to(pctObj, {v:23,   duration:1.1, ease:'power3.out', onUpdate:function(){ document.getElementById('s3-pct').textContent=Math.round(pctObj.v); }}, 28.3);
+
+// Contadores de salud
+var hwObj={v:0}, hmObj={v:0}, hfObj={v:0};
+tl.to(hwObj, {v:78.5, duration:1.0, ease:'power3.out', onUpdate:function(){ document.getElementById('s3-hw').textContent=hwObj.v.toFixed(1); }}, 28.4);
+tl.to(hmObj, {v:62.3, duration:1.0, ease:'power3.out', onUpdate:function(){ document.getElementById('s3-hm').textContent=hmObj.v.toFixed(1); }}, 28.5);
+tl.to(hfObj, {v:14.2, duration:1.0, ease:'power3.out', onUpdate:function(){ document.getElementById('s3-hf').textContent=hfObj.v.toFixed(1)+'%'; }}, 28.6);
+
+// Entrada de la fila de salud
+tl.fromTo('#s3hr', {y:20, opacity:0}, {y:0, opacity:1, duration:0.5, ease:'power2.out'}, 28.2);
+
+// Charts entran con slide
+tl.fromTo('#s3c1', {x:60, opacity:0}, {x:0, opacity:1, duration:0.5, ease:'expo.out'}, 27.65);
+tl.fromTo('#s3c2', {x:60, opacity:0}, {x:0, opacity:1, duration:0.5, ease:'expo.out'}, 27.82);
+tl.fromTo('#s3tr', {x:60, opacity:0}, {x:0, opacity:1, duration:0.5, ease:'expo.out'}, 27.99);
+
+// Barras de fuerza
+tl.fromTo([document.getElementById('sb0'),document.getElementById('sb1'),document.getElementById('sb2'),document.getElementById('sb3'),document.getElementById('sb4'),document.getElementById('sb5')],
+  {scaleY:0, transformOrigin:'bottom'},
+  {scaleY:1, duration:0.65, ease:'power3.out', stagger:0.1},
+28.15);
+
+// Barras de asistencia (ligeramente después)
+tl.fromTo([document.getElementById('ab0s'),document.getElementById('ab1s'),document.getElementById('ab2s'),document.getElementById('ab3s'),document.getElementById('ab4s')],
+  {scaleY:0, transformOrigin:'bottom'},
+  {scaleY:1, duration:0.55, ease:'power3.out', stagger:0.1},
+28.6);
+
+// Barra de racha
+var trendObj={v:0};
+tl.to(trendObj, {v:80, duration:1.2, ease:'power3.out', onUpdate:function(){
+  document.getElementById('s3-tbar').style.width = trendObj.v + '%';
+  document.getElementById('s3-tv').textContent = Math.round(trendObj.v / 80 * 12) + ' días';
+}}, 29.1);
+
+tl.fromTo('#s3q', {y:18, opacity:0}, {y:0, opacity:1, duration:0.6, ease:'power2.out'}, 32.5);
+// Sweep sutil en barras de fuerza (32.8s → 34.5s)
+tl.fromTo('#sb5', {boxShadow:'0 0 16px rgba(255,94,20,0.35), 0 -3px 10px rgba(255,94,20,0.2)'}, {boxShadow:'0 0 28px rgba(255,94,20,0.6), 0 -3px 16px rgba(255,94,20,0.35)', yoyo:true, repeat:3, duration:0.5, ease:'sine.inOut'}, 32.8);
+tl.fromTo('#ab4s', {boxShadow:'none'}, {boxShadow:'0 0 16px rgba(255,94,20,0.35), 0 -3px 10px rgba(255,94,20,0.2)', yoyo:true, repeat:3, duration:0.5, ease:'sine.inOut'}, 33.1);
+
+window.__timelines['member-section'] = tl;
+</script>
+
+</div>
+</template>
+</body>
+</html>

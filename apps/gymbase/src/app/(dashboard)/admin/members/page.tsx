@@ -1,10 +1,10 @@
 // page.tsx — Listado de miembros con paginación server-side y filtros por URL params
 
-import { getMembersPaginated } from "@core/actions/admin.actions";
+import { getMembersPaginated } from "@/actions/admin.actions";
 import { getMonthlyAttendanceCountsForUsers } from "@/actions/checkin.actions";
-import { getPlans } from "@core/actions/membership.actions";
+import { getPlans } from "@/actions/membership.actions";
 import { MembersClient } from "./MembersClient";
-import type { MemberStatusFilter } from "@core/services/admin.service";
+import type { MemberStatusFilter } from "@/services/admin.service";
 
 const PAGE_SIZE = 25;
 

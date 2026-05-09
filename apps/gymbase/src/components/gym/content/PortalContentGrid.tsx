@@ -12,7 +12,7 @@ import {
 import { ContentDetailModal } from "./ContentDetailModal";
 import { Pagination } from "@/components/shared/Pagination";
 import type { Content, ContentType, ContentCategory } from "@/types/database";
-import type { PaginatedResult } from "@core/types/pagination";
+import type { PaginatedResult } from "@/types/pagination";
 
 const TYPE_ICONS: Record<ContentType, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   article: FileText,

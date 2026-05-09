@@ -1,6 +1,6 @@
 // MembershipTable.tsx — Tabla por plan con barra de retención inline y métricas clave
 
-import type { MembershipReport } from "@core/types/owner";
+import type { MembershipReport } from "@/types/owner";
 import { themeConfig } from "@/lib/theme";
 
 interface MembershipTableProps {

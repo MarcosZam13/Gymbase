@@ -10,7 +10,7 @@ import { StockAdjustmentForm } from "./StockAdjustmentForm";
 import { QuickStockModal } from "./QuickStockModal";
 import { Pagination } from "@/components/shared/Pagination";
 import type { InventoryProduct, ProductCategory } from "@/types/gym-inventory";
-import type { PaginatedResult } from "@core/types/pagination";
+import type { PaginatedResult } from "@/types/pagination";
 
 const CATEGORY_LABELS: Record<ProductCategory, string> = {
   supplement: "Suplementos",

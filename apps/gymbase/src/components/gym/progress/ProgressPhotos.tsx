@@ -1,7 +1,7 @@
 // ProgressPhotos.tsx — Grid de fotos de progreso del miembro
 
-import { Card, CardContent, CardHeader, CardTitle } from "@core/components/ui/card";
-import { Badge } from "@core/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Camera } from "lucide-react";
 import type { ProgressPhoto } from "@/types/gym-health";
 

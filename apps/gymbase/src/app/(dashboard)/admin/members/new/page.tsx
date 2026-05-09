@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { getPlans } from "@core/actions/membership.actions";
+import { getPlans } from "@/actions/membership.actions";
 import { AddMemberForm } from "@/components/gym/members/AddMemberForm";
 
 export default async function NewMemberPage(): Promise<React.ReactNode> {

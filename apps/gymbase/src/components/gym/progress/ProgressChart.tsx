@@ -4,7 +4,7 @@
 
 import { useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { Button } from "@core/components/ui/button";
+import { Button } from "@/components/ui/button";
 import type { ProgressChartData } from "@/types/gym-progress";
 
 interface ProgressChartProps {

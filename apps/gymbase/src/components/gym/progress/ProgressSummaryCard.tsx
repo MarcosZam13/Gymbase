@@ -1,7 +1,7 @@
 // ProgressSummaryCard.tsx — Tarjeta resumen de progreso comparando primera y última medición
 
 import { TrendingUp, TrendingDown, Minus, Scale } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@core/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { HealthSnapshot } from "@/types/gym-health";
 
 interface ProgressSummaryCardProps {

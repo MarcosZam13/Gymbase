@@ -2,9 +2,9 @@
 
 import { Suspense } from "react";
 import { MessageSquare } from "lucide-react";
-import { getPosts } from "@core/actions/community.actions";
+import { getPosts } from "@/actions/community.actions";
 import { getCurrentUser } from "@/lib/supabase/server";
-import { CommunityFilter } from "@core/app/(portal)/portal/community/CommunityFilter";
+import { CommunityFilter } from "@/app/(portal)/portal/community/CommunityFilter";
 import { CommunityFeedClient } from "@/components/gym/community/CommunityFeedClient";
 
 interface CommunityPageProps {

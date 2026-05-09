@@ -1,7 +1,7 @@
 // HealthProfileCard.tsx — Tarjeta resumen del perfil de salud de un miembro
 
-import { Card, CardContent, CardHeader, CardTitle } from "@core/components/ui/card";
-import { Badge } from "@core/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Heart, Ruler, Weight, Activity, Target } from "lucide-react";
 import type { HealthProfile, FitnessLevel } from "@/types/gym-health";
 

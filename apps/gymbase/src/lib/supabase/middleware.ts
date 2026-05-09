@@ -3,7 +3,7 @@
 
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
-import type { OrgConfig } from "@core/types/org-config";
+import type { OrgConfig } from "@/types/org-config";
 
 // DEFAULT_ORG_CONFIG inline para evitar problemas de runtime en edge — mismos valores que en org-config.ts
 const DEFAULT_CONFIG: OrgConfig = {

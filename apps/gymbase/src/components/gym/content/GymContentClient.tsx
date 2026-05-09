@@ -9,7 +9,7 @@ import {
   Link as LinkIcon, Image as ImageIcon, Plus, Eye, EyeOff,
   Trash2, Pencil, BarChart2,
 } from "lucide-react";
-import { togglePublished, deleteContent } from "@core/actions/content.actions";
+import { togglePublished, deleteContent } from "@/actions/content.actions";
 import type { Content, ContentType, MembershipPlan, ContentCategory } from "@/types/database";
 
 // Tipo extendido que incluye métricas de admin

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { getPlans } from "@core/actions/membership.actions";
-import { getCategories } from "@core/actions/category.actions";
+import { getPlans } from "@/actions/membership.actions";
+import { getCategories } from "@/actions/category.actions";
 import { AddContentForm } from "@/components/gym/content/AddContentForm";
 
 export default async function NewContentPage(): Promise<React.ReactNode> {

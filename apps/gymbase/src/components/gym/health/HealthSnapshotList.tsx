@@ -1,6 +1,6 @@
 // HealthSnapshotList.tsx — Lista de snapshots históricos de métricas de salud
 
-import { Card, CardContent, CardHeader, CardTitle } from "@core/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import type { HealthSnapshot } from "@/types/gym-health";
 

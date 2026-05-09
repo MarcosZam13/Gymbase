@@ -5,7 +5,7 @@ import { GymPortalNav } from "@/components/gym/GymPortalNav";
 import { GymPortalBottomNav } from "@/components/gym/GymPortalBottomNav";
 import { SubscriptionGuard } from "@/components/gym/SubscriptionGuard";
 import { getCurrentUser } from "@/lib/supabase/server";
-import { getUserSubscription } from "@core/actions/payment.actions";
+import { getUserSubscription } from "@/actions/payment.actions";
 import { getPublicOrgInfo } from "@/actions/settings.actions";
 
 export default async function PortalLayout({

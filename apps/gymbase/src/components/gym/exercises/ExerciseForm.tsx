@@ -6,9 +6,9 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X, Loader2, Timer, Repeat } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
-import { Label } from "@core/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { createExercise, editExercise } from "@/actions/exercise.actions";
 import { createExerciseSchema, type CreateExerciseInput } from "@/lib/validations/routines";
 import type { Exercise, DifficultyLevel } from "@/types/gym-routines";
@@ -241,7 +241,7 @@ export function ExerciseForm({ exercise, onClose, onSaved }: ExerciseFormProps):
                 id="ex-duration"
                 type="number"
                 placeholder="ej: 60"
-                {...register("duration_seconds", { valueAsNumber: true })}
+                {...register("duration_seconds", { setValueAs: (v: string) => v === "" ? null : parseInt(v, 10) })}
               />
               {errors.duration_seconds && (
                 <p className="text-xs text-red-600">{errors.duration_seconds.message}</p>

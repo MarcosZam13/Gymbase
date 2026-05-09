@@ -3,9 +3,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Download } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Badge } from "@core/components/ui/badge";
-import { getContentById } from "@core/actions/content.actions";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { getContentById } from "@/actions/content.actions";
 import { getYouTubeEmbedUrl } from "@/lib/utils";
 import type { ContentType } from "@/types/database";
 

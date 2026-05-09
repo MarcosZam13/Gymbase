@@ -3,7 +3,7 @@
 import { ShoppingCart, TrendingUp, CreditCard } from "lucide-react";
 import { createClient, getCurrentUser } from "@/lib/supabase/server";
 import { getSalesPaginated, getProducts, getInventoryStats } from "@/actions/inventory.actions";
-import { getMembers } from "@core/actions/admin.actions";
+import { getMembers } from "@/actions/admin.actions";
 import { SalesClient } from "@/components/gym/inventory/SalesClient";
 import type { SalePaymentMethod } from "@/types/gym-inventory";
 

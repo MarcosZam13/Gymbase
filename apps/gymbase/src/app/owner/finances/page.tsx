@@ -8,7 +8,7 @@ import { PeriodSelector } from "@/components/owner/PeriodSelector";
 import { ExportCSVButton } from "@/components/owner/ExportCSVButton";
 import { AddExpenseDialog } from "@/components/owner/AddExpenseDialog";
 import { themeConfig } from "@/lib/theme";
-import type { OwnerPeriod } from "@core/types/owner";
+import type { OwnerPeriod } from "@/types/owner";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("es-CR", {
@@ -64,6 +64,17 @@ export default async function OwnerFinancesPage({
   const cashFlow = cashFlowResult.success ? cashFlowResult.data! : [];
   const comparison = comparisonResult.success ? comparisonResult.data! : null;
 
+  // Totales del período calculados desde cashFlow (period-aware)
+  const periodTotals = cashFlow.reduce(
+    (acc, row) => ({
+      membership: acc.membership + Number(row.membership_revenue),
+      sales: acc.sales + Number(row.sales_revenue),
+      total: acc.total + Number(row.total_revenue),
+    }),
+    { membership: 0, sales: 0, total: 0 }
+  );
+  const periodNet = periodTotals.total - expenseStats.total;
+
   // Datos serializados para exportar CSV desde el cliente
   const csvRows = cashFlow.map((row) => ({
     "Período": row.period_label,
@@ -87,6 +98,32 @@ export default async function OwnerFinancesPage({
           <Suspense>
             <PeriodSelector current={period} />
           </Suspense>
+        </div>
+      </div>
+
+      {/* KPI Cards — resumen del período seleccionado */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
+          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Total ingresos</p>
+          <p className="font-barlow font-bold text-2xl text-white">{formatCurrency(periodTotals.total)}</p>
+        </div>
+        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
+          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Membresías</p>
+          <p className="font-barlow font-bold text-2xl text-[#FF5E14]">{formatCurrency(periodTotals.membership)}</p>
+        </div>
+        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
+          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Ventas tienda</p>
+          <p className="font-barlow font-bold text-2xl text-green-400">{formatCurrency(periodTotals.sales)}</p>
+        </div>
+        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
+          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Egresos</p>
+          <p className="font-barlow font-bold text-2xl text-red-400">{formatCurrency(expenseStats.total)}</p>
+        </div>
+        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
+          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Net</p>
+          <p className={`font-barlow font-bold text-2xl ${periodNet >= 0 ? "text-green-400" : "text-red-400"}`}>
+            {formatCurrency(periodNet)}
+          </p>
         </div>
       </div>
 

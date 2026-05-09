@@ -4,8 +4,8 @@
 
 import { useState } from "react";
 import { Search, Loader2, UserPlus } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Input } from "@core/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { manualCheckin } from "@/actions/checkin.actions";
 import type { MemberWithSubscription } from "@/types/database";
 

@@ -1,5 +1,5 @@
 // page.tsx — Página de login de GymBase con soporte para Google OAuth
-import { LoginForm } from "@core/components/auth/LoginForm";
+import { LoginForm } from "@/components/auth/LoginForm";
 import { GoogleSignInButton } from "@/components/shared/GoogleSignInButton";
 
 interface PageProps {

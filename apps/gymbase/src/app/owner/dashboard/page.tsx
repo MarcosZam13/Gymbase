@@ -1,14 +1,13 @@
-// dashboard/page.tsx — Dashboard principal del owner con KPIs, cashflow y top productos
+// dashboard/page.tsx — Dashboard principal del owner con KPIs de revenue, cashflow y top productos
 
 import { Suspense } from "react";
-import { DollarSign, Users, Activity, TrendingDown } from "lucide-react";
+import { DollarSign, Users, ShoppingBag, TrendingDown } from "lucide-react";
 import { getOwnerDashboardStats, getCashFlow } from "@/actions/owner.actions";
-import { getExpenseStats } from "@/actions/expense.actions";
 import { StatCard } from "@/components/owner/StatCard";
 import { CashFlowChart } from "@/components/owner/CashFlowChart";
 import { PeriodSelector } from "@/components/owner/PeriodSelector";
 import { themeConfig } from "@/lib/theme";
-import type { OwnerPeriod } from "@core/types/owner";
+import type { OwnerPeriod } from "@/types/owner";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("es-CR", {
@@ -35,19 +34,16 @@ export default async function OwnerDashboardPage({
   const period: OwnerPeriod =
     params.period === "week" || params.period === "year" ? params.period : "month";
 
-  // Calcular rango del mes actual para el KPI de gastos
-  const now = new Date();
-  const monthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
-  const today = now.toISOString().split("T")[0];
-
-  const [statsResult, cashFlowResult, expenseStats] = await Promise.all([
+  const [statsResult, cashFlowResult] = await Promise.all([
     getOwnerDashboardStats(period),
     getCashFlow(period),
-    getExpenseStats({ startDate: monthStart, endDate: today }),
   ]);
 
   const stats = statsResult.success ? statsResult.data! : null;
   const cashFlow = cashFlowResult.success ? cashFlowResult.data! : [];
+
+  const net = stats?.revenue.net ?? 0;
+  const netPositive = net >= 0;
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
@@ -64,43 +60,61 @@ export default async function OwnerDashboardPage({
         </Suspense>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      {/* KPI Cards — ingresos y egresos del período */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <StatCard
           label="Ingresos totales"
           value={stats ? formatCurrency(stats.revenue.current) : "—"}
-          delta={
-            stats ? calcDelta(stats.revenue.current, stats.revenue.previous) : null
-          }
+          delta={stats ? calcDelta(stats.revenue.current, stats.revenue.previous) : null}
           icon={<DollarSign size={16} />}
           highlight
         />
         <StatCard
-          label="Miembros activos"
-          value={stats ? String(stats.members.active) : "—"}
-          suffix="miembros"
-          delta={
-            stats
-              ? calcDelta(
-                  stats.members.active,
-                  stats.members.active - stats.members.new_this_period + stats.members.churned_this_period
-                )
-              : null
-          }
+          label="Membresías"
+          value={stats ? formatCurrency(stats.revenue.membership) : "—"}
           icon={<Users size={16} />}
         />
         <StatCard
-          label="Visitas en el período"
-          value={stats ? String(stats.attendance.total_visits) : "—"}
-          suffix={`(${stats ? stats.attendance.avg_daily.toFixed(1) : "—"}/día)`}
-          icon={<Activity size={16} />}
+          label="Ventas tienda"
+          value={stats ? formatCurrency(stats.revenue.sales) : "—"}
+          icon={<ShoppingBag size={16} />}
         />
         <StatCard
-          label="Gastos del mes"
-          value={formatCurrency(expenseStats.total)}
+          label="Egresos del período"
+          value={stats ? formatCurrency(stats.revenue.expenses) : "—"}
           icon={<TrendingDown size={16} />}
         />
       </div>
+
+      {/* Fila secundaria — miembros y net del período */}
+      {stats && (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+            <p className="font-barlow font-bold text-2xl text-white">{stats.members.active}</p>
+            <p className="text-xs text-[#737373] mt-1">Miembros activos</p>
+          </div>
+          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+            <p className="font-barlow font-bold text-2xl text-green-400">
+              +{stats.members.new_this_period}
+            </p>
+            <p className="text-xs text-[#737373] mt-1">Nuevos este período</p>
+          </div>
+          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+            <p className="font-barlow font-bold text-2xl text-yellow-400">
+              {stats.members.expiring_soon}
+            </p>
+            <p className="text-xs text-[#737373] mt-1">Vencen próximos 7d</p>
+          </div>
+          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+            <p
+              className={`font-barlow font-bold text-2xl ${netPositive ? "text-green-400" : "text-red-400"}`}
+            >
+              {formatCurrency(net)}
+            </p>
+            <p className="text-xs text-[#737373] mt-1">Net del período</p>
+          </div>
+        </div>
+      )}
 
       {/* Cashflow Chart */}
       <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6 mb-8">
@@ -119,7 +133,6 @@ export default async function OwnerDashboardPage({
           </h2>
           {stats ? (
             <div className="space-y-4">
-              {/* Membresías */}
               <div>
                 <div className="flex justify-between text-sm mb-1.5">
                   <span className="text-[#737373]">Membresías</span>
@@ -136,7 +149,6 @@ export default async function OwnerDashboardPage({
                   />
                 </div>
               </div>
-              {/* Ventas */}
               <div>
                 <div className="flex justify-between text-sm mb-1.5">
                   <span className="text-[#737373]">Ventas de productos</span>
@@ -154,9 +166,21 @@ export default async function OwnerDashboardPage({
                 </div>
               </div>
               <div className="pt-3 border-t border-[#1E1E1E] flex justify-between">
-                <span className="text-[#737373] text-sm">Total</span>
-                <span className="text-white font-bold">
-                  {formatCurrency(stats.revenue.current)}
+                <span className="text-[#737373] text-sm">Total ingresos</span>
+                <span className="text-white font-bold">{formatCurrency(stats.revenue.current)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#737373] text-sm">Egresos</span>
+                <span className="text-red-400 font-semibold">
+                  − {formatCurrency(stats.revenue.expenses)}
+                </span>
+              </div>
+              <div className="pt-3 border-t border-[#1E1E1E] flex justify-between">
+                <span className="text-[#737373] text-sm font-medium">Net</span>
+                <span
+                  className={`font-bold ${stats.revenue.net >= 0 ? "text-green-400" : "text-red-400"}`}
+                >
+                  {formatCurrency(stats.revenue.net)}
                 </span>
               </div>
             </div>
@@ -193,15 +217,9 @@ export default async function OwnerDashboardPage({
         </div>
       </div>
 
-      {/* Tarjetas de estado de miembros */}
+      {/* Fila de estado de asistencia */}
       {stats && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
-            <p className="font-barlow font-bold text-2xl text-green-400">
-              +{stats.members.new_this_period}
-            </p>
-            <p className="text-xs text-[#737373] mt-1">Nuevos miembros</p>
-          </div>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
           <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
             <p className="font-barlow font-bold text-2xl text-red-400">
               {stats.members.churned_this_period}
@@ -209,10 +227,12 @@ export default async function OwnerDashboardPage({
             <p className="text-xs text-[#737373] mt-1">Abandonos</p>
           </div>
           <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
-            <p className="font-barlow font-bold text-2xl text-yellow-400">
-              {stats.members.expiring_soon}
+            <p className="font-barlow font-bold text-2xl text-[#FF5E14]">
+              {stats.attendance.total_visits}
             </p>
-            <p className="text-xs text-[#737373] mt-1">Vencen próximos 7d</p>
+            <p className="text-xs text-[#737373] mt-1">
+              Visitas ({stats.attendance.avg_daily.toFixed(1)}/día)
+            </p>
           </div>
           <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
             <p className="font-barlow font-bold text-2xl text-white">

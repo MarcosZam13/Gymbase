@@ -3,7 +3,7 @@
 "use client";
 
 import { useState } from "react";
-import type { AttendanceReport } from "@core/types/owner";
+import type { AttendanceReport } from "@/types/owner";
 
 interface AttendanceHeatmapProps {
   data: AttendanceReport[];

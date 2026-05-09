@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { ScanLine } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@core/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getOccupancy, getAttendanceLogs } from "@/actions/checkin.actions";
-import { getMembers } from "@core/actions/admin.actions";
+import { getMembers } from "@/actions/admin.actions";
 import { OccupancyWidget } from "@/components/gym/checkin/OccupancyWidget";
 import { AttendanceTable } from "@/components/gym/checkin/AttendanceTable";
 import { ManualCheckinForm } from "@/components/gym/checkin/ManualCheckinForm";

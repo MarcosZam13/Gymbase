@@ -18,12 +18,8 @@ export const createExerciseSchema = z.object({
   difficulty: z.enum(["beginner", "intermediate", "advanced", "expert"], {
     error: "Nivel de dificultad inválido",
   }),
-  is_timed: z.boolean().optional().default(false),
-  // preprocess convierte NaN (viene de valueAsNumber con campo vacío) a null
-  duration_seconds: z.preprocess(
-    (v) => (typeof v === "number" && isNaN(v) ? null : v),
-    z.number().int("Debe ser un número entero").min(1, "Mínimo 1 segundo").max(3600, "Máximo 3600 segundos").nullable().optional()
-  ),
+  is_timed: z.boolean(),
+  duration_seconds: z.number().int("Debe ser un número entero").min(1, "Mínimo 1 segundo").max(3600, "Máximo 3600 segundos").nullable().optional(),
   // Referencia al ejercicio padre cuando se crea una variante
   parent_exercise_id: z.string().uuid().optional().nullable(),
 });

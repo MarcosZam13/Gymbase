@@ -4,7 +4,7 @@
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import type { OwnerPeriod } from "@core/types/owner";
+import type { OwnerPeriod } from "@/types/owner";
 
 const PERIODS: { value: OwnerPeriod; label: string }[] = [
   { value: "week", label: "Semana" },

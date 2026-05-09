@@ -6,9 +6,9 @@ import * as React from "react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
   DialogDescription, DialogFooter, DialogTrigger, DialogClose,
-} from "@core/components/ui/dialog";
-import { Button } from "@core/components/ui/button";
-import { cn } from "@core/lib/utils";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 // Re-exporta con nombres AlertDialog para compatibilidad con el patrón shadcn
 const AlertDialog = Dialog;

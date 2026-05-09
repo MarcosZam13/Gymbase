@@ -1,7 +1,7 @@
 // BadgeDisplay.tsx — Muestra insignias ganadas por el miembro
 
 import { Award, Trophy, Medal } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@core/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ChallengeBadge } from "@/types/gym-challenges";
 
 interface BadgeDisplayProps {

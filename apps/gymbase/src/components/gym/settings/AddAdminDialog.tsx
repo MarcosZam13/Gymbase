@@ -6,8 +6,8 @@ import { useState, useEffect, useCallback } from "react";
 import { Search, UserPlus, Shield, Crown, Loader2, X, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
-import { Dialog, DialogPortal, DialogOverlay } from "@core/components/ui/dialog";
-import { Button } from "@core/components/ui/button";
+import { Dialog, DialogPortal, DialogOverlay } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { searchMembers, promoteToAdmin, promoteToOwner } from "@/actions/settings.actions";
 import type { AdminProfile } from "@/actions/settings.actions";
 

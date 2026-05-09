@@ -1,0 +1,22 @@
+# Build artifacts
+.next/
+apps/*/.next/
+packages/*/.next/
+
+# Dependencies
+node_modules/
+apps/*/node_modules/
+packages/*/node_modules/
+
+# Cache
+.turbo/
+
+# Skills & config for other tools (not relevant to Claude)
+.agents/
+
+# Alternate demo versions (solo gymbase-demo es el activo)
+gymbase-demo-deepseek/
+gymbase-demo-MiMO/
+
+# Large generated files
+pnpm-lock.yaml

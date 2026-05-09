@@ -4,7 +4,7 @@
 
 import { useState } from "react";
 import { Plus, Loader2 } from "lucide-react";
-import { Button } from "@core/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { addDay } from "@/actions/routine.actions";
 
 interface AddDayButtonProps {

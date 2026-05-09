@@ -4,8 +4,8 @@
 
 import { useState } from "react";
 import { Calendar, Clock, X, Loader2 } from "lucide-react";
-import { Button } from "@core/components/ui/button";
-import { Card, CardContent } from "@core/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { cancelMyBooking } from "@/actions/calendar.actions";
 import type { ClassBooking } from "@/types/gym-calendar";
 

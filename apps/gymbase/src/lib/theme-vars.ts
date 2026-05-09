@@ -1,7 +1,7 @@
 // theme-vars.ts — Genera los CSS custom properties del tema a partir del config del gym.
 // Usada en layout.tsx (SSR inline style) y AppearanceClient.tsx (actualización live en cliente).
 
-import type { OrgConfig } from "@core/types/org-config";
+import type { OrgConfig } from "@/types/org-config";
 
 type ThemeInput = Pick<OrgConfig, "colors" | "design">;
 
