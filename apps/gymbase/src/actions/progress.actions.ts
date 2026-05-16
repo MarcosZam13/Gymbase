@@ -3,9 +3,9 @@
 "use server";
 
 import { createClient, getCurrentUser } from "@/lib/supabase/server";
-import { fetchHealthSnapshots, fetchProgressPhotos } from "@/services/health.service";
+import { fetchHealthSnapshots } from "@/services/health.service";
 import type { ProgressChartData } from "@/types/gym-progress";
-import type { HealthSnapshot, ProgressPhoto } from "@/types/gym-health";
+import type { HealthSnapshot } from "@/types/gym-health";
 
 // Obtiene datos formateados para gráficas de progreso del usuario actual
 export async function getProgressChartData(limit?: number): Promise<ProgressChartData[]> {
@@ -40,15 +40,3 @@ export async function getMySnapshots(limit?: number): Promise<HealthSnapshot[]> 
   }
 }
 
-// Obtiene fotos de progreso del usuario actual
-export async function getMyProgressPhotos(): Promise<ProgressPhoto[]> {
-  const user = await getCurrentUser();
-  if (!user) return [];
-  const supabase = await createClient();
-  try {
-    return await fetchProgressPhotos(supabase, user.id);
-  } catch (error) {
-    console.error("[getMyProgressPhotos] Error:", error);
-    return [];
-  }
-}

@@ -27,20 +27,20 @@ export function AdminCalendarHeader({ weekLabel, weekOffset }: AdminCalendarHead
       <div className="flex items-center gap-2">
         <button
           onClick={() => navigate(-1)}
-          className="w-8 h-8 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg flex items-center justify-center hover:border-[#333] transition-colors"
+          className="w-8 h-8 bg-muted border border-border rounded-lg flex items-center justify-center hover:border-[#333] transition-colors"
         >
           <ChevronLeft className="w-4 h-4 text-[#888]" />
         </button>
         <button
           onClick={() => navigate(-weekOffset)}
           disabled={weekOffset === 0}
-          className="h-8 px-3 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg text-xs transition-colors disabled:opacity-40 disabled:cursor-default hover:border-[#333] text-[#666]"
+          className="h-8 px-3 bg-muted border border-border rounded-lg text-xs transition-colors disabled:opacity-40 disabled:cursor-default hover:border-[#333] text-[#666]"
         >
           Hoy
         </button>
         <button
           onClick={() => navigate(1)}
-          className="w-8 h-8 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg flex items-center justify-center hover:border-[#333] transition-colors"
+          className="w-8 h-8 bg-muted border border-border rounded-lg flex items-center justify-center hover:border-[#333] transition-colors"
         >
           <ChevronRight className="w-4 h-4 text-[#888]" />
         </button>

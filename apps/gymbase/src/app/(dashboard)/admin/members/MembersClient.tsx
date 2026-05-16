@@ -14,7 +14,7 @@ import { toOpaqueId } from "@/lib/utils/opaque-id";
 
 function avatarColor(id: string): { bg: string; text: string } {
   const PALETTES: Array<{ bg: string; text: string }> = [
-    { bg: "#1e0f06", text: "#FF5E14" },
+    { bg: "var(--gym-accent-dim)", text: "var(--gym-accent)" },
     { bg: "#0d1a0d", text: "#22C55E" },
     { bg: "#0d0d2a", text: "#818CF8" },
     { bg: "#1a0d1a", text: "#E879F9" },
@@ -120,7 +120,7 @@ export function MembersClient({
           <p className="text-xs text-[#555] mt-1">{total} miembros en total</p>
         </div>
         <div className="flex gap-2 items-center">
-          <div className="flex items-center gap-2 h-[34px] bg-[#111] border border-[#222] rounded-lg px-3 w-[220px]">
+          <div className="flex items-center gap-2 h-[34px] bg-card border border-[#222] rounded-lg px-3 w-[220px]">
             <Search className="w-3.5 h-3.5 text-[#444] flex-shrink-0" />
             <input
               type="text"
@@ -137,7 +137,7 @@ export function MembersClient({
           </div>
           <Link
             href="/admin/members/new"
-            className="h-[34px] px-3.5 flex items-center gap-1.5 bg-[#FF5E14] hover:bg-[#e5540f] text-white text-xs font-semibold rounded-lg transition-colors"
+            className="h-[34px] px-3.5 flex items-center gap-1.5 bg-primary hover:bg-primary text-white text-xs font-semibold rounded-lg transition-colors"
           >
             <span className="text-base leading-none">+</span>
             Agregar
@@ -153,16 +153,16 @@ export function MembersClient({
             onClick={() => navigate({ status: f })}
             className={`h-7 px-3 rounded-full text-[11px] font-medium border transition-all flex items-center gap-1.5 cursor-pointer ${
               currentStatus === f
-                ? "bg-[rgba(255,94,20,0.12)] border-[rgba(255,94,20,0.4)] text-[#FF5E14]"
-                : "bg-[#111] border-[#222] text-[#666] hover:border-[#333]"
+                ? "bg-primary/10 border-primary/40 text-primary"
+                : "bg-card border-[#222] text-[#666] hover:border-[#333]"
             }`}
           >
-            {currentStatus === f && <span className="w-1.5 h-1.5 rounded-full bg-[#FF5E14]" />}
+            {currentStatus === f && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
             {STATUS_CHIP[f]}
           </button>
         ))}
 
-        {plans.length > 0 && <div className="w-px bg-[#1e1e1e] mx-1" />}
+        {plans.length > 0 && <div className="w-px bg-border mx-1" />}
 
         {/* Chips de plan */}
         {plans.map((plan) => (
@@ -171,8 +171,8 @@ export function MembersClient({
             onClick={() => navigate({ planId: currentPlanId === plan.id ? "" : plan.id })}
             className={`h-7 px-3 rounded-full text-[11px] font-medium border transition-all cursor-pointer ${
               currentPlanId === plan.id
-                ? "bg-[rgba(255,94,20,0.12)] border-[rgba(255,94,20,0.4)] text-[#FF5E14]"
-                : "bg-[#111] border-[#222] text-[#666] hover:border-[#333]"
+                ? "bg-primary/10 border-primary/40 text-primary"
+                : "bg-card border-[#222] text-[#666] hover:border-[#333]"
             }`}
           >
             {plan.name}
@@ -181,10 +181,10 @@ export function MembersClient({
       </div>
 
       {/* Tabla */}
-      <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[16px] overflow-hidden">
+      <div className="bg-sidebar border border-border rounded-[16px] overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-[#1a1a1a]">
+            <tr className="border-b border-border">
               {["Miembro", "Plan", "Estado", "Asistencias", "Vence", ""].map((h) => (
                 <th key={h} className="text-[10px] text-[#444] uppercase tracking-[0.08em] font-semibold px-4 py-3 text-left">{h}</th>
               ))}
@@ -212,7 +212,7 @@ export function MembersClient({
                 const colors = avatarColor(member.id);
 
                 return (
-                  <tr key={member.id} className="border-b border-[#111] last:border-b-0 hover:bg-[#111] transition-colors">
+                  <tr key={member.id} className="border-b border-[#111] last:border-b-0 hover:bg-card transition-colors">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2.5">
                         <div
@@ -247,10 +247,10 @@ export function MembersClient({
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1">
-                        <Link href={`/admin/members/${toOpaqueId(member.id)}?tab=attendance`} className="w-7 h-7 flex items-center justify-center rounded-md bg-[#161616] hover:bg-[#1e1e1e] transition-colors" title="Ver historial">
+                        <Link href={`/admin/members/${toOpaqueId(member.id)}?tab=attendance`} className="w-7 h-7 flex items-center justify-center rounded-md bg-[#161616] hover:bg-border transition-colors" title="Ver historial">
                           <Clock className="w-3 h-3 text-[#555]" />
                         </Link>
-                        <Link href={`/admin/members/${toOpaqueId(member.id)}`} className="w-7 h-7 flex items-center justify-center rounded-md bg-[#161616] hover:bg-[#1e1e1e] transition-colors" title="Editar perfil">
+                        <Link href={`/admin/members/${toOpaqueId(member.id)}`} className="w-7 h-7 flex items-center justify-center rounded-md bg-[#161616] hover:bg-border transition-colors" title="Editar perfil">
                           <Pencil className="w-3 h-3 text-[#555]" />
                         </Link>
                       </div>
@@ -263,7 +263,7 @@ export function MembersClient({
         </table>
 
         {/* Footer con conteo */}
-        <div className="px-4 py-2.5 border-t border-[#111] bg-[#0a0a0a]">
+        <div className="px-4 py-2.5 border-t border-[#111] bg-background">
           <p className="text-[10px] text-[#444]">
             {total > 0
               ? `Mostrando ${from}–${to} de ${total} miembro${total !== 1 ? "s" : ""}`

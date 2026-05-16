@@ -34,7 +34,7 @@ export function ClassWaitlistConfirmedEmail({
 
             <Text style={textStyle}>
               Buenas noticias — se liberó un cupo en la clase{" "}
-              <strong style={{ color: "#FF5E14" }}>{className}</strong> del{" "}
+              <strong style={{ color: "var(--gym-accent)" }}>{className}</strong> del{" "}
               <strong style={{ color: "#ffffff" }}>{classDate}</strong>.
             </Text>
 
@@ -56,7 +56,7 @@ export function ClassWaitlistConfirmedEmail({
 }
 
 const bodyStyle = {
-  backgroundColor: "#0A0A0A",
+  backgroundColor: "var(--background)",
   fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
   margin: "0",
   padding: "20px 0",
@@ -65,14 +65,14 @@ const bodyStyle = {
 const containerStyle = {
   maxWidth: "480px",
   margin: "0 auto",
-  backgroundColor: "#111111",
+  backgroundColor: "var(--card)",
   borderRadius: "16px",
   overflow: "hidden" as const,
-  border: "1px solid #1E1E1E",
+  border: "1px solid var(--border)",
 };
 
 const headerStyle = {
-  backgroundColor: "#0D0D0D",
+  backgroundColor: "var(--sidebar)",
   padding: "24px 32px",
   borderBottom: "2px solid #FF5E14",
 };
@@ -80,7 +80,7 @@ const headerStyle = {
 const logoStyle = {
   fontSize: "20px",
   fontWeight: "700",
-  color: "#FF5E14",
+  color: "var(--gym-accent)",
   margin: "0",
   letterSpacing: "0.04em",
 };

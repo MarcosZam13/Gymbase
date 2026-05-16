@@ -47,8 +47,8 @@ export default async function AdminCommunityPage(): Promise<React.ReactNode> {
       <AdminPostComposer plans={plans} />
 
       {/* Lista de posts */}
-      <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[18px] overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#1a1a1a]">
+      <div className="bg-sidebar border border-border rounded-[18px] overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-border">
           <span className="text-[10px] font-semibold text-[#666] uppercase tracking-[0.08em]">
             Posts y publicaciones
           </span>
@@ -63,9 +63,9 @@ export default async function AdminCommunityPage(): Promise<React.ReactNode> {
             ordered.map((post) => (
               <div
                 key={post.id}
-                className={`px-5 py-4 flex items-start gap-4 transition-colors hover:bg-[#111] ${
+                className={`px-5 py-4 flex items-start gap-4 transition-colors hover:bg-card ${
                   !post.is_visible ? "opacity-50" : ""
-                } ${post.is_pinned ? "border-l-2 border-[#FF5E14]" : ""}`}
+                } ${post.is_pinned ? "border-l-2 border-primary" : ""}`}
               >
                 {/* Imagen de portada miniatura */}
                 {post.cover_image_url && (
@@ -82,7 +82,7 @@ export default async function AdminCommunityPage(): Promise<React.ReactNode> {
                   {/* Header del post */}
                   <div className="flex items-center gap-2 mb-1.5">
                     {post.is_pinned && (
-                      <span className="text-[9px] font-bold text-[#FF5E14] uppercase tracking-[0.06em]">
+                      <span className="text-[9px] font-bold text-primary uppercase tracking-[0.06em]">
                         📌 Fijado
                       </span>
                     )}

@@ -65,7 +65,7 @@ export default async function OwnerInventoryPage({
           <h1 className="font-barlow font-bold text-3xl text-white tracking-wide uppercase">
             Inventario
           </h1>
-          <p className="text-[#737373] text-sm mt-1">Reporte de ventas y alertas de stock</p>
+          <p className="text-muted-foreground text-sm mt-1">Reporte de ventas y alertas de stock</p>
         </div>
         <div className="flex items-center gap-3">
           <ExportCSVButton filename={`inventario-${period}.csv`} rows={csvRows} />
@@ -77,24 +77,24 @@ export default async function OwnerInventoryPage({
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Ingresos ventas</p>
-          <p className="font-barlow font-bold text-3xl text-[#FF5E14]">
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Ingresos ventas</p>
+          <p className="font-barlow font-bold text-3xl text-primary">
             {formatCurrency(totalRevenue)}
           </p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Ganancia neta</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Ganancia neta</p>
           <p className="font-barlow font-bold text-3xl text-green-400">
             {formatCurrency(totalProfit)}
           </p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Unidades vendidas</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Unidades vendidas</p>
           <p className="font-barlow font-bold text-3xl text-white">{totalUnits}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Margen promedio</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Margen promedio</p>
           <p className="font-barlow font-bold text-3xl text-white">
             {avgMargin.toFixed(1)}%
           </p>
@@ -125,7 +125,7 @@ export default async function OwnerInventoryPage({
       )}
 
       {/* Tabla de ventas */}
-      <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6">
+      <div className="bg-card border border-border rounded-xl p-6">
         <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
           Ventas por producto
         </h2>

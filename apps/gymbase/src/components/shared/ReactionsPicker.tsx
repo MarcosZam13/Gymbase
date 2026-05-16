@@ -39,7 +39,7 @@ export function ReactionsPicker({ onSelect, onClose, currentReaction }: Reaction
     <div
       ref={ref}
       className="absolute bottom-full left-0 mb-2 z-50 flex items-center gap-1 px-3 py-2 rounded-full shadow-xl"
-      style={{ background: "#1E1E1E", border: "1px solid #2a2a2a" }}
+      style={{ background: "var(--card)", border: "1px solid #2a2a2a" }}
       role="toolbar"
       aria-label="Selecciona una reacción"
     >
@@ -51,7 +51,7 @@ export function ReactionsPicker({ onSelect, onClose, currentReaction }: Reaction
           aria-label={label}
           onClick={() => { onSelect(type); onClose(); }}
           className="text-xl transition-transform duration-150 hover:scale-[1.4] active:scale-110 rounded-full p-0.5 cursor-pointer"
-          style={currentReaction === type ? { filter: "drop-shadow(0 0 4px #FF5E14)" } : undefined}
+          style={currentReaction === type ? { filter: "drop-shadow(0 0 4px var(--gym-accent))" } : undefined}
         >
           {emoji}
         </button>

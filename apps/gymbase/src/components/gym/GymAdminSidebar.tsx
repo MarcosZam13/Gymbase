@@ -123,17 +123,17 @@ export function GymAdminSidebar({ inventoryBadgeCount = 0, userRole }: GymAdminS
         className={cn(
           "relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
           active
-            ? "text-[#FF5E14] bg-[#FF5E1420]"
-            : "text-[#737373] hover:text-[#F5F5F5] hover:bg-[#1A1A1A]"
+            ? "text-primary bg-primary/15"
+            : "text-muted-foreground hover:text-foreground hover:bg-muted"
         )}
-        style={active ? { borderLeft: "3px solid #FF5E14" } : { borderLeft: "3px solid transparent" }}
+        style={active ? { borderLeft: "3px solid var(--gym-accent)" } : { borderLeft: "3px solid transparent" }}
       >
-        <item.icon className={cn("w-4 h-4 shrink-0", active ? "text-[#FF5E14]" : "")} />
+        <item.icon className={cn("w-4 h-4 shrink-0", active ? "text-primary" : "")} />
         <span className="flex-1">{item.label}</span>
 
         {/* Badge de notificación */}
         {item.badge && item.badge > 0 && (
-          <span className="flex items-center justify-center w-5 h-5 text-[10px] font-bold rounded-full bg-[#FF5E14] text-white">
+          <span className="flex items-center justify-center w-5 h-5 text-[10px] font-bold rounded-full bg-primary text-white">
             {item.badge > 9 ? "9+" : item.badge}
           </span>
         )}
@@ -148,7 +148,7 @@ export function GymAdminSidebar({ inventoryBadgeCount = 0, userRole }: GymAdminS
         <div className="flex items-center gap-2">
           <div
             className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: "#FF5E14" }}
+            style={{ backgroundColor: "var(--gym-accent)" }}
           >
             <Zap className="w-4 h-4 text-white" />
           </div>
@@ -178,7 +178,7 @@ export function GymAdminSidebar({ inventoryBadgeCount = 0, userRole }: GymAdminS
             <div key={section.label}>
               <p
                 className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-widest"
-                style={{ color: "var(--gym-text-ghost)" }}
+                style={{ color: "var(--gym-text-muted)" }}
               >
                 {section.label}
               </p>
@@ -209,8 +209,8 @@ export function GymAdminSidebar({ inventoryBadgeCount = 0, userRole }: GymAdminS
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors"
             style={{ color: "var(--gym-text-muted)", borderLeft: "3px solid transparent" }}
             onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-              (e.currentTarget as HTMLElement).style.color = "#FF5E14";
-              (e.currentTarget as HTMLElement).style.backgroundColor = "#FF5E1415";
+              (e.currentTarget as HTMLElement).style.color = "var(--gym-accent)";
+              (e.currentTarget as HTMLElement).style.backgroundColor = "var(--gym-accent-dim)";
             }}
             onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
               (e.currentTarget as HTMLElement).style.color = "var(--gym-text-muted)";

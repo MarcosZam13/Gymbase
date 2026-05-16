@@ -36,7 +36,7 @@ export function AttendanceHeatmap({ data }: AttendanceHeatmapProps): React.React
 
   if (!data.length) {
     return (
-      <div className="text-center py-8 text-[#737373] text-sm">
+      <div className="text-center py-8 text-muted-foreground text-sm">
         Sin datos de asistencia para el período
       </div>
     );
@@ -151,11 +151,11 @@ export function AttendanceHeatmap({ data }: AttendanceHeatmapProps): React.React
 
       {/* Leyenda escala */}
       <div className="flex items-center gap-1.5 mt-2">
-        <span className="text-xs text-[#737373]">Menos</span>
+        <span className="text-xs text-muted-foreground">Menos</span>
         {["#1E1E1E", "#FFB899", "#FF9666", "#FF7A3D", "#FF5E14"].map((color) => (
           <span key={color} className="w-3 h-3 rounded-sm" style={{ backgroundColor: color }} />
         ))}
-        <span className="text-xs text-[#737373]">Más</span>
+        <span className="text-xs text-muted-foreground">Más</span>
       </div>
 
       {/* Tooltip HTML */}
@@ -176,7 +176,7 @@ export function AttendanceHeatmap({ data }: AttendanceHeatmapProps): React.React
               day: "numeric",
             })}
           </p>
-          <p className="text-[#FF5E14]">{tooltip.visits} visitas</p>
+          <p className="text-primary">{tooltip.visits} visitas</p>
         </div>
       )}
     </div>

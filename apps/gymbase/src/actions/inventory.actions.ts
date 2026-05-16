@@ -43,12 +43,7 @@ export async function createProduct(input: unknown): Promise<ActionResult<Invent
   if (!user) return { success: false, error: "No autenticado" };
 
   const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-  if (profile?.role !== "admin" && profile?.role !== "owner") return { success: false, error: "Sin permisos" };
+  if (user.role !== "admin" && user.role !== "owner") return { success: false, error: "Sin permisos" };
 
   const parsed = createProductSchema.safeParse(input);
   if (!parsed.success) return { success: false, error: parsed.error.flatten().fieldErrors };
@@ -99,12 +94,7 @@ export async function updateProduct(
   if (!user) return { success: false, error: "No autenticado" };
 
   const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-  if (profile?.role !== "admin" && profile?.role !== "owner") return { success: false, error: "Sin permisos" };
+  if (user.role !== "admin" && user.role !== "owner") return { success: false, error: "Sin permisos" };
 
   const parsed = updateProductSchema.safeParse(input);
   if (!parsed.success) return { success: false, error: parsed.error.flatten().fieldErrors };
@@ -128,12 +118,7 @@ export async function adjustStock(input: unknown): Promise<ActionResult> {
   if (!user) return { success: false, error: "No autenticado" };
 
   const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-  if (profile?.role !== "admin" && profile?.role !== "owner") return { success: false, error: "Sin permisos" };
+  if (user.role !== "admin" && user.role !== "owner") return { success: false, error: "Sin permisos" };
 
   const parsed = adjustStockSchema.safeParse(input);
   if (!parsed.success) return { success: false, error: parsed.error.flatten().fieldErrors };
@@ -182,12 +167,7 @@ export async function registerSale(input: unknown): Promise<ActionResult<Sale>> 
   if (!user) return { success: false, error: "No autenticado" };
 
   const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-  if (profile?.role !== "admin" && profile?.role !== "owner") return { success: false, error: "Sin permisos" };
+  if (user.role !== "admin" && user.role !== "owner") return { success: false, error: "Sin permisos" };
 
   const parsed = registerSaleSchema.safeParse(input);
   if (!parsed.success) return { success: false, error: parsed.error.flatten().fieldErrors };
@@ -369,13 +349,8 @@ export async function getSales(filters?: {
   if (!user) return { success: false, error: "No autenticado" };
 
   const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
   // Tanto admin como owner pueden gestionar el historial de ventas
-  if (profile?.role !== "admin" && profile?.role !== "owner") return { success: false, error: "Sin permisos" };
+  if (user.role !== "admin" && user.role !== "owner") return { success: false, error: "Sin permisos" };
 
   try {
     const orgId = await getOrgId();
@@ -401,12 +376,7 @@ export async function getSalesPaginated(params: {
   if (!user) return empty;
 
   const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-  if (profile?.role !== "admin" && profile?.role !== "owner") return empty;
+  if (user.role !== "admin" && user.role !== "owner") return empty;
 
   try {
     const orgId = await getOrgId();
@@ -453,13 +423,8 @@ export async function getInventoryStats(): Promise<ActionResult<InventoryStats>>
   if (!user) return { success: false, error: "No autenticado" };
 
   const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
   // Solo el owner puede ver estadísticas financieras de inventario
-  if (profile?.role !== "owner") return { success: false, error: "Sin permisos" };
+  if (user.role !== "owner") return { success: false, error: "Sin permisos" };
 
   try {
     const orgId = await getOrgId();

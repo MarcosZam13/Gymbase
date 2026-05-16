@@ -1,22 +1,19 @@
 // page.tsx — Dashboard de progreso personal: métricas, gráficas, PRs, fotos y comparativa
 
-import { getMySnapshots, getMyProgressPhotos } from "@/actions/progress.actions";
+import { getMySnapshots } from "@/actions/progress.actions";
 import { getProgressChartData } from "@/actions/progress.actions";
 import { getMyTopPRs } from "@/actions/workout.actions";
 import { HealthChartCard } from "@/components/gym/health/HealthChartCard";
-import { MemberProgressPhotoUpload } from "@/components/gym/health/MemberProgressPhotoUpload";
-import { BeforeAfterComparison } from "@/components/gym/progress/BeforeAfterComparison";
-import { TrendingUp, TrendingDown, Camera, Minus, Dumbbell } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Dumbbell } from "lucide-react";
 import Link from "next/link";
 import { themeConfig } from "@/lib/theme";
 
 export default async function PortalProgressPage(): Promise<React.ReactNode> {
-  if (!themeConfig.features.gym_health_metrics && !themeConfig.features.gym_progress) return null;
+  if (!themeConfig.features.gym_health_metrics) return null;
 
-  const [snapshots, chartData, photos, topPRs] = await Promise.all([
+  const [snapshots, chartData, topPRs] = await Promise.all([
     themeConfig.features.gym_health_metrics ? getMySnapshots(50) : Promise.resolve([]),
     themeConfig.features.gym_health_metrics ? getProgressChartData(50) : Promise.resolve([]),
-    themeConfig.features.gym_progress ? getMyProgressPhotos() : Promise.resolve([]),
     themeConfig.features.gym_routines ? getMyTopPRs(6) : Promise.resolve([]),
   ]);
 
@@ -45,17 +42,6 @@ export default async function PortalProgressPage(): Promise<React.ReactNode> {
   const musclePoints = chartData
     .filter((d) => d.muscle_mass_kg != null)
     .map((d) => ({ date: d.date, value: d.muscle_mass_kg! }));
-
-  // Agrupar fotos por fecha (taken_at → string YYYY-MM-DD)
-  const photosByDate = photos.reduce<Record<string, typeof photos>>((acc, photo) => {
-    const key = photo.taken_at.slice(0, 10);
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(photo);
-    return acc;
-  }, {});
-  const photoGroups = Object.entries(photosByDate)
-    .sort(([a], [b]) => b.localeCompare(a))
-    .slice(0, 6); // últimos 6 grupos
 
   return (
     <div className="max-w-3xl mx-auto space-y-5 pb-4">
@@ -142,7 +128,7 @@ export default async function PortalProgressPage(): Promise<React.ReactNode> {
           {weightPoints.length >= 2 && (
             <HealthChartCard
               points={weightPoints}
-              color="#FF5E14"
+              color="var(--gym-accent)"
               unit="kg"
               label="peso"
               title="Peso"
@@ -256,7 +242,7 @@ export default async function PortalProgressPage(): Promise<React.ReactNode> {
             style={{ borderColor: "var(--gym-border)" }}
           >
             <div className="flex items-center gap-2">
-              <Dumbbell className="w-3.5 h-3.5" style={{ color: "#FF5E14" }} />
+              <Dumbbell className="w-3.5 h-3.5" style={{ color: "var(--gym-accent)" }} />
               <p className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--gym-text-ghost)" }}>
                 Mis mejores marcas
               </p>
@@ -291,7 +277,7 @@ export default async function PortalProgressPage(): Promise<React.ReactNode> {
                     </p>
                     <span
                       className="text-[8px] font-bold px-1.5 py-0.5 rounded-full shrink-0"
-                      style={{ backgroundColor: "#FF5E1415", color: "#FF5E14", border: "1px solid #FF5E1425" }}
+                      style={{ backgroundColor: "var(--gym-accent-dim)", color: "var(--gym-accent)", border: "1px solid var(--gym-accent-dim)" }}
                     >
                       PR
                     </span>
@@ -301,7 +287,7 @@ export default async function PortalProgressPage(): Promise<React.ReactNode> {
                       {MUSCLE_LABELS[exercise.muscle_group] ?? exercise.muscle_group}
                     </p>
                   )}
-                  <p className="text-[20px] font-extrabold leading-none" style={{ color: "#FF5E14", fontFamily: "var(--font-barlow)" }}>
+                  <p className="text-[20px] font-extrabold leading-none" style={{ color: "var(--gym-accent)", fontFamily: "var(--font-barlow)" }}>
                     {pr.max_weight} <span className="text-[12px] font-normal" style={{ color: "var(--gym-text-ghost)" }}>kg</span>
                   </p>
                   <p className="text-[9px] mt-1" style={{ color: "var(--gym-text-ghost)" }}>
@@ -312,102 +298,6 @@ export default async function PortalProgressPage(): Promise<React.ReactNode> {
             })}
           </div>
         </div>
-      )}
-
-      {/* ── SECCIÓN 5: GALERÍA DE FOTOS ─────────────────────────────────────────── */}
-      {themeConfig.features.gym_progress && (
-        <div
-          className="rounded-2xl overflow-hidden"
-          style={{ backgroundColor: "var(--gym-bg-card)", border: "1px solid var(--gym-border)" }}
-        >
-          <div
-            className="flex items-center justify-between px-5 py-4 border-b"
-            style={{ borderColor: "var(--gym-border)" }}
-          >
-            <div className="flex items-center gap-2">
-              <Camera className="w-3.5 h-3.5" style={{ color: "#FF5E14" }} />
-              <p className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--gym-text-ghost)" }}>
-                Fotos de progreso
-              </p>
-            </div>
-            <MemberProgressPhotoUpload />
-          </div>
-
-          {photoGroups.length > 0 ? (
-            <div className="p-5 space-y-6">
-              {photoGroups.map(([date, groupPhotos]) => {
-                const front  = groupPhotos.find((p) => p.photo_type === "front");
-                const side   = groupPhotos.find((p) => p.photo_type === "side");
-                const back   = groupPhotos.find((p) => p.photo_type === "back");
-                const slots  = [
-                  { key: "front", label: "Frente", photo: front },
-                  { key: "side",  label: "Lado",   photo: side },
-                  { key: "back",  label: "Espalda", photo: back },
-                ];
-
-                return (
-                  <div key={date}>
-                    <p className="text-[10px] uppercase tracking-widest mb-3" style={{ color: "var(--gym-text-ghost)" }}>
-                      {new Date(date).toLocaleDateString("es-CR", {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {slots.map(({ key, label, photo }) => (
-                        <div key={key} className="relative rounded-xl overflow-hidden" style={{ aspectRatio: "3/4" }}>
-                          {photo ? (
-                            <>
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={photo.photo_url}
-                                alt={label}
-                                className="w-full h-full object-cover"
-                              />
-                              <div
-                                className="absolute bottom-0 left-0 right-0 text-center py-1 px-2"
-                                style={{ backgroundColor: "rgba(0,0,0,0.65)" }}
-                              >
-                                <p className="text-[9px]" style={{ color: "var(--gym-text-muted)" }}>
-                                  {label}
-                                </p>
-                              </div>
-                            </>
-                          ) : (
-                            <div
-                              className="w-full h-full flex flex-col items-center justify-center gap-1"
-                              style={{ backgroundColor: "#0d0d0d", border: "1px dashed #1e1e1e" }}
-                            >
-                              <Camera className="w-5 h-5" style={{ color: "#222" }} />
-                              <p className="text-[9px]" style={{ color: "#333" }}>{label}</p>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="p-10 flex flex-col items-center gap-3">
-              <Camera className="w-10 h-10" style={{ color: "#1e1e1e" }} />
-              <p className="text-[12px]" style={{ color: "var(--gym-text-ghost)" }}>
-                Aún no tienes fotos de progreso
-              </p>
-              <p className="text-[10px]" style={{ color: "#333" }}>
-                Usa el botón de arriba para subir tu primera foto
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ── SECCIÓN 6: COMPARATIVA ANTES/DESPUÉS ─────────────────────────────────── */}
-      {themeConfig.features.gym_progress && Object.keys(photosByDate).length >= 2 && (
-        <BeforeAfterComparison photosByDate={photosByDate} />
       )}
 
     </div>

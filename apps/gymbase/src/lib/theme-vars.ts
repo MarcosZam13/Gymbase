@@ -1,71 +1,91 @@
-// theme-vars.ts — Genera los CSS custom properties del tema a partir del config del gym.
-// Usada en layout.tsx (SSR inline style) y AppearanceClient.tsx (actualización live en cliente).
+// theme-vars.ts — Genera los CSS custom properties del tema a partir del ThemeConfig estático.
+// Los valores se aplican como inline style en <html> — tienen mayor especificidad que :root en globals.css.
 
-import type { OrgConfig } from "@/types/org-config";
-
-type ThemeInput = Pick<OrgConfig, "colors" | "design">;
-
-export function buildThemeVars(
-  config: ThemeInput
+export function buildThemeVarsFromConfig(
+  config: Pick<import("../../theme.config").ThemeConfig, "colors" | "radius">
 ): Record<string, string> {
-  const { colors, design } = config;
+  const { colors, radius } = config;
+
+  // Jerarquía de fondos — derivada del surface base con color-mix
+  // Permite que cada gym tenga su propia paleta de profundidad sin campos extra en la config
+  const cardBg     = `color-mix(in srgb, ${colors.surface} 96%, white)`;  // card — ligeramente más claro
+  const elevatedBg = `color-mix(in srgb, ${colors.surface} 93%, white)`;  // inputs, dropdowns
+  const hoverBg    = `color-mix(in srgb, ${colors.surface} 88%, white)`;  // hover state
+
+  // Borde más visible para separadores secundarios
+  const borderMd = `color-mix(in srgb, ${colors.border} 70%, white)`;
+
+  // Ghost text: textMuted mezclado con el fondo — texto muy apagado pero derivado del tema
+  const ghostText = `color-mix(in srgb, ${colors.textMuted} 55%, ${colors.background})`;
+
+  // Acento con 12.5% de opacidad para fondos (formato hex de 8 dígitos)
   const primaryDim = `${colors.primary}20`;
-  const shadowValue =
-    design.shadow === "sm"
-      ? "0 1px 3px rgba(0,0,0,0.3)"
-      : design.shadow === "md"
-      ? "0 4px 12px rgba(0,0,0,0.4)"
-      : "none";
 
   return {
+    // ── Shadcn / Tailwind tokens ─────────────────────────────────────────────
     "--primary":                    colors.primary,
-    "--primary-foreground":         "#FFFFFF",
-    "--accent":                     colors.primary,
-    "--accent-foreground":          "#FFFFFF",
+    "--primary-foreground":         colors.primaryForeground,
+    "--secondary":                  elevatedBg,
+    "--secondary-foreground":       colors.text,
+    "--accent":                     colors.accent,
+    "--accent-foreground":          colors.accentForeground,
     "--background":                 colors.background,
     "--foreground":                 colors.text,
-    "--card":                       colors.surface,
+    "--card":                       cardBg,
     "--card-foreground":            colors.text,
-    "--popover":                    colors.surface,
+    "--popover":                    elevatedBg,
     "--popover-foreground":         colors.text,
-    "--muted":                      colors.surface,
+    "--muted":                      elevatedBg,
     "--muted-foreground":           colors.textMuted,
     "--border":                     colors.border,
-    "--input":                      colors.surface,
-    "--ring":                       colors.primary,
-    "--radius":                     design.cardRadius,
+    "--input":                      colors.input,
+    "--ring":                       colors.ring,
+    "--radius":                     radius.card,
+    "--destructive":                colors.danger,
+    "--destructive-foreground":     colors.dangerForeground,
+
+    // ── GymBase design tokens ────────────────────────────────────────────────
     "--gym-bg-base":                colors.background,
     "--gym-bg-surface":             colors.surface,
-    "--gym-bg-card":                colors.surface,
-    "--gym-bg-elevated":            colors.surface,
-    "--gym-bg-hover":               colors.surface,
+    "--gym-bg-card":                cardBg,
+    "--gym-bg-elevated":            elevatedBg,
+    "--gym-bg-hover":               hoverBg,
+
     "--gym-border":                 colors.border,
-    "--gym-border-md":              colors.border,
+    "--gym-border-md":              borderMd,
+
     "--gym-accent":                 colors.primary,
     "--gym-accent-dim":             primaryDim,
+
+    "--gym-success":                colors.success,
+    "--gym-warning":                colors.warning,
+    "--gym-danger":                 colors.danger,
+    "--gym-info":                   "#38BDF8",
+
     "--gym-text-primary":           colors.text,
     "--gym-text-secondary":         colors.textMuted,
     "--gym-text-muted":             colors.textMuted,
-    "--gym-text-ghost":             "#404040",
+    "--gym-text-ghost":             ghostText,
+
+    // ── Sidebar ──────────────────────────────────────────────────────────────
     "--sidebar":                    colors.surface,
     "--sidebar-foreground":         colors.text,
     "--sidebar-primary":            colors.primary,
-    "--sidebar-primary-foreground": "#FFFFFF",
-    "--sidebar-accent":             colors.surface,
+    "--sidebar-primary-foreground": colors.primaryForeground,
+    "--sidebar-accent":             elevatedBg,
     "--sidebar-accent-foreground":  colors.text,
     "--sidebar-border":             colors.border,
-    "--sidebar-ring":               colors.primary,
-    "--chart-1":                    colors.primary,
-    "--card-radius":                design.cardRadius,
-    "--card-shadow":                shadowValue,
-  };
-}
+    "--sidebar-ring":               colors.ring,
 
-// Aplica los CSS vars directamente al document.documentElement (uso cliente)
-export function applyThemeToDOM(config: ThemeInput): void {
-  const vars = buildThemeVars(config);
-  const root = document.documentElement;
-  for (const [key, value] of Object.entries(vars)) {
-    root.style.setProperty(key, value);
-  }
+    // ── Charts ───────────────────────────────────────────────────────────────
+    "--chart-1":                    colors.primary,
+    "--chart-2":                    colors.success,
+    "--chart-3":                    "#38BDF8",
+    "--chart-4":                    colors.warning,
+    "--chart-5":                    colors.danger,
+
+    // ── Misc ─────────────────────────────────────────────────────────────────
+    "--card-radius":                radius.card,
+    "--card-shadow":                "none",
+  };
 }

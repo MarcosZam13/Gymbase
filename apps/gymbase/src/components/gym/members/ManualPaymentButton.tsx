@@ -88,9 +88,9 @@ export function ManualPaymentButton({
         onClick={handleOpen}
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-colors"
         style={{
-          backgroundColor: "#FF5E1415",
-          color: "#FF5E14",
-          border: "1px solid #FF5E1430",
+          backgroundColor: "var(--gym-accent-dim)",
+          color: "var(--gym-accent)",
+          border: "1px solid var(--gym-accent-dim)",
         }}
       >
         <DollarSign className="w-3.5 h-3.5" />
@@ -106,10 +106,10 @@ export function ManualPaymentButton({
             if (e.target === e.currentTarget) setOpen(false);
           }}
         >
-          <div className="bg-[#111] border border-[#1a1a1a] rounded-[16px] p-6 w-full max-w-sm space-y-4">
+          <div className="bg-card border border-border rounded-[16px] p-6 w-full max-w-sm space-y-4">
             {/* Header */}
             <div>
-              <p className="text-[10px] text-[#FF5E14] font-semibold uppercase tracking-[0.08em] mb-1">
+              <p className="text-[10px] text-primary font-semibold uppercase tracking-[0.08em] mb-1">
                 Registrar pago presencial
               </p>
               <p className="text-[12px] text-[#666]">
@@ -129,19 +129,19 @@ export function ManualPaymentButton({
                       onClick={() => handlePlanChange(plan.id)}
                       className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors"
                       style={{
-                        backgroundColor: isSelected ? "#FF5E1420" : "#0d0d0d",
-                        border: `1px solid ${isSelected ? "#FF5E1440" : "#161616"}`,
+                        backgroundColor: isSelected ? "color-mix(in srgb, var(--gym-accent) 12%, transparent)" : "var(--sidebar)",
+                        border: `1px solid ${isSelected ? "color-mix(in srgb, var(--gym-accent) 25%, transparent)" : "#161616"}`,
                       }}
                     >
                       <span
                         className="text-[12px] font-medium"
-                        style={{ color: isSelected ? "#FF5E14" : "#999" }}
+                        style={{ color: isSelected ? "var(--gym-accent)" : "#999" }}
                       >
                         {plan.name}
                       </span>
                       <span
                         className="text-[11px]"
-                        style={{ color: isSelected ? "#FF5E14" : "#555" }}
+                        style={{ color: isSelected ? "var(--gym-accent)" : "#555" }}
                       >
                         {formatPrice(plan.price, plan.currency)}
                       </span>
@@ -161,9 +161,9 @@ export function ManualPaymentButton({
                     onClick={() => setMethod(value)}
                     className="px-3 py-2 rounded-lg text-[12px] font-medium transition-colors"
                     style={{
-                      backgroundColor: method === value ? "#FF5E1420" : "#0d0d0d",
-                      color: method === value ? "#FF5E14" : "#666",
-                      border: `1px solid ${method === value ? "#FF5E1440" : "#161616"}`,
+                      backgroundColor: method === value ? "color-mix(in srgb, var(--gym-accent) 12%, transparent)" : "var(--sidebar)",
+                      color: method === value ? "var(--gym-accent)" : "#666",
+                      border: `1px solid ${method === value ? "color-mix(in srgb, var(--gym-accent) 25%, transparent)" : "#161616"}`,
                     }}
                   >
                     {label}
@@ -181,7 +181,7 @@ export function ManualPaymentButton({
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5 text-[13px] text-[#ccc] outline-none focus:border-[#FF5E14]"
+                className="w-full bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5 text-[13px] text-[#ccc] outline-none focus:border-primary"
               />
             </div>
 
@@ -194,7 +194,7 @@ export function ManualPaymentButton({
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
-                className="w-full bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5 text-[13px] text-[#ccc] outline-none focus:border-[#FF5E14] resize-none"
+                className="w-full bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5 text-[13px] text-[#ccc] outline-none focus:border-primary resize-none"
                 placeholder="Ej: Pago de enero, efectivo en recepción"
               />
             </div>
@@ -205,7 +205,7 @@ export function ManualPaymentButton({
             <div className="flex gap-2 pt-1">
               <button
                 onClick={() => setOpen(false)}
-                className="flex-1 py-2.5 rounded-lg text-[12px] font-medium bg-[#0d0d0d] text-[#666] border border-[#161616]"
+                className="flex-1 py-2.5 rounded-lg text-[12px] font-medium bg-sidebar text-[#666] border border-[#161616]"
               >
                 Cancelar
               </button>
@@ -213,7 +213,7 @@ export function ManualPaymentButton({
                 onClick={handleSubmit}
                 disabled={isPending || !selectedPlan}
                 className="flex-1 py-2.5 rounded-lg text-[12px] font-medium transition-colors disabled:opacity-50"
-                style={{ backgroundColor: "#FF5E14", color: "white" }}
+                style={{ backgroundColor: "var(--gym-accent)", color: "white" }}
               >
                 {isPending ? (
                   <span className="flex items-center justify-center gap-1.5">

@@ -77,7 +77,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactNode> {
             href="/qr/scan"
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-150"
             style={{
-              backgroundColor: "#FF5E14",
+              backgroundColor: "var(--gym-accent)",
               color: "#FFFFFF",
             }}
           >
@@ -147,7 +147,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactNode> {
           />
           <StatCard
             icon={TrendingUp}
-            iconColor="#FF5E14"
+            iconColor="var(--gym-accent)"
             gradientClass="stat-gradient-orange"
             value={stats.newMembersLast30Days}
             label="Nuevos miembros"
@@ -288,7 +288,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactNode> {
               <Link
                 href="/admin/calendar"
                 className="text-xs font-medium"
-                style={{ color: "#FF5E14" }}
+                style={{ color: "var(--gym-accent)" }}
               >
                 Ver todo →
               </Link>
@@ -344,7 +344,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactNode> {
               <Link
                 href="/admin/occupancy"
                 className="text-xs font-medium"
-                style={{ color: "#FF5E14" }}
+                style={{ color: "var(--gym-accent)" }}
               >
                 Ver todo →
               </Link>
@@ -397,7 +397,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactNode> {
           <QuickAction href="/admin/members"    icon={Users}       label="Miembros"      color="#38BDF8" />
           <QuickAction href="/admin/payments"   icon={FileCheck}   label="Revisar pagos" color="#22C55E" />
           {themeConfig.features.gym_routines && (
-            <QuickAction href="/admin/routines/new"  icon={Dumbbell}    label="Nueva rutina"  color="#FF5E14" />
+            <QuickAction href="/admin/routines/new"  icon={Dumbbell}    label="Nueva rutina"  color="var(--gym-accent)" />
           )}
           {themeConfig.features.gym_calendar && (
             <QuickAction href="/admin/calendar"      icon={CalendarDays} label="Calendario"   color="#A855F7" />
@@ -432,7 +432,7 @@ function AttendanceTrendWidget({ data }: AttendanceTrendWidgetProps) {
         >
           Asistencia — últimos 7 días
         </p>
-        <Link href="/admin/occupancy" className="text-xs font-medium" style={{ color: "#FF5E14" }}>
+        <Link href="/admin/occupancy" className="text-xs font-medium" style={{ color: "var(--gym-accent)" }}>
           Ver historial →
         </Link>
       </div>
@@ -475,7 +475,7 @@ function AttendanceTrendWidget({ data }: AttendanceTrendWidgetProps) {
                   {day.count > 0 && (
                     <p
                       className="text-[9px] text-center font-semibold mb-1"
-                      style={{ color: isToday ? "#FF5E14" : "#555" }}
+                      style={{ color: isToday ? "var(--gym-accent)" : "#555" }}
                     >
                       {day.count}
                     </p>
@@ -485,9 +485,9 @@ function AttendanceTrendWidget({ data }: AttendanceTrendWidgetProps) {
                     style={{
                       height: `${barH}px`,
                       backgroundColor: isToday
-                        ? "#FF5E14"
+                        ? "var(--gym-accent)"
                         : day.count > 0
-                        ? "rgba(255,94,20,0.3)"
+                        ? "color-mix(in srgb, var(--gym-accent) 30%, transparent)"
                         : "#1a1a1a",
                     }}
                   />
@@ -503,7 +503,7 @@ function AttendanceTrendWidget({ data }: AttendanceTrendWidgetProps) {
                 <div key={day.date} className="flex-1 text-center">
                   <span
                     className="text-[9px] font-semibold"
-                    style={{ color: isToday ? "#FF5E14" : "#333" }}
+                    style={{ color: isToday ? "var(--gym-accent)" : "#333" }}
                   >
                     {day.label}
                   </span>
@@ -516,11 +516,11 @@ function AttendanceTrendWidget({ data }: AttendanceTrendWidgetProps) {
         {/* Leyenda */}
         <div className="shrink-0 hidden lg:flex flex-col gap-2 text-[10px]" style={{ color: "var(--gym-text-ghost)" }}>
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: "#FF5E14" }} />
+            <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: "var(--gym-accent)" }} />
             <span>Hoy</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: "rgba(255,94,20,0.3)" }} />
+            <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 30%, transparent)" }} />
             <span>Días anteriores</span>
           </div>
           {max > 0 && (

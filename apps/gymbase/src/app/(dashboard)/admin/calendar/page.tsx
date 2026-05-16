@@ -56,7 +56,7 @@ export default async function AdminCalendarPage({
         <div className="space-y-3">
 
           {/* Tipos de clase */}
-          <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[16px] p-4">
+          <div className="bg-sidebar border border-border rounded-[16px] p-4">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-semibold text-[#555] uppercase tracking-[0.08em]">
                 Tipos de clase
@@ -72,7 +72,7 @@ export default async function AdminCalendarPage({
                     <div key={ct.id} className="flex items-center gap-2 py-1.5 border-b border-[#141414] last:border-b-0">
                       <div
                         className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: ct.color ?? "#FF5E14" }}
+                        style={{ backgroundColor: ct.color ?? "var(--gym-accent)" }}
                       />
                       <span className="text-xs text-[#ccc] flex-1 truncate">{ct.name}</span>
                       <span className="text-[10px] text-[#555] font-barlow font-semibold">{count}</span>
@@ -84,11 +84,11 @@ export default async function AdminCalendarPage({
           </div>
 
           {/* Stats de la semana */}
-          <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[16px] p-4">
+          <div className="bg-sidebar border border-border rounded-[16px] p-4">
             <div className="space-y-0">
               <div className="flex justify-between items-center py-2 border-b border-[#141414]">
                 <span className="text-xs text-[#666]">Clases esta semana</span>
-                <span className="text-lg font-bold text-[#FF5E14] font-barlow">{weekClasses.length}</span>
+                <span className="text-lg font-bold text-primary font-barlow">{weekClasses.length}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-[#141414]">
                 <span className="text-xs text-[#666]">Reservas activas</span>
@@ -102,8 +102,8 @@ export default async function AdminCalendarPage({
           </div>
 
           {/* Formulario nuevo tipo de clase */}
-          <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[16px] p-4">
-            <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em] mb-3">
+          <div className="bg-sidebar border border-border rounded-[16px] p-4">
+            <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em] mb-3">
               Nuevo tipo de clase
             </p>
             <ClassTypeForm />
@@ -119,8 +119,8 @@ export default async function AdminCalendarPage({
       </div>
 
       {/* Panel programar clase — debajo del grid */}
-      <div className="mt-4 bg-[#0D0D0D] border border-[#1e1e1e] rounded-[18px] overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#1a1a1a]">
+      <div className="mt-4 bg-sidebar border border-border rounded-[18px] overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-border">
           <p className="text-xs font-semibold text-[#666] uppercase tracking-[0.08em]">Programar nueva clase</p>
         </div>
         <div className="p-5">

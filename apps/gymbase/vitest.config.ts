@@ -30,8 +30,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(rootDir, 'apps/gymbase/src'),
-      '@core': path.resolve(rootDir, 'packages/core/src'),
-      '@memberbase/core': path.resolve(rootDir, 'packages/core/src'),
+
     },
   },
 })

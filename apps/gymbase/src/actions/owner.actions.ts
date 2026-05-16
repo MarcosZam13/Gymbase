@@ -67,16 +67,7 @@ function getPeriodRange(period: OwnerPeriod): PeriodRange {
 // Verificación de rol owner — usada en todas las actions
 async function requireOwner(): Promise<{ userId: string } | null> {
   const user = await getCurrentUser();
-  if (!user) return null;
-
-  const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-
-  if (profile?.role !== "owner") return null;
+  if (!user || user.role !== "owner") return null;
   return { userId: user.id };
 }
 

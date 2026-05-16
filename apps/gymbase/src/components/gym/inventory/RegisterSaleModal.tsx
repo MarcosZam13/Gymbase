@@ -134,16 +134,16 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
       <div className="absolute inset-0 bg-black/70" />
       <div
         className="relative w-full max-w-2xl max-h-[90vh] flex flex-col rounded-2xl overflow-hidden"
-        style={{ backgroundColor: "#111111", border: "1px solid #2a2a2a" }}
+        style={{ backgroundColor: "var(--card)", border: "1px solid #2a2a2a" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid #1e1e1e" }}>
+        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="flex items-center gap-2">
-            <ShoppingCart className="w-5 h-5 text-[#FF5E14]" />
+            <ShoppingCart className="w-5 h-5 text-primary" />
             <h2 className="text-lg font-bold text-white font-barlow">Registrar Venta</h2>
           </div>
-          <button onClick={handleClose} className="p-1.5 rounded-lg text-[#737373] hover:text-white hover:bg-[#1a1a1a] transition-colors">
+          <button onClick={handleClose} className="p-1.5 rounded-lg text-muted-foreground hover:text-white hover:bg-muted transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -151,13 +151,13 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
         {/* Body — 2 columnas */}
         <div className="flex-1 overflow-hidden flex min-h-0">
           {/* Columna izquierda — Catálogo */}
-          <div className="w-1/2 flex flex-col" style={{ borderRight: "1px solid #1e1e1e" }}>
-            <div className="px-4 py-3" style={{ borderBottom: "1px solid #1e1e1e" }}>
+          <div className="w-1/2 flex flex-col" style={{ borderRight: "1px solid var(--border)" }}>
+            <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
               <input
                 value={productSearch}
                 onChange={(e) => setProductSearch(e.target.value)}
                 placeholder="Buscar producto..."
-                className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-primary"
                 style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
               />
             </div>
@@ -171,14 +171,14 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                     key={p.id}
                     type="button"
                     onClick={() => addToCart(p)}
-                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors cursor-pointer hover:bg-[#1a1a1a]"
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors cursor-pointer hover:bg-muted"
                     style={{ border: "1px solid transparent" }}
                   >
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-white truncate">{p.name}</p>
                       <p className="text-[11px] text-[#555]">Stock: {p.current_stock}</p>
                     </div>
-                    <span className="text-sm font-semibold shrink-0 ml-2" style={{ color: "#FF5E14" }}>
+                    <span className="text-sm font-semibold shrink-0 ml-2" style={{ color: "var(--gym-accent)" }}>
                       {formatPrice(p.sale_price)}
                     </span>
                   </button>
@@ -201,7 +201,7 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                   <div
                     key={item.product.id}
                     className="rounded-lg p-2.5 space-y-2"
-                    style={{ backgroundColor: "#0D0D0D", border: "1px solid #1e1e1e" }}
+                    style={{ backgroundColor: "var(--sidebar)", border: "1px solid var(--border)" }}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <p className="text-xs font-medium text-white flex-1 truncate">{item.product.name}</p>
@@ -220,7 +220,7 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                         <button
                           type="button"
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="w-6 h-6 rounded flex items-center justify-center text-[#737373] hover:text-white hover:bg-[#2a2a2a] transition-colors"
+                          className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground hover:text-white hover:bg-muted transition-colors"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
@@ -229,7 +229,7 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                           type="button"
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
                           disabled={item.quantity >= item.product.current_stock}
-                          className="w-6 h-6 rounded flex items-center justify-center text-[#737373] hover:text-white hover:bg-[#2a2a2a] transition-colors disabled:opacity-40"
+                          className="w-6 h-6 rounded flex items-center justify-center text-muted-foreground hover:text-white hover:bg-muted transition-colors disabled:opacity-40"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
@@ -243,7 +243,7 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                           value={item.unit_price}
                           onChange={(e) => updatePrice(item.product.id, parseFloat(e.target.value) || 0)}
                           min={0}
-                          className="w-full pl-5 pr-2 py-1 rounded text-xs text-white outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                          className="w-full pl-5 pr-2 py-1 rounded text-xs text-white outline-none focus:ring-1 focus:ring-primary"
                           style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
                         />
                       </div>
@@ -259,9 +259,9 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
             </div>
 
             {/* Total + opciones */}
-            <div className="px-3 py-3 space-y-3" style={{ borderTop: "1px solid #1e1e1e" }}>
+            <div className="px-3 py-3 space-y-3" style={{ borderTop: "1px solid var(--border)" }}>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-[#737373]">Total</span>
+                <span className="text-sm text-muted-foreground">Total</span>
                 <span className="text-xl font-bold font-barlow text-white">{formatPrice(total)}</span>
               </div>
 
@@ -274,9 +274,9 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                     onClick={() => setPaymentMethod(m.value)}
                     className="py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer"
                     style={{
-                      backgroundColor: paymentMethod === m.value ? "rgba(255,94,20,0.2)" : "#1a1a1a",
-                      border: `1px solid ${paymentMethod === m.value ? "#FF5E14" : "#2a2a2a"}`,
-                      color: paymentMethod === m.value ? "#FF5E14" : "#737373",
+                      backgroundColor: paymentMethod === m.value ? "color-mix(in srgb, var(--gym-accent) 20%, transparent)" : "#1a1a1a",
+                      border: `1px solid ${paymentMethod === m.value ? "var(--gym-accent)" : "#2a2a2a"}`,
+                      color: paymentMethod === m.value ? "var(--gym-accent)" : "#737373",
                     }}
                   >
                     {m.label}
@@ -295,7 +295,7 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                   }}
                   onFocus={() => setMemberDropdown(true)}
                   placeholder="Cliente (opcional)"
-                  className="w-full px-3 py-1.5 rounded-lg text-xs text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                  className="w-full px-3 py-1.5 rounded-lg text-xs text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-primary"
                   style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
                 />
                 {memberDropdown && filteredMembers.length > 0 && !selectedMember && (
@@ -307,7 +307,7 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                       <button
                         key={m.id}
                         type="button"
-                        className="w-full text-left px-3 py-2 text-xs text-white hover:bg-[#2a2a2a] transition-colors cursor-pointer"
+                        className="w-full text-left px-3 py-2 text-xs text-white hover:bg-muted transition-colors cursor-pointer"
                         onClick={() => {
                           setSelectedMember(m);
                           setMemberSearch("");
@@ -327,7 +327,7 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                 onChange={(e) => setNotes(e.target.value)}
                 rows={1}
                 placeholder="Notas (opcional)"
-                className="w-full px-3 py-1.5 rounded-lg text-xs text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-[#FF5E14] resize-none"
+                className="w-full px-3 py-1.5 rounded-lg text-xs text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-primary resize-none"
                 style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
               />
 
@@ -338,7 +338,7 @@ export function RegisterSaleModal({ open, onClose, products, members }: Register
                 onClick={handleSubmit}
                 disabled={isPending || cart.length === 0}
                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ backgroundColor: "#FF5E14" }}
+                style={{ backgroundColor: "var(--gym-accent)" }}
               >
                 {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                 Confirmar venta

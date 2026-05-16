@@ -60,7 +60,7 @@ export function ExerciseProgressModal({
         position: "fixed", top: "50%", left: "50%",
         transform: "translate(-50%, -50%)",
         width: "min(480px, calc(100vw - 32px))",
-        background: "#0d0d0d", border: "0.5px solid #1e1e1e",
+        background: "var(--sidebar)", border: "0.5px solid var(--border)",
         borderRadius: 20, zIndex: 101, overflow: "hidden",
       }}>
         {/* Barra superior */}
@@ -70,7 +70,7 @@ export function ExerciseProgressModal({
         }}>
           <div>
             {muscleGroup && (
-              <p style={{ fontSize: 9, fontWeight: 700, color: "#FF5E14", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 3 }}>
+              <p style={{ fontSize: 9, fontWeight: 700, color: "var(--gym-accent)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 3 }}>
                 {MUSCLE_LABEL[muscleGroup] ?? muscleGroup}
               </p>
             )}
@@ -92,14 +92,14 @@ export function ExerciseProgressModal({
         <div style={{ padding: "16px 20px 20px" }}>
           {loading ? (
             <div style={{ height: 120, background: "#111", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <div style={{ width: 20, height: 20, borderRadius: "50%", border: "2px solid #222", borderTopColor: "#FF5E14", animation: "spin 0.8s linear infinite" }} />
+              <div style={{ width: 20, height: 20, borderRadius: "50%", border: "2px solid #222", borderTopColor: "var(--gym-accent)", animation: "spin 0.8s linear infinite" }} />
             </div>
           ) : points.length === 0 ? (
             /* Estado vacío */
             <div style={{ textAlign: "center", padding: "32px 0" }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(255,94,20,0.08)", border: "0.5px solid rgba(255,94,20,0.15)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: "color-mix(in srgb, var(--gym-accent) 8%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 15%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <path d="M3 17l4-5 4 3 4-7 4 4" stroke="#FF5E14" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M3 17l4-5 4 3 4-7 4 4" stroke="var(--gym-accent)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
               <p style={{ fontSize: 14, fontWeight: 600, color: "#888" }}>Sin historial aún</p>
@@ -132,7 +132,7 @@ export function ExerciseProgressModal({
                 <p style={{ fontSize: 9, fontWeight: 600, color: "#444", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
                   Peso máximo por sesión (kg)
                 </p>
-                <MiniLineChart points={chartPoints} color="#FF5E14" label={exerciseId} />
+                <MiniLineChart points={chartPoints} color="var(--gym-accent)" label={exerciseId} />
               </div>
 
               {/* Últimas sesiones */}
@@ -150,7 +150,7 @@ export function ExerciseProgressModal({
                       <span style={{ fontSize: 11, color: "#666" }}>{p.date}</span>
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                         <span style={{ fontSize: 10, color: "#444" }}>{p.sets_count} series</span>
-                        <span style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontSize: 16, fontWeight: 700, color: i === 0 ? "#FF5E14" : "#fff" }}>
+                        <span style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontSize: 16, fontWeight: 700, color: i === 0 ? "var(--gym-accent)" : "#fff" }}>
                           {p.max_weight} kg
                         </span>
                       </div>

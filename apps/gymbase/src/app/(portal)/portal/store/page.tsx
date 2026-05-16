@@ -21,9 +21,9 @@ export default async function PortalStorePage(): Promise<React.ReactNode> {
       <div className="flex items-center gap-3">
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-          style={{ backgroundColor: "rgba(255,94,20,0.12)" }}
+          style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 12%, transparent)" }}
         >
-          <Store className="w-5 h-5" style={{ color: "#FF5E14" }} />
+          <Store className="w-5 h-5" style={{ color: "var(--gym-accent)" }} />
         </div>
         <div>
           <h1
@@ -46,15 +46,15 @@ export default async function PortalStorePage(): Promise<React.ReactNode> {
         <div
           className="flex items-start gap-4 p-5 rounded-2xl"
           style={{
-            backgroundColor: "rgba(255,94,20,0.06)",
-            border: "1px solid rgba(255,94,20,0.2)",
+            backgroundColor: "color-mix(in srgb, var(--gym-accent) 6%, transparent)",
+            border: "1px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)",
           }}
         >
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ backgroundColor: "rgba(255,94,20,0.12)" }}
+            style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 12%, transparent)" }}
           >
-            <ShoppingBag className="w-5 h-5" style={{ color: "#FF5E14" }} />
+            <ShoppingBag className="w-5 h-5" style={{ color: "var(--gym-accent)" }} />
           </div>
           <div>
             <p className="text-sm font-semibold" style={{ color: "var(--gym-text-primary)" }}>

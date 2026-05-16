@@ -60,7 +60,7 @@ export function HealthChartCard({
 
   return (
     <>
-      <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
+      <div className="bg-card border border-border rounded-[14px] p-4">
         <div className="flex items-center justify-between mb-3">
           <p
             className="text-[10px] font-semibold uppercase tracking-[0.08em]"
@@ -72,7 +72,7 @@ export function HealthChartCard({
           {points.length >= 2 && (
             <button
               onClick={() => setOpen(true)}
-              className="flex items-center gap-1 px-2 py-1 rounded-md text-[9px] text-[#555] hover:text-[#888] hover:bg-[#1a1a1a] transition-colors"
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-[9px] text-[#555] hover:text-[#888] hover:bg-muted transition-colors"
               aria-label={`Expandir gráfica de ${title}`}
             >
               <Maximize2 className="w-3 h-3" />
@@ -91,11 +91,11 @@ export function HealthChartCard({
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-full max-w-4xl bg-[#111] border border-[#1e1e1e] rounded-[16px] p-6 shadow-2xl"
+            className="w-full max-w-4xl bg-card border border-border rounded-[16px] p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#1e1e1e]">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
               <div className="flex items-center gap-3">
                 <p
                   className="text-[13px] font-semibold uppercase tracking-[0.08em]"
@@ -115,7 +115,7 @@ export function HealthChartCard({
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="p-1.5 rounded-lg text-[#444] hover:text-[#888] hover:bg-[#1a1a1a] transition-colors"
+                className="p-1.5 rounded-lg text-[#444] hover:text-[#888] hover:bg-muted transition-colors"
                 aria-label="Cerrar"
               >
                 <X className="w-4 h-4" />
@@ -132,7 +132,7 @@ export function HealthChartCard({
 
             {/* Tabla de mediciones — scrollable si hay muchas */}
             {points.length > 0 && (
-              <div className="mt-4 border-t border-[#1a1a1a] pt-3 max-h-40 overflow-y-auto">
+              <div className="mt-4 border-t border-border pt-3 max-h-40 overflow-y-auto">
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6">
                   {[...points].reverse().map((p, i) => (
                     <div

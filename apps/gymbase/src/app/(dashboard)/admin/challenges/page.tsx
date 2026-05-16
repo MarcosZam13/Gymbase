@@ -35,7 +35,7 @@ export default async function AdminChallengesPage(): Promise<React.ReactNode> {
         </div>
         <Link
           href="/admin/challenges/new"
-          className="flex items-center gap-1.5 h-9 px-4 bg-[#FF5E14] hover:bg-[#e5540f] text-white text-sm font-semibold rounded-[10px] transition-opacity"
+          className="flex items-center gap-1.5 h-9 px-4 bg-primary hover:bg-primary text-white text-sm font-semibold rounded-[10px] transition-opacity"
         >
           <Plus className="w-4 h-4" />
           Crear reto
@@ -43,7 +43,7 @@ export default async function AdminChallengesPage(): Promise<React.ReactNode> {
       </div>
 
       {challenges.length === 0 ? (
-        <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[18px] p-10 text-center">
+        <div className="bg-sidebar border border-border rounded-[18px] p-10 text-center">
           <p className="text-[#444] text-sm">No hay retos creados. Crea el primero.</p>
         </div>
       ) : (

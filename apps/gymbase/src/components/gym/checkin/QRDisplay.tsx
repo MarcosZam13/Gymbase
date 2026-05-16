@@ -21,7 +21,7 @@ export function QRDisplay({ qrData, memberName, compact = false }: QRDisplayProp
           size={80}
           level="M"
           includeMargin={false}
-          fgColor="#0A0A0A"
+          fgColor="var(--background)"
         />
       </div>
     );
@@ -36,7 +36,7 @@ export function QRDisplay({ qrData, memberName, compact = false }: QRDisplayProp
           size={160}
           level="M"
           includeMargin={false}
-          fgColor="#0A0A0A"
+          fgColor="var(--background)"
         />
       </div>
 

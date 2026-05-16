@@ -33,7 +33,7 @@ function getInitials(name: string | null, email: string): string {
 
 // Paleta de colores para avatares — hash por id
 const AVATAR_COLORS = [
-  { bg: "#1e0f06", text: "#FF5E14" },
+  { bg: "var(--gym-accent-dim)", text: "var(--gym-accent)" },
   { bg: "#0d1a0d", text: "#22C55E" },
   { bg: "#0d0d2a", text: "#818CF8" },
   { bg: "#1a0d1a", text: "#E879F9" },
@@ -146,7 +146,7 @@ export function AddAdminDialog({ isOwner, onSuccess }: AddAdminDialogProps): Rea
                         data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95"
             style={{
               backgroundColor: "#0f0f0f",
-              border: "1px solid #1e1e1e",
+              border: "1px solid var(--border)",
               maxHeight: "min(600px, 90vh)",
             }}
           >
@@ -192,7 +192,7 @@ export function AddAdminDialog({ isOwner, onSuccess }: AddAdminDialogProps): Rea
                     border: "1px solid #252525",
                     color: "#e5e5e5",
                   }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#FF5E14")}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "var(--gym-accent)")}
                   onBlur={(e) => (e.currentTarget.style.borderColor = "#252525")}
                 />
               </div>
@@ -203,7 +203,7 @@ export function AddAdminDialog({ isOwner, onSuccess }: AddAdminDialogProps): Rea
               {isSearching ? (
                 // Estado de carga
                 <div className="flex flex-col items-center justify-center gap-2 py-12">
-                  <Loader2 className="w-5 h-5 animate-spin" style={{ color: "#FF5E14" }} />
+                  <Loader2 className="w-5 h-5 animate-spin" style={{ color: "var(--gym-accent)" }} />
                   <p className="text-xs" style={{ color: "#555" }}>Buscando miembros...</p>
                 </div>
 
@@ -222,7 +222,7 @@ export function AddAdminDialog({ isOwner, onSuccess }: AddAdminDialogProps): Rea
                         onClick={() => setSelected(isSelected ? null : member)}
                         className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors"
                         style={{
-                          backgroundColor: isSelected ? "rgba(255,94,20,0.08)" : "transparent",
+                          backgroundColor: isSelected ? "color-mix(in srgb, var(--gym-accent) 8%, transparent)" : "transparent",
                           borderBottom: "1px solid #141414",
                         }}
                         onMouseEnter={(e) => {
@@ -254,7 +254,7 @@ export function AddAdminDialog({ isOwner, onSuccess }: AddAdminDialogProps): Rea
                         {isAlreadyAdmin ? (
                           <span
                             className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium"
-                            style={{ backgroundColor: "rgba(255,94,20,0.1)", color: "#FF5E14", border: "1px solid rgba(255,94,20,0.2)" }}
+                            style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 10%, transparent)", color: "var(--gym-accent)", border: "1px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)" }}
                           >
                             <Shield className="w-2.5 h-2.5" />
                             Admin
@@ -262,7 +262,7 @@ export function AddAdminDialog({ isOwner, onSuccess }: AddAdminDialogProps): Rea
                         ) : isSelected ? (
                           <div
                             className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
-                            style={{ backgroundColor: "#FF5E14" }}
+                            style={{ backgroundColor: "var(--gym-accent)" }}
                           >
                             <Check className="w-3 h-3 text-white" />
                           </div>
@@ -336,7 +336,7 @@ export function AddAdminDialog({ isOwner, onSuccess }: AddAdminDialogProps): Rea
                     disabled={isSubmitting}
                     onClick={handleConfirm}
                     className="h-8 px-3 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-opacity disabled:opacity-50 shrink-0"
-                    style={{ backgroundColor: "#FF5E14", color: "white" }}
+                    style={{ backgroundColor: "var(--gym-accent)", color: "white" }}
                   >
                     {isSubmitting ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />

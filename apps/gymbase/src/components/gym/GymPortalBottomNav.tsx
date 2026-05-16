@@ -73,9 +73,9 @@ export function GymPortalBottomNav({ profile: _, isActive: hasMembership = true 
             href={href}
             className={cn(
               "flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg transition-all duration-150",
-              active ? "bg-[#FF5E1415]" : ""
+              active ? "bg-primary/10" : ""
             )}
-            style={{ color: active ? "#FF5E14" : "var(--gym-text-muted)" }}
+            style={{ color: active ? "var(--gym-accent)" : "var(--gym-text-muted)" }}
           >
             <Icon className="w-5 h-5" />
             <span style={{ fontSize: "10px" }}>{label}</span>

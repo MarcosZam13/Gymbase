@@ -26,21 +26,21 @@ export function StatCard({
   return (
     <div
       className={[
-        "bg-[#111111] border rounded-xl p-5 flex flex-col gap-3",
-        highlight ? "border-[#FF5E14]/40" : "border-[#1E1E1E]",
+        "bg-card border rounded-xl p-5 flex flex-col gap-3",
+        highlight ? "border-primary/40" : "border-border",
       ].join(" ")}
     >
       <div className="flex items-start justify-between">
-        <span className="text-sm text-[#737373]">{label}</span>
+        <span className="text-sm text-muted-foreground">{label}</span>
         {icon && (
-          <span className="p-2 rounded-lg bg-[#FF5E14]/10 text-[#FF5E14]">{icon}</span>
+          <span className="p-2 rounded-lg bg-primary/10 text-primary">{icon}</span>
         )}
       </div>
       <div className="flex items-end gap-2">
         <span className="font-barlow font-bold text-3xl text-white leading-none">
           {value}
         </span>
-        {suffix && <span className="text-sm text-[#737373] mb-0.5">{suffix}</span>}
+        {suffix && <span className="text-sm text-muted-foreground mb-0.5">{suffix}</span>}
       </div>
       {deltaText && (
         <span

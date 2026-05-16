@@ -5,7 +5,7 @@ import type { InventoryMovement, MovementType } from "@/types/gym-inventory";
 const MOVEMENT_META: Record<MovementType, { label: string; color: string; bg: string; sign: string }> = {
   restock:    { label: "Restock",   color: "#22c55e", bg: "rgba(34,197,94,0.12)",   sign: "+" },
   sale:       { label: "Venta",     color: "#3b82f6", bg: "rgba(59,130,246,0.12)",  sign: "-" },
-  adjustment: { label: "Ajuste",    color: "#FF5E14", bg: "rgba(255,94,20,0.12)",   sign: "±" },
+  adjustment: { label: "Ajuste",    color: "var(--gym-accent)", bg: "color-mix(in srgb, var(--gym-accent) 12%, transparent)",   sign: "±" },
   waste:      { label: "Merma",     color: "#ef4444", bg: "rgba(239,68,68,0.12)",   sign: "-" },
 };
 
@@ -43,7 +43,7 @@ export function MovementHistory({ movements }: MovementHistoryProps): React.Reac
           <div
             key={m.id}
             className="flex items-start gap-3 p-3 rounded-[10px]"
-            style={{ backgroundColor: "#0D0D0D", border: "1px solid #1e1e1e" }}
+            style={{ backgroundColor: "var(--sidebar)", border: "1px solid var(--border)" }}
           >
             {/* Chip de tipo */}
             <span

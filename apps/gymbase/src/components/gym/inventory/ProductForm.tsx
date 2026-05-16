@@ -113,17 +113,17 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
       {/* Panel lateral */}
       <div
         className="relative w-full max-w-md h-full flex flex-col overflow-hidden"
-        style={{ backgroundColor: "#111111", borderLeft: "1px solid #1e1e1e" }}
+        style={{ backgroundColor: "var(--card)", borderLeft: "1px solid var(--border)" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid #1e1e1e" }}>
+        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
           <h2 className="text-lg font-bold text-white font-barlow">
             {isEdit ? "Editar Producto" : "Nuevo Producto"}
           </h2>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#737373] hover:text-white hover:bg-[#1a1a1a] transition-colors"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-white hover:bg-muted transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -139,38 +139,38 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
 
           {/* Nombre */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-[#737373]">Nombre *</label>
+            <label className="text-xs font-medium text-muted-foreground">Nombre *</label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
               placeholder="Ej: Proteína Whey 2kg"
-              className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-[#FF5E14]"
+              className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-primary"
               style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
             />
           </div>
 
           {/* Descripción */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-[#737373]">Descripción</label>
+            <label className="text-xs font-medium text-muted-foreground">Descripción</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
               placeholder="Descripción opcional"
-              className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-[#FF5E14] resize-none"
+              className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-primary resize-none"
               style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
             />
           </div>
 
           {/* SKU */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-[#737373]">SKU</label>
+            <label className="text-xs font-medium text-muted-foreground">SKU</label>
             <input
               value={sku}
               onChange={(e) => setSku(e.target.value)}
               placeholder="Opcional"
-              className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-[#FF5E14]"
+              className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-primary"
               style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
             />
           </div>
@@ -178,11 +178,11 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
           {/* Categoría y Unidad en fila */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-medium text-[#737373]">Categoría *</label>
+              <label className="text-xs font-medium text-muted-foreground">Categoría *</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as ProductCategory)}
-                className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-primary"
                 style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
               >
                 {CATEGORIES.map((c) => (
@@ -191,11 +191,11 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-medium text-[#737373]">Unidad *</label>
+              <label className="text-xs font-medium text-muted-foreground">Unidad *</label>
               <select
                 value={unit}
                 onChange={(e) => setUnit(e.target.value as ProductUnit)}
-                className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-primary"
                 style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
               >
                 {UNITS.map((u) => (
@@ -208,7 +208,7 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
           {/* Precios en fila */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-medium text-[#737373]">Precio de Costo *</label>
+              <label className="text-xs font-medium text-muted-foreground">Precio de Costo *</label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#555]">₡</span>
                 <input
@@ -218,13 +218,13 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
                   required
                   min={0}
                   step={1}
-                  className="w-full pl-6 pr-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                  className="w-full pl-6 pr-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-primary"
                   style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
                 />
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-medium text-[#737373]">Precio de Venta *</label>
+              <label className="text-xs font-medium text-muted-foreground">Precio de Venta *</label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#555]">₡</span>
                 <input
@@ -234,7 +234,7 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
                   required
                   min={0}
                   step={1}
-                  className="w-full pl-6 pr-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                  className="w-full pl-6 pr-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-primary"
                   style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
                 />
               </div>
@@ -253,13 +253,13 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
 
           {/* Stock mínimo */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-[#737373]">Stock mínimo de alerta</label>
+            <label className="text-xs font-medium text-muted-foreground">Stock mínimo de alerta</label>
             <input
               type="number"
               value={minStock}
               onChange={(e) => setMinStock(e.target.value)}
               min={0}
-              className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-[#FF5E14]"
+              className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-primary"
               style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
             />
           </div>
@@ -267,13 +267,13 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
           {/* Stock inicial — solo en modo crear */}
           {!isEdit && (
             <div className="space-y-1">
-              <label className="text-xs font-medium text-[#737373]">Stock inicial</label>
+              <label className="text-xs font-medium text-muted-foreground">Stock inicial</label>
               <input
                 type="number"
                 value={initialStock}
                 onChange={(e) => setInitialStock(e.target.value)}
                 min={0}
-                className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-primary"
                 style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
               />
             </div>
@@ -281,11 +281,11 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
         </form>
 
         {/* Footer fijo */}
-        <div className="px-5 py-4 flex gap-2 justify-end" style={{ borderTop: "1px solid #1e1e1e" }}>
+        <div className="px-5 py-4 flex gap-2 justify-end" style={{ borderTop: "1px solid var(--border)" }}>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-lg text-sm font-medium text-[#737373] hover:text-white hover:bg-[#1a1a1a] transition-colors"
+            className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-white hover:bg-muted transition-colors"
           >
             Cancelar
           </button>
@@ -294,7 +294,7 @@ export function ProductForm({ open, onClose, product }: ProductFormProps): React
             onClick={handleSubmit}
             disabled={isPending}
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-colors disabled:opacity-60"
-            style={{ backgroundColor: "#FF5E14" }}
+            style={{ backgroundColor: "var(--gym-accent)" }}
           >
             {isPending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
             {isEdit ? "Guardar cambios" : "Crear producto"}

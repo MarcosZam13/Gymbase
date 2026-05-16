@@ -49,7 +49,7 @@ export default async function OwnerAttendancePage({
           <h1 className="font-barlow font-bold text-3xl text-white tracking-wide uppercase">
             Asistencia
           </h1>
-          <p className="text-[#737373] text-sm mt-1">Análisis de visitas y patrones de uso</p>
+          <p className="text-muted-foreground text-sm mt-1">Análisis de visitas y patrones de uso</p>
         </div>
         <div className="flex items-center gap-3">
           <ExportCSVButton filename={`asistencia-${period}.csv`} rows={csvRows} />
@@ -61,27 +61,27 @@ export default async function OwnerAttendancePage({
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Total de visitas</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Total de visitas</p>
           <p className="font-barlow font-bold text-3xl text-white">{totalVisits}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Promedio diario</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Promedio diario</p>
           <p className="font-barlow font-bold text-3xl text-white">{avgDaily}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Días con datos</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Días con datos</p>
           <p className="font-barlow font-bold text-3xl text-white">{data.length}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Día pico</p>
-          <p className="font-barlow font-bold text-3xl text-[#FF5E14]">
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Día pico</p>
+          <p className="font-barlow font-bold text-3xl text-primary">
             {peakDay
               ? peakDay.total_visits
               : "—"}
           </p>
           {peakDay && (
-            <p className="text-xs text-[#737373] mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {new Date(peakDay.date + "T12:00:00").toLocaleDateString("es-CR", {
                 month: "short",
                 day: "numeric",
@@ -92,7 +92,7 @@ export default async function OwnerAttendancePage({
       </div>
 
       {/* Heatmap */}
-      <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6 mb-6">
+      <div className="bg-card border border-border rounded-xl p-6 mb-6">
         <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
           Mapa de calor de asistencia
         </h2>
@@ -100,7 +100,7 @@ export default async function OwnerAttendancePage({
       </div>
 
       {/* Tabla diaria */}
-      <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6">
+      <div className="bg-card border border-border rounded-xl p-6">
         <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
           Detalle diario
         </h2>
@@ -108,12 +108,12 @@ export default async function OwnerAttendancePage({
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1E1E1E]">
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Fecha</th>
-                  <th className="text-right py-3 px-4 text-[#737373] font-medium">Visitas totales</th>
-                  <th className="text-right py-3 px-4 text-[#737373] font-medium">Miembros únicos</th>
-                  <th className="text-right py-3 px-4 text-[#737373] font-medium">Hora pico</th>
-                  <th className="py-3 px-4 text-[#737373] font-medium">Actividad</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-3 px-4 text-muted-foreground font-medium">Fecha</th>
+                  <th className="text-right py-3 px-4 text-muted-foreground font-medium">Visitas totales</th>
+                  <th className="text-right py-3 px-4 text-muted-foreground font-medium">Miembros únicos</th>
+                  <th className="text-right py-3 px-4 text-muted-foreground font-medium">Hora pico</th>
+                  <th className="py-3 px-4 text-muted-foreground font-medium">Actividad</th>
                 </tr>
               </thead>
               <tbody>
@@ -128,7 +128,7 @@ export default async function OwnerAttendancePage({
                     return (
                       <tr
                         key={row.date}
-                        className="border-b border-[#1E1E1E] last:border-0 hover:bg-white/[0.02] transition-colors"
+                        className="border-b border-border last:border-0 hover:bg-white/[0.02] transition-colors"
                       >
                         <td className="py-3 px-4 text-white">
                           {new Date(row.date + "T12:00:00").toLocaleDateString("es-CR", {
@@ -141,16 +141,16 @@ export default async function OwnerAttendancePage({
                         <td className="py-3 px-4 text-right font-barlow font-bold text-white text-base">
                           {row.total_visits}
                         </td>
-                        <td className="py-3 px-4 text-right text-[#737373]">
+                        <td className="py-3 px-4 text-right text-muted-foreground">
                           {row.unique_members}
                         </td>
-                        <td className="py-3 px-4 text-right text-[#737373]">
+                        <td className="py-3 px-4 text-right text-muted-foreground">
                           {row.peak_hour}:00
                         </td>
                         <td className="py-3 px-4 w-32">
-                          <div className="h-1.5 bg-[#1E1E1E] rounded-full overflow-hidden">
+                          <div className="h-1.5 bg-border rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-[#FF5E14] rounded-full"
+                              className="h-full bg-primary rounded-full"
                               style={{ width: `${barPct}%` }}
                             />
                           </div>
@@ -162,7 +162,7 @@ export default async function OwnerAttendancePage({
             </table>
           </div>
         ) : (
-          <p className="text-center py-8 text-[#737373] text-sm">
+          <p className="text-center py-8 text-muted-foreground text-sm">
             Sin registros de asistencia en el período seleccionado
           </p>
         )}

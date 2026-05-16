@@ -17,7 +17,7 @@ type PaymentStatus = "pending" | "approved" | "rejected";
 
 function avatarColor(id: string): { bg: string; text: string } {
   const P = [
-    { bg: "#1e0f06", text: "#FF5E14" },
+    { bg: "var(--gym-accent-dim)", text: "var(--gym-accent)" },
     { bg: "#0d1a0d", text: "#22C55E" },
     { bg: "#0d0d2a", text: "#818CF8" },
   ];
@@ -145,7 +145,7 @@ export function GymPaymentsClient({
           <div className="flex items-center gap-2">
             {/* Slot para el dialog de pago manual — se monta desde el servidor con los datos ya cargados */}
             {manualPaymentSlot}
-            <div className="flex items-center gap-2 h-[34px] bg-[#111] border border-[#222] rounded-lg px-3 w-[200px]">
+            <div className="flex items-center gap-2 h-[34px] bg-card border border-[#222] rounded-lg px-3 w-[200px]">
               <Search className="w-3.5 h-3.5 text-[#444] flex-shrink-0" />
               <input
                 type="text"
@@ -166,8 +166,8 @@ export function GymPaymentsClient({
               onClick={() => navigate({ status: f })}
               className={`h-7 px-3 rounded-full text-[11px] font-medium border transition-all cursor-pointer ${
                 currentStatus === f
-                  ? "bg-[rgba(255,94,20,0.12)] border-[rgba(255,94,20,0.4)] text-[#FF5E14]"
-                  : "bg-[#111] border-[#222] text-[#666] hover:border-[#333]"
+                  ? "bg-primary/10 border-primary/40 text-primary"
+                  : "bg-card border-[#222] text-[#666] hover:border-[#333]"
               }`}
             >
               {STATUS_LABEL[f]}
@@ -176,10 +176,10 @@ export function GymPaymentsClient({
         </div>
 
         {/* Tabla */}
-        <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[16px] overflow-hidden">
+        <div className="bg-sidebar border border-border rounded-[16px] overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[#1a1a1a]">
+              <tr className="border-b border-border">
                 {["Miembro", "Plan", "Monto", "Fecha", "Estado", "Comprobante", "Acción"].map((h) => (
                   <th key={h} className="text-[10px] text-[#444] uppercase tracking-[0.08em] font-semibold px-4 py-3 text-left">
                     {h}
@@ -199,7 +199,7 @@ export function GymPaymentsClient({
                   const colors = avatarColor(proof.user_id);
                   const statusBadge = STATUS_BADGE[proof.status as PaymentStatus] ?? STATUS_BADGE.pending;
                   return (
-                    <tr key={proof.id} className="border-b border-[#0f0f0f] last:border-b-0 hover:bg-[#111] transition-colors">
+                    <tr key={proof.id} className="border-b border-[#0f0f0f] last:border-b-0 hover:bg-card transition-colors">
                       {/* Miembro */}
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
@@ -291,7 +291,7 @@ export function GymPaymentsClient({
           </table>
 
           {/* Footer con conteo */}
-          <div className="px-4 py-2.5 border-t border-[#111] bg-[#0a0a0a]">
+          <div className="px-4 py-2.5 border-t border-[#111] bg-background">
             <p className="text-[10px] text-[#444]">
               {total > 0
                 ? `Mostrando ${from}–${to} de ${total} comprobante${total !== 1 ? "s" : ""}`
@@ -310,10 +310,10 @@ export function GymPaymentsClient({
           onClick={() => setViewingProof(null)}
         >
           <div
-            className="bg-[#111] border border-[#1e1e1e] rounded-[18px] w-full max-w-lg overflow-hidden"
+            className="bg-card border border-border rounded-[18px] w-full max-w-lg overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="px-5 py-4 border-b border-[#1a1a1a]">
+            <div className="px-5 py-4 border-b border-border">
               <p className="text-sm font-semibold text-white">Comprobante de pago</p>
               <p className="text-xs text-[#555] mt-0.5">
                 {viewingProof.profile?.full_name} — {viewingProof.subscription?.plan?.name}
@@ -323,7 +323,7 @@ export function GymPaymentsClient({
             <div className="p-5">
               {/* Vista del comprobante — los pagos manuales no tienen archivo digital */}
               {!viewingProof.file_url || viewingProof.file_url === "" ? (
-                <div className="flex flex-col items-center justify-center h-24 bg-[#0d0d0d] rounded-xl mb-4 gap-2">
+                <div className="flex flex-col items-center justify-center h-24 bg-sidebar rounded-xl mb-4 gap-2">
                   <p className="text-[12px] text-[#555]">Pago presencial — sin comprobante digital</p>
                   {viewingProof.payment_method && (
                     <span className="text-[10px] bg-[#161616] border border-[#222] rounded px-2 py-0.5 text-[#666]">
@@ -334,7 +334,7 @@ export function GymPaymentsClient({
               ) : viewingProof.file_url.match(/\.(jpg|jpeg|png|webp)(\?|$)/i) ? (
                 // Usar <img> en lugar de next/image — signed URLs de Supabase tienen dominios variables
                 // y las imágenes de comprobantes son de tamaño desconocido (uso admin solamente)
-                <div className="h-72 bg-[#0d0d0d] rounded-xl overflow-hidden mb-4 flex items-center justify-center">
+                <div className="h-72 bg-sidebar rounded-xl overflow-hidden mb-4 flex items-center justify-center">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={viewingProof.file_url}
@@ -343,12 +343,12 @@ export function GymPaymentsClient({
                   />
                 </div>
               ) : (
-                <div className="flex items-center justify-center h-24 bg-[#0d0d0d] rounded-xl mb-4">
+                <div className="flex items-center justify-center h-24 bg-sidebar rounded-xl mb-4">
                   <a
                     href={viewingProof.file_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-[#FF5E14] text-sm hover:underline"
+                    className="flex items-center gap-2 text-primary text-sm hover:underline"
                   >
                     <ExternalLink className="w-4 h-4" />
                     Ver comprobante PDF
@@ -391,10 +391,10 @@ export function GymPaymentsClient({
           onClick={() => { setRejectingProof(null); setRejectionReason(""); }}
         >
           <div
-            className="bg-[#111] border border-[#1e1e1e] rounded-[18px] w-full max-w-md overflow-hidden"
+            className="bg-card border border-border rounded-[18px] w-full max-w-md overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="px-5 py-4 border-b border-[#1a1a1a]">
+            <div className="px-5 py-4 border-b border-border">
               <p className="text-sm font-semibold text-white">Rechazar comprobante</p>
               <p className="text-xs text-[#555] mt-0.5">El cliente verá este motivo en su portal</p>
             </div>
@@ -407,12 +407,12 @@ export function GymPaymentsClient({
                 placeholder="Ej: El monto no coincide con el plan seleccionado..."
                 value={rejectionReason}
                 onChange={(e) => setRejectionReason(e.target.value)}
-                className="w-full bg-[#0d0d0d] border border-[#222] rounded-lg px-3 py-2 text-sm text-[#ccc] placeholder-[#444] outline-none focus:border-[#EF4444] resize-none"
+                className="w-full bg-sidebar border border-[#222] rounded-lg px-3 py-2 text-sm text-[#ccc] placeholder-[#444] outline-none focus:border-[#EF4444] resize-none"
               />
               <div className="flex gap-2">
                 <button
                   onClick={() => { setRejectingProof(null); setRejectionReason(""); }}
-                  className="flex-1 h-9 text-sm font-medium rounded-[10px] bg-[#1a1a1a] border border-[#2a2a2a] text-[#666] hover:text-[#888] transition-colors"
+                  className="flex-1 h-9 text-sm font-medium rounded-[10px] bg-muted border border-border text-[#666] hover:text-[#888] transition-colors"
                 >
                   Cancelar
                 </button>

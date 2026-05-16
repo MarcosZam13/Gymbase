@@ -47,7 +47,7 @@ function ContentBody({ item }: { item: Content }): React.ReactNode {
         href={item.media_url}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-3 p-4 rounded-xl bg-[#1a1a1a] border border-[#222] hover:border-[#FF5E14] transition-colors group"
+        className="flex items-center gap-3 p-4 rounded-xl bg-muted border border-[#222] hover:border-primary transition-colors group"
       >
         <div className="w-10 h-10 rounded-lg bg-[rgba(250,204,21,0.1)] flex items-center justify-center flex-shrink-0">
           <FileDown className="w-5 h-5 text-[#FACC15]" />
@@ -56,7 +56,7 @@ function ContentBody({ item }: { item: Content }): React.ReactNode {
           <p className="text-sm font-semibold text-white truncate">{item.title}</p>
           <p className="text-xs text-[#555] mt-0.5">Click para descargar</p>
         </div>
-        <ExternalLink className="w-4 h-4 text-[#555] group-hover:text-[#FF5E14] transition-colors flex-shrink-0" />
+        <ExternalLink className="w-4 h-4 text-[#555] group-hover:text-primary transition-colors flex-shrink-0" />
       </a>
     );
   }
@@ -67,7 +67,7 @@ function ContentBody({ item }: { item: Content }): React.ReactNode {
         href={item.media_url}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-3 p-4 rounded-xl bg-[#1a1a1a] border border-[#222] hover:border-[#22C55E] transition-colors group"
+        className="flex items-center gap-3 p-4 rounded-xl bg-muted border border-[#222] hover:border-[#22C55E] transition-colors group"
       >
         <div className="w-10 h-10 rounded-lg bg-[rgba(34,197,94,0.1)] flex items-center justify-center flex-shrink-0">
           <ExternalLink className="w-5 h-5 text-[#22C55E]" />
@@ -142,10 +142,10 @@ export function ContentDetailModal({
     }
   }
 
-  const typeColor = TYPE_COLORS[content.type as ContentType] ?? "#FF5E14";
+  const typeColor = TYPE_COLORS[content.type as ContentType] ?? "var(--gym-accent)";
   const typeLabel = TYPE_LABELS[content.type as ContentType] ?? content.type;
   const catName = (content.category as { name: string } | null | undefined)?.name;
-  const catColor = (content.category as { color: string } | null | undefined)?.color ?? "#FF5E14";
+  const catColor = (content.category as { color: string } | null | undefined)?.color ?? "var(--gym-accent)";
 
   return (
     <div
@@ -156,11 +156,11 @@ export function ContentDetailModal({
       {/* Panel del modal — detiene propagación para no cerrar al hacer click adentro */}
       <div
         className="relative w-full sm:max-w-2xl max-h-[92vh] overflow-y-auto rounded-t-[20px] sm:rounded-[20px] flex flex-col"
-        style={{ backgroundColor: "#111111", border: "1px solid #1E1E1E" }}
+        style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-5 pb-4 sticky top-0 z-10" style={{ backgroundColor: "#111111", borderBottom: "1px solid #1a1a1a" }}>
+        <div className="flex items-start justify-between p-5 pb-4 sticky top-0 z-10" style={{ backgroundColor: "var(--card)", borderBottom: "1px solid #1a1a1a" }}>
           <div className="flex-1 min-w-0 pr-3">
             <div className="flex items-center gap-2 mb-1.5">
               <span
@@ -204,7 +204,7 @@ export function ContentDetailModal({
             {/* Cerrar */}
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#222] hover:border-[#333] text-[#555] hover:text-[#888] transition-colors"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-muted border border-[#222] hover:border-[#333] text-[#555] hover:text-[#888] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>

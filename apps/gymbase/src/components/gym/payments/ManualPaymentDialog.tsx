@@ -106,9 +106,9 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
         onClick={handleOpen}
         className="flex items-center gap-1.5 h-[34px] px-3 rounded-lg text-[12px] font-medium transition-colors"
         style={{
-          backgroundColor: "rgba(255,94,20,0.12)",
-          color: "#FF5E14",
-          border: "1px solid rgba(255,94,20,0.3)",
+          backgroundColor: "color-mix(in srgb, var(--gym-accent) 12%, transparent)",
+          color: "var(--gym-accent)",
+          border: "1px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)",
         }}
       >
         <PlusCircle className="w-3.5 h-3.5" />
@@ -124,9 +124,9 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
             if (e.target === e.currentTarget) setOpen(false);
           }}
         >
-          <div className="bg-[#111] border border-[#1a1a1a] rounded-[18px] w-full max-w-md max-h-[90vh] overflow-y-auto">
+          <div className="bg-card border border-border rounded-[18px] w-full max-w-md max-h-[90vh] overflow-y-auto">
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#1a1a1a] sticky top-0 bg-[#111] rounded-t-[18px]">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-border sticky top-0 bg-card rounded-t-[18px]">
               <div>
                 <p className="text-[13px] font-semibold text-white">Registrar pago presencial</p>
                 <p className="text-[11px] text-[#555] mt-0.5">Se aprueba directamente — sin comprobante digital</p>
@@ -146,10 +146,10 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
 
                 {selectedMember ? (
                   // Miembro seleccionado — mostrar con opción de cambiar
-                  <div className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-[rgba(255,94,20,0.08)] border border-[rgba(255,94,20,0.2)]">
+                  <div className="flex items-center justify-between px-3 py-2.5 rounded-lg" style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 8%, transparent)", border: "1px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)" }}>
                     <div>
-                      <p className="text-[13px] font-medium text-[#FF5E14]">{selectedMember.full_name ?? "—"}</p>
-                      <p className="text-[10px] text-[#FF5E14]/60 mt-0.5">{selectedMember.email}</p>
+                      <p className="text-[13px] font-medium text-primary">{selectedMember.full_name ?? "—"}</p>
+                      <p className="text-[10px] text-primary/60 mt-0.5">{selectedMember.email}</p>
                     </div>
                     <button
                       onClick={() => { setSelectedMember(null); setMemberSearch(""); }}
@@ -161,7 +161,7 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
                 ) : (
                   // Buscador de miembros
                   <div className="space-y-1.5">
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#0d0d0d] border border-[#1a1a1a] focus-within:border-[#333]">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-sidebar border border-border focus-within:border-[#333]">
                       <Search className="w-3.5 h-3.5 text-[#444] shrink-0" />
                       <input
                         type="text"
@@ -173,7 +173,7 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
                       />
                     </div>
                     {/* Lista de resultados */}
-                    <div className="max-h-36 overflow-y-auto rounded-lg border border-[#1a1a1a] divide-y divide-[#111]">
+                    <div className="max-h-36 overflow-y-auto rounded-lg border border-border divide-y divide-[#111]">
                       {filteredMembers.length === 0 ? (
                         <p className="text-[11px] text-[#444] text-center py-4">Sin resultados</p>
                       ) : (
@@ -181,7 +181,7 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
                           <button
                             key={m.id}
                             onClick={() => { setSelectedMember(m); setMemberSearch(""); }}
-                            className="w-full flex flex-col items-start px-3 py-2 bg-[#0d0d0d] hover:bg-[#141414] transition-colors text-left"
+                            className="w-full flex flex-col items-start px-3 py-2 bg-sidebar hover:bg-[#141414] transition-colors text-left"
                           >
                             <span className="text-[12px] text-[#ccc]">{m.full_name ?? "—"}</span>
                             <span className="text-[10px] text-[#555]">{m.email}</span>
@@ -205,14 +205,14 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
                         onClick={() => handlePlanChange(plan.id)}
                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-colors"
                         style={{
-                          backgroundColor: isSelected ? "rgba(255,94,20,0.1)" : "#0d0d0d",
-                          border: `1px solid ${isSelected ? "rgba(255,94,20,0.3)" : "#161616"}`,
+                          backgroundColor: isSelected ? "color-mix(in srgb, var(--gym-accent) 10%, transparent)" : "var(--sidebar)",
+                          border: `1px solid ${isSelected ? "color-mix(in srgb, var(--gym-accent) 30%, transparent)" : "#161616"}`,
                         }}
                       >
-                        <span className="text-[12px] font-medium" style={{ color: isSelected ? "#FF5E14" : "#888" }}>
+                        <span className="text-[12px] font-medium" style={{ color: isSelected ? "var(--gym-accent)" : "#888" }}>
                           {plan.name}
                         </span>
-                        <span className="text-[11px]" style={{ color: isSelected ? "#FF5E14" : "#444" }}>
+                        <span className="text-[11px]" style={{ color: isSelected ? "var(--gym-accent)" : "#444" }}>
                           {formatPrice(plan.price, plan.currency)}
                         </span>
                       </button>
@@ -231,9 +231,9 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
                       onClick={() => setMethod(value)}
                       className="px-3 py-2 rounded-lg text-[12px] font-medium transition-colors"
                       style={{
-                        backgroundColor: method === value ? "rgba(255,94,20,0.1)" : "#0d0d0d",
-                        color: method === value ? "#FF5E14" : "#666",
-                        border: `1px solid ${method === value ? "rgba(255,94,20,0.3)" : "#161616"}`,
+                        backgroundColor: method === value ? "color-mix(in srgb, var(--gym-accent) 10%, transparent)" : "var(--sidebar)",
+                        color: method === value ? "var(--gym-accent)" : "#666",
+                        border: `1px solid ${method === value ? "color-mix(in srgb, var(--gym-accent) 30%, transparent)" : "#161616"}`,
                       }}
                     >
                       {label}
@@ -251,7 +251,7 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5 text-[13px] text-[#ccc] outline-none focus:border-[#FF5E14]"
+                  className="w-full bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5 text-[13px] text-[#ccc] outline-none focus:border-primary"
                 />
               </div>
 
@@ -264,7 +264,7 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
-                  className="w-full bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5 text-[12px] text-[#ccc] placeholder-[#444] outline-none focus:border-[#FF5E14] resize-none"
+                  className="w-full bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5 text-[12px] text-[#ccc] placeholder-[#444] outline-none focus:border-primary resize-none"
                   placeholder="Ej: Pago de abril, efectivo en recepción"
                 />
               </div>
@@ -279,7 +279,7 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
               <div className="flex gap-2 pt-1">
                 <button
                   onClick={() => setOpen(false)}
-                  className="flex-1 py-2.5 rounded-lg text-[12px] font-medium bg-[#0d0d0d] text-[#666] border border-[#161616] hover:text-[#888] transition-colors"
+                  className="flex-1 py-2.5 rounded-lg text-[12px] font-medium bg-sidebar text-[#666] border border-[#161616] hover:text-[#888] transition-colors"
                 >
                   Cancelar
                 </button>
@@ -287,7 +287,7 @@ export function ManualPaymentDialog({ members, plans }: ManualPaymentDialogProps
                   onClick={handleSubmit}
                   disabled={isPending || !selectedMember || !selectedPlanId}
                   className="flex-1 py-2.5 rounded-lg text-[12px] font-semibold transition-colors disabled:opacity-50"
-                  style={{ backgroundColor: "#FF5E14", color: "white" }}
+                  style={{ backgroundColor: "var(--gym-accent)", color: "white" }}
                 >
                   {isPending ? (
                     <span className="flex items-center justify-center gap-1.5">

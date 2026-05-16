@@ -41,9 +41,9 @@ export function ChallengeFilterClient({ challenges }: ChallengeFilterClientProps
   };
 
   return (
-    <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[18px] overflow-hidden">
+    <div className="bg-sidebar border border-border rounded-[18px] overflow-hidden">
       {/* Header con chips de filtro */}
-      <div className="px-5 py-3.5 border-b border-[#1a1a1a] flex items-center gap-2 flex-wrap">
+      <div className="px-5 py-3.5 border-b border-border flex items-center gap-2 flex-wrap">
         {(["all", "active", "upcoming", "closed"] as FilterStatus[]).map((f) => (
           <button
             key={f}
@@ -54,8 +54,8 @@ export function ChallengeFilterClient({ challenges }: ChallengeFilterClientProps
                   ? "bg-[rgba(34,197,94,0.1)] border-[rgba(34,197,94,0.25)] text-[#22C55E]"
                   : f === "upcoming"
                     ? "bg-[rgba(56,189,248,0.1)] border-[rgba(56,189,248,0.25)] text-[#38BDF8]"
-                    : "bg-[rgba(255,94,20,0.1)] border-[rgba(255,94,20,0.3)] text-[#FF5E14]"
-                : "bg-[#1a1a1a] border-[#2a2a2a] text-[#555] hover:border-[#333]"
+                    : "bg-primary/10 border-primary/30 text-primary"
+                : "bg-muted border-border text-[#555] hover:border-[#333]"
             }`}
           >
             {FILTER_LABELS[f]}

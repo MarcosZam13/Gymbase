@@ -40,7 +40,7 @@ export function CashFlowChart({
 
   if (!data.length) {
     return (
-      <div className="h-[280px] flex items-center justify-center text-[#737373] text-sm">
+      <div className="h-[280px] flex items-center justify-center text-muted-foreground text-sm">
         Sin datos para el período seleccionado
       </div>
     );
@@ -95,12 +95,12 @@ export function CashFlowChart({
       {/* Leyenda */}
       <div className="flex items-center gap-4 mb-3">
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-[#FF5E14]" />
-          <span className="text-xs text-[#737373]">Membresías</span>
+          <span className="w-3 h-3 rounded-full bg-primary" />
+          <span className="text-xs text-muted-foreground">Membresías</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-[#22C55E]" />
-          <span className="text-xs text-[#737373]">Ventas</span>
+          <span className="text-xs text-muted-foreground">Ventas</span>
         </div>
       </div>
 
@@ -114,8 +114,8 @@ export function CashFlowChart({
       >
         <defs>
           <linearGradient id="grad-membership" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#FF5E14" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#FF5E14" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--gym-accent)" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="var(--gym-accent)" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="grad-sales" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#22C55E" stopOpacity="0.2" />
@@ -134,7 +134,7 @@ export function CashFlowChart({
                 y1={y}
                 x2={PAD.left + CHART_W}
                 y2={y}
-                stroke="#1E1E1E"
+                stroke="var(--border)"
                 strokeWidth="1"
               />
               <text
@@ -158,7 +158,7 @@ export function CashFlowChart({
         <path
           d={buildPath("membership_revenue")}
           fill="none"
-          stroke="#FF5E14"
+          stroke="var(--gym-accent)"
           strokeWidth="2.5"
           strokeLinejoin="round"
           strokeLinecap="round"
@@ -198,8 +198,8 @@ export function CashFlowChart({
             cx={tooltip.x}
             cy={tooltip.y}
             r="5"
-            fill="#FF5E14"
-            stroke="#0A0A0A"
+            fill="var(--gym-accent)"
+            stroke="var(--background)"
             strokeWidth="2"
           />
         )}
@@ -211,7 +211,7 @@ export function CashFlowChart({
             y1={PAD.top}
             x2={tooltip.x}
             y2={PAD.top + CHART_H}
-            stroke="#FF5E14"
+            stroke="var(--gym-accent)"
             strokeWidth="1"
             strokeDasharray="4 4"
             opacity="0.5"
@@ -230,7 +230,7 @@ export function CashFlowChart({
           }}
         >
           <p className="font-semibold text-white mb-1">{tooltip.entry.period_label}</p>
-          <p className="text-[#FF5E14]">
+          <p className="text-primary">
             Membresías: {formatCurrency(tooltip.entry.membership_revenue, currency)}
           </p>
           <p className="text-green-400">

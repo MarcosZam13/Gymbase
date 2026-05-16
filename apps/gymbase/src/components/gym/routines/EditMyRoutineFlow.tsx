@@ -243,8 +243,8 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
 
   /* ── Estilos base ── */
   const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "9px 12px", background: "#0d0d0d",
-    border: "0.5px solid #1e1e1e", borderRadius: 10, color: "#ddd",
+    width: "100%", padding: "9px 12px", background: "var(--sidebar)",
+    border: "0.5px solid var(--border)", borderRadius: 10, color: "#ddd",
     fontSize: 13, outline: "none", fontFamily: "inherit", boxSizing: "border-box",
   };
 
@@ -273,7 +273,7 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
         <button
           onClick={() => router.push("/portal/routines")}
           style={{
-            padding: "7px 14px", background: "#FF5E14", color: "#fff",
+            padding: "7px 14px", background: "var(--gym-accent)", color: "#fff",
             border: "none", borderRadius: 10, fontSize: 12, fontWeight: 700,
             cursor: "pointer", display: "flex", alignItems: "center", gap: 5,
             fontFamily: "inherit", flexShrink: 0,
@@ -287,7 +287,7 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
       {/* ── Lista de días ── */}
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 12 }}>
         {days.length === 0 && (
-          <div style={{ background: "#111", border: "0.5px solid #1e1e1e", borderRadius: 12, padding: 20, textAlign: "center" }}>
+          <div style={{ background: "#111", border: "0.5px solid var(--border)", borderRadius: 12, padding: 20, textAlign: "center" }}>
             <p style={{ fontSize: 12, color: "#444" }}>Sin días — agrega el primero abajo.</p>
           </div>
         )}
@@ -301,7 +301,7 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
           return (
             <div
               key={day.id}
-              style={{ background: "#111", border: `0.5px solid ${isPickerOpen ? "rgba(255,94,20,0.35)" : "#1e1e1e"}`, borderRadius: 14, overflow: "hidden" }}
+              style={{ background: "#111", border: `0.5px solid ${isPickerOpen ? "color-mix(in srgb, var(--gym-accent) 35%, transparent)" : "var(--border)"}`, borderRadius: 14, overflow: "hidden" }}
             >
               {/* Cabecera del día */}
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px" }}>
@@ -327,9 +327,9 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
                   <button
                     onClick={() => openPicker(day.id)}
                     style={{
-                      padding: "5px 10px", background: "rgba(255,94,20,0.08)",
-                      border: "0.5px solid rgba(255,94,20,0.25)", borderRadius: 8,
-                      color: "#FF5E14", fontSize: 11, fontWeight: 600, cursor: "pointer",
+                      padding: "5px 10px", background: "color-mix(in srgb, var(--gym-accent) 8%, transparent)",
+                      border: "0.5px solid color-mix(in srgb, var(--gym-accent) 25%, transparent)", borderRadius: 8,
+                      color: "var(--gym-accent)", fontSize: 11, fontWeight: 600, cursor: "pointer",
                       display: "flex", alignItems: "center", gap: 4, fontFamily: "inherit",
                     }}
                   >
@@ -392,7 +392,7 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
                       <button
                         onClick={() => handleRemoveExercise(ex.id, day.id)}
                         disabled={removingExId === ex.id}
-                        style={{ padding: 5, background: "transparent", border: "0.5px solid #1e1e1e", borderRadius: 6, cursor: "pointer", display: "flex", alignItems: "center", color: "#333", flexShrink: 0 }}
+                        style={{ padding: 5, background: "transparent", border: "0.5px solid var(--border)", borderRadius: 6, cursor: "pointer", display: "flex", alignItems: "center", color: "#333", flexShrink: 0 }}
                       >
                         {removingExId === ex.id
                           ? <Loader2 style={{ width: 11, height: 11 }} className="animate-spin" />
@@ -406,11 +406,11 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
 
               {/* ── Picker de ejercicios (inline dentro del día activo) ── */}
               {isPickerOpen && (
-                <div style={{ borderTop: "0.5px solid rgba(255,94,20,0.2)", padding: "14px 14px 16px", background: "rgba(255,94,20,0.02)" }}>
+                <div style={{ borderTop: "0.5px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)", padding: "14px 14px 16px", background: "color-mix(in srgb, var(--gym-accent) 2%, transparent)" }}>
 
                   {/* Header del picker */}
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-                    <p style={{ fontSize: 11, fontWeight: 700, color: "#FF5E14", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, color: "var(--gym-accent)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
                       Agregar ejercicio
                     </p>
                     <button onClick={closePicker} style={{ background: "none", border: "none", color: "#555", cursor: "pointer" }}>
@@ -434,7 +434,7 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
                   <div style={{ display: "flex", gap: 5, overflowX: "auto", paddingBottom: 2, marginBottom: 10, scrollbarWidth: "none" }}>
                     <button
                       onClick={() => setMuscleFilter("")}
-                      style={{ flexShrink: 0, padding: "3px 9px", background: !muscleFilter ? "#FF5E14" : "#111", color: !muscleFilter ? "#fff" : "#666", border: `0.5px solid ${!muscleFilter ? "#FF5E14" : "#252525"}`, borderRadius: 100, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
+                      style={{ flexShrink: 0, padding: "3px 9px", background: !muscleFilter ? "var(--gym-accent)" : "#111", color: !muscleFilter ? "#fff" : "#666", border: `0.5px solid ${!muscleFilter ? "var(--gym-accent)" : "#252525"}`, borderRadius: 100, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
                     >
                       Todos
                     </button>
@@ -442,7 +442,7 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
                       <button
                         key={mg}
                         onClick={() => setMuscleFilter(muscleFilter === mg ? "" : mg)}
-                        style={{ flexShrink: 0, padding: "3px 9px", background: muscleFilter === mg ? "#FF5E14" : "#111", color: muscleFilter === mg ? "#fff" : "#666", border: `0.5px solid ${muscleFilter === mg ? "#FF5E14" : "#252525"}`, borderRadius: 100, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }}
+                        style={{ flexShrink: 0, padding: "3px 9px", background: muscleFilter === mg ? "var(--gym-accent)" : "#111", color: muscleFilter === mg ? "#fff" : "#666", border: `0.5px solid ${muscleFilter === mg ? "var(--gym-accent)" : "#252525"}`, borderRadius: 100, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }}
                       >
                         {MUSCLE_LABELS[mg] ?? mg}
                       </button>
@@ -451,9 +451,9 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
 
                   {/* Form de parámetros — aparece al seleccionar un ejercicio */}
                   {selectedEx && (
-                    <div style={{ background: "rgba(255,94,20,0.06)", border: "0.5px solid rgba(255,94,20,0.3)", borderRadius: 12, padding: 12, marginBottom: 10 }}>
+                    <div style={{ background: "color-mix(in srgb, var(--gym-accent) 6%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)", borderRadius: 12, padding: 12, marginBottom: 10 }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-                        <p style={{ fontSize: 13, fontWeight: 600, color: "#FF5E14" }}>{selectedEx.name}</p>
+                        <p style={{ fontSize: 13, fontWeight: 600, color: "var(--gym-accent)" }}>{selectedEx.name}</p>
                         <button onClick={() => setSelectedEx(null)} style={{ background: "none", border: "none", color: "#555", cursor: "pointer" }}>
                           <X style={{ width: 13, height: 13 }} />
                         </button>
@@ -483,7 +483,7 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
                       <button
                         onClick={handleAddExercise}
                         disabled={addingExercise}
-                        style={{ width: "100%", padding: "8px 0", background: "#FF5E14", color: "#fff", border: "none", borderRadius: 9, fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, fontFamily: "inherit", opacity: addingExercise ? 0.6 : 1 }}
+                        style={{ width: "100%", padding: "8px 0", background: "var(--gym-accent)", color: "#fff", border: "none", borderRadius: 9, fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, fontFamily: "inherit", opacity: addingExercise ? 0.6 : 1 }}
                       >
                         {addingExercise ? <Loader2 style={{ width: 13, height: 13 }} className="animate-spin" /> : <Plus style={{ width: 13, height: 13 }} />}
                         Agregar al día
@@ -502,16 +502,16 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
                           <button
                             key={ex.id}
                             onClick={() => { setSelectedEx(isSelected ? null : ex); setParams({ sets: "3", reps: "10", rest_seconds: "60", notes: "" }); }}
-                            style={{ textAlign: "left", padding: "9px 10px", background: isSelected ? "rgba(255,94,20,0.08)" : "#0d0d0d", border: `0.5px solid ${isSelected ? "rgba(255,94,20,0.4)" : "#1a1a1a"}`, borderRadius: 9, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontFamily: "inherit" }}
+                            style={{ textAlign: "left", padding: "9px 10px", background: isSelected ? "color-mix(in srgb, var(--gym-accent) 8%, transparent)" : "var(--sidebar)", border: `0.5px solid ${isSelected ? "color-mix(in srgb, var(--gym-accent) 40%, transparent)" : "#1a1a1a"}`, borderRadius: 9, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontFamily: "inherit" }}
                           >
                             <div style={{ flex: 1 }}>
                               <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                                <span style={{ fontSize: 12, fontWeight: 600, color: isSelected ? "#FF5E14" : "#ccc" }}>{ex.name}</span>
+                                <span style={{ fontSize: 12, fontWeight: 600, color: isSelected ? "var(--gym-accent)" : "#ccc" }}>{ex.name}</span>
                                 {ex.is_private_to_user && <Lock style={{ width: 9, height: 9, color: "#555" }} />}
                               </div>
                               {ex.muscle_group && <span style={{ fontSize: 10, color: "#444" }}>{MUSCLE_LABELS[ex.muscle_group] ?? ex.muscle_group}</span>}
                             </div>
-                            {isSelected && <Check style={{ width: 13, height: 13, color: "#FF5E14", flexShrink: 0 }} />}
+                            {isSelected && <Check style={{ width: 13, height: 13, color: "var(--gym-accent)", flexShrink: 0 }} />}
                           </button>
                         );
                       })
@@ -520,9 +520,9 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
 
                   {/* Crear ejercicio privado */}
                   {showPrivateForm ? (
-                    <div style={{ background: "#111", border: "0.5px solid rgba(255,94,20,0.2)", borderRadius: 10, padding: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ background: "#111", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)", borderRadius: 10, padding: 12, display: "flex", flexDirection: "column", gap: 8 }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <p style={{ fontSize: 11, fontWeight: 700, color: "#FF5E14" }}>Crear ejercicio propio</p>
+                        <p style={{ fontSize: 11, fontWeight: 700, color: "var(--gym-accent)" }}>Crear ejercicio propio</p>
                         <button onClick={() => setShowPrivateForm(false)} style={{ background: "none", border: "none", color: "#555", cursor: "pointer" }}><X style={{ width: 13, height: 13 }} /></button>
                       </div>
                       <input type="text" placeholder="Nombre *" value={privateExName} onChange={(e) => setPrivateExName(e.target.value)} maxLength={100} style={inputStyle} />
@@ -534,13 +534,13 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
                         <Video style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", width: 12, height: 12, color: "#444" }} />
                         <input type="url" placeholder="URL de video — opcional" value={privateExVideoUrl} onChange={(e) => setPrivateExVideoUrl(e.target.value)} style={{ ...inputStyle, paddingLeft: 30 }} />
                       </div>
-                      <button onClick={handleCreatePrivate} disabled={creatingPrivate || !privateExName.trim()} style={{ padding: "8px", background: "#FF5E14", color: "#fff", border: "none", borderRadius: 9, fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, fontFamily: "inherit", opacity: creatingPrivate || !privateExName.trim() ? 0.5 : 1 }}>
+                      <button onClick={handleCreatePrivate} disabled={creatingPrivate || !privateExName.trim()} style={{ padding: "8px", background: "var(--gym-accent)", color: "#fff", border: "none", borderRadius: 9, fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, fontFamily: "inherit", opacity: creatingPrivate || !privateExName.trim() ? 0.5 : 1 }}>
                         {creatingPrivate ? <Loader2 style={{ width: 12, height: 12 }} className="animate-spin" /> : <Plus style={{ width: 12, height: 12 }} />}
                         Crear
                       </button>
                     </div>
                   ) : (
-                    <button onClick={() => setShowPrivateForm(true)} style={{ width: "100%", padding: "8px 0", background: "rgba(255,94,20,0.06)", color: "#FF5E14", border: "0.5px solid rgba(255,94,20,0.25)", borderRadius: 9, fontSize: 11, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, fontFamily: "inherit" }}>
+                    <button onClick={() => setShowPrivateForm(true)} style={{ width: "100%", padding: "8px 0", background: "color-mix(in srgb, var(--gym-accent) 6%, transparent)", color: "var(--gym-accent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 25%, transparent)", borderRadius: 9, fontSize: 11, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, fontFamily: "inherit" }}>
                       <Lock style={{ width: 11, height: 11 }} />
                       Crear ejercicio propio (privado)
                     </button>
@@ -554,7 +554,7 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
 
       {/* ── Agregar nuevo día ── */}
       {showDayInput ? (
-        <div style={{ background: "#111", border: "0.5px solid rgba(255,94,20,0.3)", borderRadius: 12, padding: 12, display: "flex", gap: 8, marginBottom: 12 }}>
+        <div style={{ background: "#111", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)", borderRadius: 12, padding: 12, display: "flex", gap: 8, marginBottom: 12 }}>
           <input
             type="text"
             placeholder="Ej: Pecho y Tríceps…"
@@ -565,10 +565,10 @@ export function EditMyRoutineFlow({ routine, exercises }: Props): React.ReactNod
             autoFocus
             style={{ ...inputStyle, flex: 1 }}
           />
-          <button onClick={handleAddDay} disabled={addingDay || !newDayName.trim()} style={{ padding: "8px 12px", background: "#FF5E14", border: "none", borderRadius: 8, color: "#fff", cursor: "pointer", flexShrink: 0 }}>
+          <button onClick={handleAddDay} disabled={addingDay || !newDayName.trim()} style={{ padding: "8px 12px", background: "var(--gym-accent)", border: "none", borderRadius: 8, color: "#fff", cursor: "pointer", flexShrink: 0 }}>
             {addingDay ? <Loader2 style={{ width: 14, height: 14 }} className="animate-spin" /> : <Check style={{ width: 14, height: 14 }} />}
           </button>
-          <button onClick={() => { setShowDayInput(false); setNewDayName(""); }} style={{ padding: "8px", background: "transparent", border: "0.5px solid #1e1e1e", borderRadius: 8, color: "#555", cursor: "pointer" }}>
+          <button onClick={() => { setShowDayInput(false); setNewDayName(""); }} style={{ padding: "8px", background: "transparent", border: "0.5px solid var(--border)", borderRadius: 8, color: "#555", cursor: "pointer" }}>
             <X style={{ width: 14, height: 14 }} />
           </button>
         </div>

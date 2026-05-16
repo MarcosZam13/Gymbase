@@ -35,7 +35,7 @@ function MarginBadge({ pct }: { pct: number }): React.ReactElement {
 export function SalesReportTable({ data }: SalesReportTableProps): React.ReactElement {
   if (!data.length) {
     return (
-      <div className="text-center py-8 text-[#737373] text-sm">
+      <div className="text-center py-8 text-muted-foreground text-sm">
         Sin ventas en el período seleccionado
       </div>
     );
@@ -45,29 +45,29 @@ export function SalesReportTable({ data }: SalesReportTableProps): React.ReactEl
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-[#1E1E1E]">
-            <th className="text-left py-3 px-4 text-[#737373] font-medium">Producto</th>
-            <th className="text-left py-3 px-4 text-[#737373] font-medium">Categoría</th>
-            <th className="text-right py-3 px-4 text-[#737373] font-medium">Uds.</th>
-            <th className="text-right py-3 px-4 text-[#737373] font-medium">Ingresos</th>
-            <th className="text-right py-3 px-4 text-[#737373] font-medium">Costo</th>
-            <th className="text-right py-3 px-4 text-[#737373] font-medium">Ganancia</th>
-            <th className="text-center py-3 px-4 text-[#737373] font-medium">Margen</th>
+          <tr className="border-b border-border">
+            <th className="text-left py-3 px-4 text-muted-foreground font-medium">Producto</th>
+            <th className="text-left py-3 px-4 text-muted-foreground font-medium">Categoría</th>
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium">Uds.</th>
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium">Ingresos</th>
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium">Costo</th>
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium">Ganancia</th>
+            <th className="text-center py-3 px-4 text-muted-foreground font-medium">Margen</th>
           </tr>
         </thead>
         <tbody>
           {data.map((row, i) => (
             <tr
               key={row.product_id}
-              className="border-b border-[#1E1E1E] last:border-0 hover:bg-white/[0.02] transition-colors"
+              className="border-b border-border last:border-0 hover:bg-white/[0.02] transition-colors"
             >
               <td className="py-3 px-4 font-medium text-white">{row.product_name}</td>
-              <td className="py-3 px-4 text-[#737373]">{row.category}</td>
+              <td className="py-3 px-4 text-muted-foreground">{row.category}</td>
               <td className="py-3 px-4 text-right text-white">{row.units_sold}</td>
-              <td className="py-3 px-4 text-right text-[#FF5E14] font-medium">
+              <td className="py-3 px-4 text-right text-primary font-medium">
                 {formatCurrency(row.revenue)}
               </td>
-              <td className="py-3 px-4 text-right text-[#737373]">
+              <td className="py-3 px-4 text-right text-muted-foreground">
                 {formatCurrency(row.cost)}
               </td>
               <td className="py-3 px-4 text-right text-green-400 font-medium">
@@ -82,13 +82,13 @@ export function SalesReportTable({ data }: SalesReportTableProps): React.ReactEl
         {/* Totales */}
         <tfoot>
           <tr className="border-t-2 border-[#2E2E2E]">
-            <td colSpan={3} className="py-3 px-4 text-[#737373] text-xs">
+            <td colSpan={3} className="py-3 px-4 text-muted-foreground text-xs">
               {data.length} productos · {data.reduce((s, r) => s + r.units_sold, 0)} unidades
             </td>
             <td className="py-3 px-4 text-right font-bold text-white">
               {formatCurrency(data.reduce((s, r) => s + r.revenue, 0))}
             </td>
-            <td className="py-3 px-4 text-right font-bold text-[#737373]">
+            <td className="py-3 px-4 text-right font-bold text-muted-foreground">
               {formatCurrency(data.reduce((s, r) => s + r.cost, 0))}
             </td>
             <td className="py-3 px-4 text-right font-bold text-green-400">

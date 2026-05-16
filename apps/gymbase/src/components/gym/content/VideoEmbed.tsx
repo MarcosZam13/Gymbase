@@ -48,7 +48,7 @@ export function VideoEmbed({ url, title = "Video" }: VideoEmbedProps): React.Rea
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center h-40 rounded-xl bg-[#1a1a1a] border border-[#222] text-[#FF5E14] text-sm font-medium hover:bg-[#222] transition-colors"
+        className="flex items-center justify-center h-40 rounded-xl bg-muted border border-[#222] text-primary text-sm font-medium hover:bg-[#222] transition-colors"
       >
         Abrir video →
       </a>

@@ -10,7 +10,7 @@ interface SnapshotFormProps {
   userId: string;
 }
 
-const inputCls = "w-full h-9 bg-[#0d0d0d] border border-[#222] rounded-lg px-3 text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-[#FF5E14] focus:outline-none transition-colors";
+const inputCls = "w-full h-9 bg-sidebar border border-[#222] rounded-lg px-3 text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-primary focus:outline-none transition-colors";
 const labelCls = "block text-[10px] font-semibold text-[#555] uppercase tracking-[0.07em] mb-1.5";
 
 export function SnapshotForm({ userId }: SnapshotFormProps): React.ReactNode {
@@ -96,7 +96,7 @@ export function SnapshotForm({ userId }: SnapshotFormProps): React.ReactNode {
         <button
           onClick={() => setOpen(true)}
           className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-[12px] font-semibold transition-colors cursor-pointer"
-          style={{ backgroundColor: "#FF5E1415", color: "#FF5E14", border: "1px solid #FF5E1430" }}
+          style={{ backgroundColor: "var(--gym-accent-dim)", color: "var(--gym-accent)", border: "1px solid var(--gym-accent-dim)" }}
         >
           <Plus className="w-3.5 h-3.5" />
           Nueva medición
@@ -109,13 +109,13 @@ export function SnapshotForm({ userId }: SnapshotFormProps): React.ReactNode {
     <div className="space-y-3">
       {/* Header del formulario */}
       <div className="flex items-center justify-between">
-        <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.07em]">
+        <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.07em]">
           Registrar medición
         </p>
         <button
           type="button"
           onClick={handleClose}
-          className="p-1 rounded-md text-[#444] hover:text-[#888] hover:bg-[#1a1a1a] transition-colors cursor-pointer"
+          className="p-1 rounded-md text-[#444] hover:text-[#888] hover:bg-muted transition-colors cursor-pointer"
         >
           <X className="w-3.5 h-3.5" />
         </button>
@@ -183,7 +183,7 @@ export function SnapshotForm({ userId }: SnapshotFormProps): React.ReactNode {
           <button
             type="button"
             onClick={handleClose}
-            className="flex-1 h-8 rounded-lg text-[11px] font-medium bg-[#1a1a1a] text-[#666] border border-[#222] hover:text-[#999] transition-colors cursor-pointer"
+            className="flex-1 h-8 rounded-lg text-[11px] font-medium bg-muted text-[#666] border border-[#222] hover:text-[#999] transition-colors cursor-pointer"
           >
             Cancelar
           </button>
@@ -191,7 +191,7 @@ export function SnapshotForm({ userId }: SnapshotFormProps): React.ReactNode {
             type="submit"
             disabled={submitting}
             className="flex-1 h-8 rounded-lg text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-opacity disabled:opacity-50 cursor-pointer"
-            style={{ backgroundColor: "#FF5E14", color: "white" }}
+            style={{ backgroundColor: "var(--gym-accent)", color: "white" }}
           >
             {submitting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
             Registrar

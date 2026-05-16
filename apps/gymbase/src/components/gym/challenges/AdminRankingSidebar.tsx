@@ -25,9 +25,9 @@ export function AdminRankingSidebar({ challenges, activeDetail }: AdminRankingSi
   const goalValue = challenge?.goal_value ?? 1;
 
   return (
-    <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[18px] overflow-hidden flex flex-col">
+    <div className="bg-sidebar border border-border rounded-[18px] overflow-hidden flex flex-col">
       {/* Header */}
-      <div className="px-5 py-3.5 border-b border-[#1a1a1a]">
+      <div className="px-5 py-3.5 border-b border-border">
         <span className="text-xs font-semibold text-[#666] uppercase tracking-[0.08em]">
           Ranking en tiempo real
         </span>
@@ -41,7 +41,7 @@ export function AdminRankingSidebar({ challenges, activeDetail }: AdminRankingSi
               .map(c => (
                 <span
                   key={c.id}
-                  className={`px-2.5 py-1 rounded-full text-[10px] font-medium cursor-pointer transition-all ${c.id === challenge?.id ? "bg-[rgba(255,94,20,0.1)] border border-[#FF5E14] text-[#FF5E14]" : "bg-[#1a1a1a] border border-[#2a2a2a] text-[#666]"}`}
+                  className={`px-2.5 py-1 rounded-full text-[10px] font-medium cursor-pointer transition-all ${c.id === challenge?.id ? "bg-primary/10 border border-primary text-primary" : "bg-muted border border-border text-[#666]"}`}
                 >
                   {c.title}
                 </span>
@@ -78,7 +78,7 @@ export function AdminRankingSidebar({ challenges, activeDetail }: AdminRankingSi
                       i === 0 ? { background: "rgba(250,204,21,0.15)", color: "#FACC15" }
                       : i === 1 ? { background: "rgba(156,163,175,0.12)", color: "#9CA3AF" }
                       : i === 2 ? { background: "rgba(205,124,47,0.12)", color: "#CD7C2F" }
-                      : { background: "#1e1e1e", color: "#666" }
+                      : { background: "var(--card)", color: "#666" }
                     }
                   >
                     {initials}
@@ -89,8 +89,8 @@ export function AdminRankingSidebar({ challenges, activeDetail }: AdminRankingSi
                   </div>
                   {/* Barra + valor */}
                   <div className="flex items-center gap-1.5">
-                    <div className="w-14 h-0.5 bg-[#1e1e1e] rounded-full overflow-hidden">
-                      <div className="h-full bg-[#FF5E14] rounded-full" style={{ width: `${pct}%` }} />
+                    <div className="w-14 h-0.5 bg-border rounded-full overflow-hidden">
+                      <div className="h-full bg-primary rounded-full" style={{ width: `${pct}%` }} />
                     </div>
                     <div className="text-[11px] font-semibold font-barlow text-[#aaa] min-w-[28px] text-right">
                       {progress}/{goalValue}
@@ -105,18 +105,18 @@ export function AdminRankingSidebar({ challenges, activeDetail }: AdminRankingSi
 
       {/* Badges footer */}
       {sorted.length > 0 && (
-        <div className="flex gap-2 flex-wrap px-4 py-3 border-t border-[#1a1a1a]">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#161616] border border-[#1e1e1e] rounded-full">
+        <div className="flex gap-2 flex-wrap px-4 py-3 border-t border-border">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#161616] border border-border rounded-full">
             <span className="text-sm">🏆</span>
             <span className="text-[10px] text-[#666]">Ganador</span>
-            <span className="text-[11px] font-semibold font-barlow text-[#FF5E14]">
+            <span className="text-[11px] font-semibold font-barlow text-primary">
               {sorted.filter(p => (p.total_progress ?? 0) >= goalValue).length}
             </span>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#161616] border border-[#1e1e1e] rounded-full">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#161616] border border-border rounded-full">
             <span className="text-sm">🥇</span>
             <span className="text-[10px] text-[#666]">Completaron</span>
-            <span className="text-[11px] font-semibold font-barlow text-[#FF5E14]">{sorted.length}</span>
+            <span className="text-[11px] font-semibold font-barlow text-primary">{sorted.length}</span>
           </div>
         </div>
       )}

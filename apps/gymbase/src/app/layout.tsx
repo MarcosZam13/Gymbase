@@ -1,4 +1,4 @@
-// layout.tsx — Root layout de GymBase: aplica tema dinámico desde DB, providers y fuentes
+// layout.tsx — Root layout de GymBase: aplica tema estático desde themeConfig, providers y fuentes
 
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
@@ -7,8 +7,7 @@ import "./globals.css";
 import { QueryProvider } from "@/components/shared/QueryProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { themeConfig } from "@/lib/theme";
-import { getOrgConfig } from "@/lib/get-org-config";
-import { buildThemeVars } from "@/lib/theme-vars";
+import { buildThemeVarsFromConfig } from "@/lib/theme-vars";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -29,18 +28,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Leer config del gym desde el header x-org-config (inyectado por middleware)
-  const config = await getOrgConfig();
-
   return (
     <html
       lang="es"
-      style={buildThemeVars(config) as CSSProperties}
+      style={buildThemeVarsFromConfig(themeConfig) as CSSProperties}
       className={`${dmSans.variable} ${barlowCondensed.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-gym-base text-gym-text-primary">

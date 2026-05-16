@@ -6,9 +6,11 @@ import { cache } from "react";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 // Crea una instancia del cliente de Supabase para el contexto del servidor.
-// Lee las cookies de la request actual para mantener la sesión del usuario.
+// Pasa x-org-id como header global para que PostgREST lo exponga a las funciones SQL
+// (get_user_org_id y get_user_role leen current_setting('request.headers')).
 export async function createClient() {
-  const cookieStore = await cookies();
+  const [cookieStore, headersList] = await Promise.all([cookies(), headers()]);
+  const orgId = headersList.get("x-org-id") ?? process.env.GYMBASE_ORG_ID;
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -28,12 +30,15 @@ export async function createClient() {
           }
         },
       },
+      global: {
+        headers: orgId ? { "x-org-id": orgId } : {},
+      },
     }
   );
 }
 
-// Obtiene el perfil del usuario autenticado actual desde la base de datos.
-// cache() deduplica la llamada dentro del mismo render tree para evitar rate limits de auth API.
+// Obtiene el perfil del usuario autenticado + su rol en el gym actual.
+// cache() deduplica la llamada dentro del mismo render tree.
 export const getCurrentUser = cache(async () => {
   const supabase = await createClient();
 
@@ -44,13 +49,29 @@ export const getCurrentUser = cache(async () => {
 
   if (authError || !user) return null;
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("id, email, full_name, role, avatar_url, phone, created_at, updated_at")
-    .eq("id", user.id)
-    .single();
+  const headersList = await headers();
+  const orgId = headersList.get("x-org-id") ?? process.env.GYMBASE_ORG_ID;
 
-  return profile;
+  // Fetch profile global + membresía en el gym actual en paralelo
+  const [{ data: profile }, { data: membership }] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("id, email, full_name, avatar_url, phone, created_at, updated_at")
+      .eq("id", user.id)
+      .single(),
+    orgId
+      ? supabase
+          .from("org_members")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("org_id", orgId)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+  ]);
+
+  if (!profile) return null;
+
+  return { ...profile, role: membership?.role ?? null };
 });
 
 // Cliente con service_role_key para operaciones admin (auth.admin.*)

@@ -27,7 +27,7 @@ export function RoutineDayAccordion({ day }: RoutineDayAccordionProps): React.Re
         <div className="flex items-center gap-3">
           <span
             className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold font-barlow shrink-0"
-            style={{ backgroundColor: "#FF5E1420", color: "#FF5E14" }}
+            style={{ backgroundColor: "var(--gym-accent-dim)", color: "var(--gym-accent)" }}
           >
             {day.day_number}
           </span>
@@ -48,7 +48,7 @@ export function RoutineDayAccordion({ day }: RoutineDayAccordionProps): React.Re
 
       {/* Lista de ejercicios del día */}
       {open && (
-        <div className="bg-[#0d0d0d] divide-y divide-[#111]">
+        <div className="bg-sidebar divide-y divide-[#111]">
           {day.exercises.length === 0 ? (
             <p className="px-4 py-3 text-[11px] text-[#444]">Sin ejercicios en este día</p>
           ) : (
@@ -69,7 +69,7 @@ export function RoutineDayAccordion({ day }: RoutineDayAccordionProps): React.Re
                   {/* Series × reps y descanso */}
                   {ex.sets != null && (
                     <div className="text-right shrink-0 ml-3">
-                      <p className="text-[12px] font-semibold font-barlow text-[#FF5E14]">
+                      <p className="text-[12px] font-semibold font-barlow text-primary">
                         {ex.sets}×{ex.reps ?? "—"}
                       </p>
                       {ex.rest_seconds != null && (

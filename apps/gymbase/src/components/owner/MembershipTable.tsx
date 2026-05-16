@@ -25,13 +25,13 @@ function RetentionBar({ days }: { days: number }): React.ReactElement {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-1.5 bg-[#1E1E1E] rounded-full overflow-hidden">
+      <div className="flex-1 h-1.5 bg-border rounded-full overflow-hidden">
         <div
           className="h-full rounded-full transition-all"
           style={{ width: `${pct}%`, backgroundColor: color }}
         />
       </div>
-      <span className="text-xs text-[#737373] w-14 text-right">{days}d avg</span>
+      <span className="text-xs text-muted-foreground w-14 text-right">{days}d avg</span>
     </div>
   );
 }
@@ -39,7 +39,7 @@ function RetentionBar({ days }: { days: number }): React.ReactElement {
 export function MembershipTable({ data }: MembershipTableProps): React.ReactElement {
   if (!data.length) {
     return (
-      <div className="text-center py-8 text-[#737373] text-sm">
+      <div className="text-center py-8 text-muted-foreground text-sm">
         Sin datos de membresías para el período
       </div>
     );
@@ -49,26 +49,26 @@ export function MembershipTable({ data }: MembershipTableProps): React.ReactElem
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-[#1E1E1E]">
-            <th className="text-left py-3 px-4 text-[#737373] font-medium">Plan</th>
-            <th className="text-right py-3 px-4 text-[#737373] font-medium">Activos</th>
-            <th className="text-right py-3 px-4 text-[#737373] font-medium">Ingresos mes</th>
-            <th className="text-right py-3 px-4 text-[#737373] font-medium">Nuevos</th>
-            <th className="text-right py-3 px-4 text-[#737373] font-medium">Cancelados</th>
-            <th className="py-3 px-4 text-[#737373] font-medium w-48">Retención</th>
+          <tr className="border-b border-border">
+            <th className="text-left py-3 px-4 text-muted-foreground font-medium">Plan</th>
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium">Activos</th>
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium">Ingresos mes</th>
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium">Nuevos</th>
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium">Cancelados</th>
+            <th className="py-3 px-4 text-muted-foreground font-medium w-48">Retención</th>
           </tr>
         </thead>
         <tbody>
           {data.map((row, i) => (
             <tr
               key={i}
-              className="border-b border-[#1E1E1E] last:border-0 hover:bg-white/[0.02] transition-colors"
+              className="border-b border-border last:border-0 hover:bg-white/[0.02] transition-colors"
             >
               <td className="py-3 px-4 font-medium text-white">{row.plan_name}</td>
               <td className="py-3 px-4 text-right text-white font-barlow font-bold text-base">
                 {row.active_count}
               </td>
-              <td className="py-3 px-4 text-right text-[#FF5E14] font-medium">
+              <td className="py-3 px-4 text-right text-primary font-medium">
                 {formatCurrency(row.revenue_this_month)}
               </td>
               <td className="py-3 px-4 text-right text-green-400">+{row.new_this_month}</td>

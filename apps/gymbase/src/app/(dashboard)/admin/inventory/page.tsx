@@ -58,18 +58,18 @@ export default async function AdminInventoryPage({ searchParams }: PageProps): P
       {/* Stats cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Total productos */}
-        <div className="rounded-2xl p-4" style={{ backgroundColor: "#111111", border: "1px solid #1e1e1e" }}>
+        <div className="rounded-2xl p-4" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(255,94,20,0.12)" }}>
-              <Package className="w-4 h-4" style={{ color: "#FF5E14" }} />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 12%, transparent)" }}>
+              <Package className="w-4 h-4" style={{ color: "var(--gym-accent)" }} />
             </div>
-            <p className="text-xs font-medium text-[#737373] uppercase tracking-wider">Total Productos</p>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Productos</p>
           </div>
           <p className="text-3xl font-bold font-barlow text-white">{allProducts.length}</p>
         </div>
 
         {/* Stock bajo */}
-        <div className="rounded-2xl p-4" style={{ backgroundColor: "#111111", border: "1px solid #1e1e1e" }}>
+        <div className="rounded-2xl p-4" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
           <div className="flex items-center gap-3 mb-3">
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center"
@@ -80,7 +80,7 @@ export default async function AdminInventoryPage({ searchParams }: PageProps): P
                 style={{ color: lowStockCount > 0 ? "#ef4444" : "#444" }}
               />
             </div>
-            <p className="text-xs font-medium text-[#737373] uppercase tracking-wider">Stock Bajo</p>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Stock Bajo</p>
           </div>
           <p
             className="text-3xl font-bold font-barlow"

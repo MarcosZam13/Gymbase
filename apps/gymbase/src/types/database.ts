@@ -22,7 +22,7 @@ export interface Profile {
   email: string;
   full_name: string | null;
   avatar_url: string | null;
-  role: UserRole;
+  role: UserRole | null;  // viene de org_members, no de profiles directamente
   phone: string | null;
   created_at: string;
   updated_at: string;

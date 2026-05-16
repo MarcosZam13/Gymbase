@@ -56,7 +56,7 @@ export const themeConfig = {
     gym_qr_checkin: true,
     gym_health_metrics: true,
     gym_routines: true,
-    gym_progress: true,
+    gym_progress: false,
     gym_calendar: true,
     gym_challenges: true,
     // Permite a los miembros crear sus propias rutinas personalizadas

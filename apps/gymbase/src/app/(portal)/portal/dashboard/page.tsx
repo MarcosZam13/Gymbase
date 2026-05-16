@@ -165,7 +165,7 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
                   <Link
                     href="/portal/plans"
                     className="inline-flex items-center gap-1.5 mt-3 text-sm font-semibold"
-                    style={{ color: "#FF5E14" }}
+                    style={{ color: "var(--gym-accent)" }}
                   >
                     Ver planes disponibles
                     <ArrowRight className="w-4 h-4" />
@@ -213,7 +213,7 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
           {themeConfig.features.gym_routines && routineDetail && (
             <Link
               href="/portal/routines"
-              className="group flex items-center gap-4 p-5 rounded-2xl transition-all duration-150 hover:border-[#FF5E14]/40"
+              className="group flex items-center gap-4 p-5 rounded-2xl transition-all duration-150 hover:border-primary/40"
               style={{
                 backgroundColor: "var(--gym-bg-card)",
                 border: "1px solid var(--gym-border)",
@@ -221,9 +221,9 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
             >
               <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                style={{ backgroundColor: "rgba(255,94,20,0.12)" }}
+                style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 12%, transparent)" }}
               >
-                <Dumbbell className="w-6 h-6" style={{ color: "#FF5E14" }} />
+                <Dumbbell className="w-6 h-6" style={{ color: "var(--gym-accent)" }} />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[10px] uppercase tracking-widest mb-0.5" style={{ color: "var(--gym-text-ghost)" }}>
@@ -244,7 +244,7 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
               </div>
               <ChevronRight
                 className="w-5 h-5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ color: "#FF5E14" }}
+                style={{ color: "var(--gym-accent)" }}
               />
             </Link>
           )}
@@ -265,7 +265,7 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
                     Clases de hoy
                   </h2>
                 </div>
-                <Link href="/portal/calendar" className="text-xs" style={{ color: "#FF5E14" }}>
+                <Link href="/portal/calendar" className="text-xs" style={{ color: "var(--gym-accent)" }}>
                   Ver todo →
                 </Link>
               </div>
@@ -301,9 +301,9 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
                         href="/portal/calendar"
                         className="text-[10px] font-semibold px-2 py-1 rounded-lg shrink-0"
                         style={{
-                          backgroundColor: "rgba(255,94,20,0.12)",
-                          color: "#FF5E14",
-                          border: "1px solid rgba(255,94,20,0.2)",
+                          backgroundColor: "color-mix(in srgb, var(--gym-accent) 12%, transparent)",
+                          color: "var(--gym-accent)",
+                          border: "1px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)",
                         }}
                       >
                         Reservar
@@ -331,7 +331,7 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
                     Retos activos
                   </h2>
                 </div>
-                <Link href="/portal/challenges" className="text-xs" style={{ color: "#FF5E14" }}>
+                <Link href="/portal/challenges" className="text-xs" style={{ color: "var(--gym-accent)" }}>
                   Ver todos →
                 </Link>
               </div>
@@ -380,7 +380,7 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
                     Contenido reciente
                   </h2>
                 </div>
-                <Link href="/portal/content" className="text-xs" style={{ color: "#FF5E14" }}>
+                <Link href="/portal/content" className="text-xs" style={{ color: "var(--gym-accent)" }}>
                   Ver todo →
                 </Link>
               </div>
@@ -430,7 +430,7 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
               }}
             >
               <div className="flex items-center gap-2 mb-4">
-                <QrCode className="w-4 h-4" style={{ color: "#FF5E14" }} />
+                <QrCode className="w-4 h-4" style={{ color: "var(--gym-accent)" }} />
                 <h2 className="text-sm font-semibold" style={{ color: "var(--gym-text-primary)" }}>
                   Mi código QR
                 </h2>
@@ -443,7 +443,7 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
                     className="w-28 h-28 flex items-center justify-center rounded-lg"
                     style={{ backgroundColor: "#f5f5f5" }}
                   >
-                    <QrCode className="w-16 h-16" style={{ color: "#0A0A0A" }} />
+                    <QrCode className="w-16 h-16" style={{ color: "var(--background)" }} />
                   </div>
                 </div>
               </div>
@@ -522,7 +522,7 @@ export default async function PortalDashboardPage(): Promise<React.ReactNode> {
               className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-medium w-full"
               style={{ backgroundColor: "var(--gym-bg-elevated)", color: "var(--gym-text-secondary)" }}
             >
-              <Zap className="w-3.5 h-3.5" style={{ color: "#FF5E14" }} />
+              <Zap className="w-3.5 h-3.5" style={{ color: "var(--gym-accent)" }} />
               Ver planes disponibles
             </Link>
 

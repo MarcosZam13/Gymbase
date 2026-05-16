@@ -31,15 +31,15 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
       className="group flex flex-col overflow-hidden transition-all duration-200 cursor-default"
       style={{
         background: "#111111",
-        border: "1px solid #1E1E1E",
+        border: "1px solid var(--border)",
         borderRadius: "16px",
       }}
       onMouseEnter={(e) => {
-        (e.currentTarget as HTMLDivElement).style.borderColor = "#FF5E14";
-        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 0 0 1px rgba(255,94,20,0.15)";
+        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--gym-accent)";
+        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 0 0 1px color-mix(in srgb, var(--gym-accent) 15%, transparent)";
       }}
       onMouseLeave={(e) => {
-        (e.currentTarget as HTMLDivElement).style.borderColor = "#1E1E1E";
+        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)";
         (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
       }}
     >
@@ -63,7 +63,7 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
             borderBottom: "1px solid #1a1a1a",
           }}
         >
-          <ImageIcon className="w-8 h-8 text-[#2a2a2a]" />
+          <ImageIcon className="w-8 h-8 text-muted-foreground" />
         </div>
       )}
 
@@ -75,9 +75,9 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
             <span
               className="text-[10px] font-bold uppercase tracking-[0.06em] px-2 py-0.5 rounded-full"
               style={{
-                background: "rgba(255,94,20,0.12)",
-                border: "1px solid rgba(255,94,20,0.3)",
-                color: "#FF5E14",
+                background: "color-mix(in srgb, var(--gym-accent) 12%, transparent)",
+                border: "1px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)",
+                color: "var(--gym-accent)",
               }}
             >
               📌 Fijado

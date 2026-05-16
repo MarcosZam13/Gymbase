@@ -7,7 +7,7 @@ import { TagFilterBar, type FilterTag } from "@/components/shared/TagFilterBar";
 
 // Filtros disponibles en la comunidad
 const COMMUNITY_TAGS: FilterTag[] = [
-  { id: "pinned",  label: "Fijados",   color: "#FF5E14" },
+  { id: "pinned",  label: "Fijados",   color: "var(--gym-accent)" },
   { id: "recent",  label: "Esta semana", color: "#22C55E" },
 ];
 

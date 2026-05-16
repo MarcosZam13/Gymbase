@@ -36,6 +36,13 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname, '../..'),
   },
 
+  experimental: {
+    // Aumentar el límite del body para Server Actions — necesario para uploads de comprobantes (hasta 5MB)
+    serverActions: {
+      bodySizeLimit: '6mb',
+    },
+  },
+
   images: {
     remotePatterns: [
       {

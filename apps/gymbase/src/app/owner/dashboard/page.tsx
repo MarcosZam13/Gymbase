@@ -53,7 +53,7 @@ export default async function OwnerDashboardPage({
           <h1 className="font-barlow font-bold text-3xl text-white tracking-wide uppercase">
             Dashboard
           </h1>
-          <p className="text-[#737373] text-sm mt-1">Resumen ejecutivo del negocio</p>
+          <p className="text-muted-foreground text-sm mt-1">Resumen ejecutivo del negocio</p>
         </div>
         <Suspense>
           <PeriodSelector current={period} />
@@ -89,35 +89,35 @@ export default async function OwnerDashboardPage({
       {/* Fila secundaria — miembros y net del período */}
       {stats && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+          <div className="bg-card border border-border rounded-xl p-4 text-center">
             <p className="font-barlow font-bold text-2xl text-white">{stats.members.active}</p>
-            <p className="text-xs text-[#737373] mt-1">Miembros activos</p>
+            <p className="text-xs text-muted-foreground mt-1">Miembros activos</p>
           </div>
-          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+          <div className="bg-card border border-border rounded-xl p-4 text-center">
             <p className="font-barlow font-bold text-2xl text-green-400">
               +{stats.members.new_this_period}
             </p>
-            <p className="text-xs text-[#737373] mt-1">Nuevos este período</p>
+            <p className="text-xs text-muted-foreground mt-1">Nuevos este período</p>
           </div>
-          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+          <div className="bg-card border border-border rounded-xl p-4 text-center">
             <p className="font-barlow font-bold text-2xl text-yellow-400">
               {stats.members.expiring_soon}
             </p>
-            <p className="text-xs text-[#737373] mt-1">Vencen próximos 7d</p>
+            <p className="text-xs text-muted-foreground mt-1">Vencen próximos 7d</p>
           </div>
-          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+          <div className="bg-card border border-border rounded-xl p-4 text-center">
             <p
               className={`font-barlow font-bold text-2xl ${netPositive ? "text-green-400" : "text-red-400"}`}
             >
               {formatCurrency(net)}
             </p>
-            <p className="text-xs text-[#737373] mt-1">Net del período</p>
+            <p className="text-xs text-muted-foreground mt-1">Net del período</p>
           </div>
         </div>
       )}
 
       {/* Cashflow Chart */}
-      <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6 mb-8">
+      <div className="bg-card border border-border rounded-xl p-6 mb-8">
         <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
           Flujo de caja
         </h2>
@@ -127,7 +127,7 @@ export default async function OwnerDashboardPage({
       {/* Segunda fila: ingresos por fuente + top productos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Desglose de ingresos */}
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6">
+        <div className="bg-card border border-border rounded-xl p-6">
           <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
             Desglose de ingresos
           </h2>
@@ -135,14 +135,14 @@ export default async function OwnerDashboardPage({
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-1.5">
-                  <span className="text-[#737373]">Membresías</span>
+                  <span className="text-muted-foreground">Membresías</span>
                   <span className="text-white font-medium">
                     {formatCurrency(stats.revenue.membership)}
                   </span>
                 </div>
-                <div className="h-2 bg-[#1E1E1E] rounded-full overflow-hidden">
+                <div className="h-2 bg-border rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#FF5E14] rounded-full"
+                    className="h-full bg-primary rounded-full"
                     style={{
                       width: `${stats.revenue.current > 0 ? (stats.revenue.membership / stats.revenue.current) * 100 : 0}%`,
                     }}
@@ -151,12 +151,12 @@ export default async function OwnerDashboardPage({
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-1.5">
-                  <span className="text-[#737373]">Ventas de productos</span>
+                  <span className="text-muted-foreground">Ventas de productos</span>
                   <span className="text-white font-medium">
                     {formatCurrency(stats.revenue.sales)}
                   </span>
                 </div>
-                <div className="h-2 bg-[#1E1E1E] rounded-full overflow-hidden">
+                <div className="h-2 bg-border rounded-full overflow-hidden">
                   <div
                     className="h-full bg-green-500 rounded-full"
                     style={{
@@ -165,18 +165,18 @@ export default async function OwnerDashboardPage({
                   />
                 </div>
               </div>
-              <div className="pt-3 border-t border-[#1E1E1E] flex justify-between">
-                <span className="text-[#737373] text-sm">Total ingresos</span>
+              <div className="pt-3 border-t border-border flex justify-between">
+                <span className="text-muted-foreground text-sm">Total ingresos</span>
                 <span className="text-white font-bold">{formatCurrency(stats.revenue.current)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#737373] text-sm">Egresos</span>
+                <span className="text-muted-foreground text-sm">Egresos</span>
                 <span className="text-red-400 font-semibold">
                   − {formatCurrency(stats.revenue.expenses)}
                 </span>
               </div>
-              <div className="pt-3 border-t border-[#1E1E1E] flex justify-between">
-                <span className="text-[#737373] text-sm font-medium">Net</span>
+              <div className="pt-3 border-t border-border flex justify-between">
+                <span className="text-muted-foreground text-sm font-medium">Net</span>
                 <span
                   className={`font-bold ${stats.revenue.net >= 0 ? "text-green-400" : "text-red-400"}`}
                 >
@@ -185,12 +185,12 @@ export default async function OwnerDashboardPage({
               </div>
             </div>
           ) : (
-            <p className="text-[#737373] text-sm">Error al cargar los datos</p>
+            <p className="text-muted-foreground text-sm">Error al cargar los datos</p>
           )}
         </div>
 
         {/* Top productos */}
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6">
+        <div className="bg-card border border-border rounded-xl p-6">
           <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
             Top productos vendidos
           </h2>
@@ -198,21 +198,21 @@ export default async function OwnerDashboardPage({
             <div className="space-y-3">
               {stats.inventory.top_products.map((p, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-full bg-[#FF5E14]/15 text-[#FF5E14] text-xs font-bold flex items-center justify-center flex-shrink-0">
+                  <span className="w-6 h-6 rounded-full bg-primary/15 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0">
                     {i + 1}
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-white font-medium truncate">{p.name}</p>
-                    <p className="text-xs text-[#737373]">{p.units_sold} uds vendidas</p>
+                    <p className="text-xs text-muted-foreground">{p.units_sold} uds vendidas</p>
                   </div>
-                  <span className="text-sm font-medium text-[#FF5E14] flex-shrink-0">
+                  <span className="text-sm font-medium text-primary flex-shrink-0">
                     {formatCurrency(p.revenue)}
                   </span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-[#737373] text-sm">Sin ventas en el período</p>
+            <p className="text-muted-foreground text-sm">Sin ventas en el período</p>
           )}
         </div>
       </div>
@@ -220,25 +220,25 @@ export default async function OwnerDashboardPage({
       {/* Fila de estado de asistencia */}
       {stats && (
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+          <div className="bg-card border border-border rounded-xl p-4 text-center">
             <p className="font-barlow font-bold text-2xl text-red-400">
               {stats.members.churned_this_period}
             </p>
-            <p className="text-xs text-[#737373] mt-1">Abandonos</p>
+            <p className="text-xs text-muted-foreground mt-1">Abandonos</p>
           </div>
-          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
-            <p className="font-barlow font-bold text-2xl text-[#FF5E14]">
+          <div className="bg-card border border-border rounded-xl p-4 text-center">
+            <p className="font-barlow font-bold text-2xl text-primary">
               {stats.attendance.total_visits}
             </p>
-            <p className="text-xs text-[#737373] mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Visitas ({stats.attendance.avg_daily.toFixed(1)}/día)
             </p>
           </div>
-          <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-4 text-center">
+          <div className="bg-card border border-border rounded-xl p-4 text-center">
             <p className="font-barlow font-bold text-2xl text-white">
               {stats.attendance.unique_members}
             </p>
-            <p className="text-xs text-[#737373] mt-1">Miembros únicos asistieron</p>
+            <p className="text-xs text-muted-foreground mt-1">Miembros únicos asistieron</p>
           </div>
         </div>
       )}

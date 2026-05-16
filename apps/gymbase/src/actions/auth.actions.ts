@@ -51,13 +51,16 @@ export async function signIn(formData: FormData): Promise<ActionResult> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { success: false, error: "Error al obtener la sesión" };
 
-  const { data: profile } = await supabase
-    .from("profiles")
+  const orgId = await getOrgId();
+  const { data: membership } = await supabase
+    .from("org_members")
     .select("role")
-    .eq("id", user.id)
-    .single();
+    .eq("user_id", user.id)
+    .eq("org_id", orgId)
+    .maybeSingle();
 
-  redirect(profile?.role === "admin" ? "/admin" : "/portal/dashboard");
+  const role = membership?.role ?? "member";
+  redirect(role === "owner" ? "/owner/dashboard" : role === "admin" ? "/admin" : "/portal/dashboard");
 }
 
 // Override: pasa org_id en options.data para que el trigger handle_new_user()

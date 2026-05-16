@@ -61,7 +61,7 @@ export default async function AdminChallengeDetailPage({ params }: Props): Promi
           </span>
         )}
         {!isActive && !isUpcoming && (
-          <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-[#1a1a1a] border border-[#2a2a2a] text-[#555] flex-shrink-0">
+          <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-muted border border-border text-[#555] flex-shrink-0">
             FINALIZADO
           </span>
         )}
@@ -69,23 +69,23 @@ export default async function AdminChallengeDetailPage({ params }: Props): Promi
 
       {/* Stats cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-[14px] p-3.5">
+        <div className="bg-card border border-border rounded-[14px] p-3.5">
           <div className="flex items-center gap-2 mb-2">
-            <Trophy className="w-3.5 h-3.5 text-[#FF5E14]" />
+            <Trophy className="w-3.5 h-3.5 text-primary" />
             <span className="text-[10px] text-[#555] uppercase tracking-[0.08em]">Tipo</span>
           </div>
           <p className="text-sm font-semibold text-white">{TYPE_LABELS[challenge.type] ?? challenge.type}</p>
         </div>
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-[14px] p-3.5">
+        <div className="bg-card border border-border rounded-[14px] p-3.5">
           <div className="flex items-center gap-2 mb-2">
-            <Target className="w-3.5 h-3.5 text-[#FF5E14]" />
+            <Target className="w-3.5 h-3.5 text-primary" />
             <span className="text-[10px] text-[#555] uppercase tracking-[0.08em]">Meta</span>
           </div>
           <p className="text-sm font-semibold text-white">{challenge.goal_value} {challenge.goal_unit}</p>
         </div>
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-[14px] p-3.5">
+        <div className="bg-card border border-border rounded-[14px] p-3.5">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="w-3.5 h-3.5 text-[#FF5E14]" />
+            <Calendar className="w-3.5 h-3.5 text-primary" />
             <span className="text-[10px] text-[#555] uppercase tracking-[0.08em]">Período</span>
           </div>
           <p className="text-sm font-semibold text-white">
@@ -94,9 +94,9 @@ export default async function AdminChallengeDetailPage({ params }: Props): Promi
             {new Date(challenge.ends_at).toLocaleDateString("es-CR", { day: "2-digit", month: "short" })}
           </p>
         </div>
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-[14px] p-3.5">
+        <div className="bg-card border border-border rounded-[14px] p-3.5">
           <div className="flex items-center gap-2 mb-2">
-            <Users className="w-3.5 h-3.5 text-[#FF5E14]" />
+            <Users className="w-3.5 h-3.5 text-primary" />
             <span className="text-[10px] text-[#555] uppercase tracking-[0.08em]">Participantes</span>
           </div>
           <p className="text-sm font-semibold text-white">
@@ -108,10 +108,10 @@ export default async function AdminChallengeDetailPage({ params }: Props): Promi
 
       {/* Premio */}
       {challenge.prize_description && (
-        <div className="flex items-center gap-2.5 p-3.5 bg-[rgba(255,94,20,0.06)] border border-[rgba(255,94,20,0.2)] rounded-[14px]">
-          <Award className="w-4 h-4 text-[#FF5E14] flex-shrink-0" />
+        <div className="flex items-center gap-2.5 p-3.5 bg-primary/[6%] border border-primary/20 rounded-[14px]">
+          <Award className="w-4 h-4 text-primary flex-shrink-0" />
           <div>
-            <p className="text-[10px] text-[#FF5E14] font-semibold uppercase tracking-[0.08em] mb-0.5">Premio</p>
+            <p className="text-[10px] text-primary font-semibold uppercase tracking-[0.08em] mb-0.5">Premio</p>
             <p className="text-sm text-white">{challenge.prize_description}</p>
           </div>
         </div>

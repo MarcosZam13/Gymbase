@@ -37,23 +37,23 @@ export function AttendancePaginatedTable({
   }
 
   return (
-    <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] overflow-hidden">
-      <div className="px-4 py-3 border-b border-[#1a1a1a] flex items-center justify-between">
-        <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+    <div className="bg-card border border-border rounded-[14px] overflow-hidden">
+      <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+        <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
           Registros recientes
         </p>
         <span className="text-[10px] text-[#444]">{total} total</span>
       </div>
 
       {/* Filas de logs */}
-      <div className={`divide-y divide-[#0d0d0d] transition-opacity ${isLoading ? "opacity-40" : ""}`}>
+      <div className={`divide-y divide-border transition-opacity ${isLoading ? "opacity-40" : ""}`}>
         {logs.length === 0 ? (
           <p className="text-center text-[#444] text-[12px] py-8">Sin asistencias registradas</p>
         ) : (
           logs.map((log) => (
             <div key={log.id} className="px-4 py-3 flex items-center justify-between hover:bg-[#0f0f0f]">
               <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#FF5E14] shrink-0" />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                 <div>
                   <p className="text-[12px] font-medium text-[#ccc] capitalize">
                     {new Date(log.check_in_at).toLocaleDateString("es-CR", {
@@ -73,7 +73,7 @@ export function AttendancePaginatedTable({
                 </div>
               </div>
               {log.duration_minutes ? (
-                <span className="text-[11px] font-semibold font-barlow text-[#FF5E14]">
+                <span className="text-[11px] font-semibold font-barlow text-primary">
                   {log.duration_minutes} min
                 </span>
               ) : (
@@ -86,7 +86,7 @@ export function AttendancePaginatedTable({
 
       {/* Paginación local */}
       {totalPages > 1 && (
-        <div className="px-4 py-3 border-t border-[#1a1a1a] flex items-center justify-between">
+        <div className="px-4 py-3 border-t border-border flex items-center justify-between">
           <p className="text-[10px] text-[#444]">
             Página {currentPage} de {totalPages}
           </p>

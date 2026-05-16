@@ -119,15 +119,15 @@ export function ProductTable({
             if (e.target.value !== currentSearch) navigate({ search: e.target.value });
           }}
           placeholder="Buscar producto..."
-          className="flex-1 min-w-[160px] px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-[#FF5E14]"
-          style={{ backgroundColor: "#111111", border: "1px solid #2a2a2a" }}
+          className="flex-1 min-w-[160px] px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-primary"
+          style={{ backgroundColor: "var(--card)", border: "1px solid #2a2a2a" }}
         />
 
         <select
           value={currentCategory}
           onChange={(e) => navigate({ category: e.target.value })}
-          className="px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-[#FF5E14]"
-          style={{ backgroundColor: "#111111", border: "1px solid #2a2a2a" }}
+          className="px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-primary"
+          style={{ backgroundColor: "var(--card)", border: "1px solid #2a2a2a" }}
         >
           <option value="all">Todas las categorías</option>
           {(Object.entries(CATEGORY_LABELS) as [ProductCategory, string][]).map(([v, l]) => (
@@ -163,7 +163,7 @@ export function ProductTable({
             type="button"
             onClick={openCreate}
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-colors cursor-pointer"
-            style={{ backgroundColor: "#FF5E14" }}
+            style={{ backgroundColor: "var(--gym-accent)" }}
           >
             <Plus className="w-4 h-4" />
             Nuevo Producto
@@ -173,7 +173,7 @@ export function ProductTable({
 
       {/* Tabla */}
       {total === 0 ? (
-        <div className="text-center py-16 rounded-2xl" style={{ backgroundColor: "#0D0D0D", border: "1px solid #1e1e1e" }}>
+        <div className="text-center py-16 rounded-2xl" style={{ backgroundColor: "var(--sidebar)", border: "1px solid var(--border)" }}>
           <p className="text-[#444] text-sm mb-3">
             {hasFilters ? "No hay productos que coincidan." : "No hay productos aún."}
           </p>
@@ -181,7 +181,7 @@ export function ProductTable({
             <button
               onClick={openCreate}
               className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
-              style={{ backgroundColor: "#FF5E14" }}
+              style={{ backgroundColor: "var(--gym-accent)" }}
             >
               Crear primer producto
             </button>
@@ -189,10 +189,10 @@ export function ProductTable({
         </div>
       ) : (
         <>
-        <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid #1e1e1e" }}>
+        <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)" }}>
           <table className="w-full">
             <thead>
-              <tr style={{ backgroundColor: "#0D0D0D", borderBottom: "1px solid #1e1e1e" }}>
+              <tr style={{ backgroundColor: "var(--sidebar)", borderBottom: "1px solid var(--border)" }}>
                 {["Producto", "Categoría", "Stock", "Costo", "Venta", "Margen", ""].map((h) => (
                   <th key={h} className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-[#555]">
                     {h}
@@ -210,7 +210,7 @@ export function ProductTable({
                 return (
                   <tr
                     key={p.id}
-                    style={{ borderBottom: "1px solid #1a1a1a", backgroundColor: "#111111" }}
+                    style={{ borderBottom: "1px solid #1a1a1a", backgroundColor: "var(--card)" }}
                     className="hover:bg-[#161616] transition-colors last:border-b-0"
                   >
                     <td className="px-4 py-3">
@@ -220,13 +220,13 @@ export function ProductTable({
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs text-[#737373]">{CATEGORY_LABELS[p.category]}</span>
+                      <span className="text-xs text-muted-foreground">{CATEGORY_LABELS[p.category]}</span>
                     </td>
                     <td className="px-4 py-3">
                       <StockBadge current={p.current_stock} min={p.min_stock_alert} />
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-sm text-[#737373]">{formatPrice(p.cost_price)}</span>
+                      <span className="text-sm text-muted-foreground">{formatPrice(p.cost_price)}</span>
                     </td>
                     <td className="px-4 py-3">
                       <span className="text-sm text-white font-medium">{formatPrice(p.sale_price)}</span>
@@ -241,7 +241,7 @@ export function ProductTable({
                         <button
                           type="button"
                           onClick={() => setAdjustingProduct(p)}
-                          className="text-xs px-2.5 py-1 rounded-lg font-medium text-[#737373] hover:text-white hover:bg-[#1e1e1e] transition-colors cursor-pointer"
+                          className="text-xs px-2.5 py-1 rounded-lg font-medium text-muted-foreground hover:text-white hover:bg-border transition-colors cursor-pointer"
                           style={{ border: "1px solid #2a2a2a" }}
                         >
                           Ajustar stock
@@ -249,7 +249,7 @@ export function ProductTable({
                         <button
                           type="button"
                           onClick={() => openEdit(p)}
-                          className="text-xs px-2.5 py-1 rounded-lg font-medium text-[#737373] hover:text-white hover:bg-[#1e1e1e] transition-colors cursor-pointer"
+                          className="text-xs px-2.5 py-1 rounded-lg font-medium text-muted-foreground hover:text-white hover:bg-border transition-colors cursor-pointer"
                           style={{ border: "1px solid #2a2a2a" }}
                         >
                           Editar
@@ -257,7 +257,7 @@ export function ProductTable({
                         <button
                           type="button"
                           onClick={() => router.push(`/admin/inventory/${p.id}`)}
-                          className="text-[#737373] hover:text-white transition-colors cursor-pointer p-1"
+                          className="text-muted-foreground hover:text-white transition-colors cursor-pointer p-1"
                         >
                           <ChevronRight className="w-4 h-4" />
                         </button>
@@ -270,7 +270,7 @@ export function ProductTable({
           </table>
 
           {/* Footer con conteo */}
-          <div className="px-4 py-2.5 border-t border-[#1a1a1a] bg-[#0a0a0a]">
+          <div className="px-4 py-2.5 border-t border-border bg-background">
             <p className="text-[10px] text-[#444]">
               Mostrando {from}–{to} de {total} producto{total !== 1 ? "s" : ""}
             </p>

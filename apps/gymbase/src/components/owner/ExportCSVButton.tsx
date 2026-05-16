@@ -18,9 +18,9 @@ export function ExportCSVButton({ filename, rows, label = "Exportar CSV" }: Expo
       disabled={rows.length === 0}
       className="flex items-center gap-1.5 h-9 px-3 rounded-lg text-sm font-medium transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
       style={{
-        backgroundColor: "rgba(255,94,20,0.08)",
-        border: "1px solid rgba(255,94,20,0.25)",
-        color: "#FF5E14",
+        backgroundColor: "color-mix(in srgb, var(--gym-accent) 8%, transparent)",
+        border: "1px solid color-mix(in srgb, var(--gym-accent) 25%, transparent)",
+        color: "var(--gym-accent)",
       }}
       title={rows.length === 0 ? "Sin datos para exportar" : `Descargar ${filename}`}
     >

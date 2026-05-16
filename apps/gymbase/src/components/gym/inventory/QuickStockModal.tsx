@@ -92,16 +92,16 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
       <div className="absolute inset-0 bg-black/70" />
       <div
         className="relative w-full max-w-md rounded-2xl overflow-hidden"
-        style={{ backgroundColor: "#111111", border: "1px solid #2a2a2a" }}
+        style={{ backgroundColor: "var(--card)", border: "1px solid #2a2a2a" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid #1e1e1e" }}>
+        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
           <div>
             <h2 className="text-base font-bold text-white font-barlow">Ajuste de Stock</h2>
-            <p className="text-xs text-[#737373] mt-0.5">Selecciona un producto y registra el movimiento</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Selecciona un producto y registra el movimiento</p>
           </div>
-          <button onClick={handleClose} className="p-1.5 rounded-lg text-[#737373] hover:text-white hover:bg-[#1a1a1a] transition-colors">
+          <button onClick={handleClose} className="p-1.5 rounded-lg text-muted-foreground hover:text-white hover:bg-muted transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -109,7 +109,7 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
         <form onSubmit={handleSubmit} className="px-5 py-4 space-y-4">
           {/* Selector de producto con búsqueda */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-[#737373]">Producto *</label>
+            <label className="text-xs font-medium text-muted-foreground">Producto *</label>
             <div className="relative">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#555]" />
@@ -123,7 +123,7 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
                   }}
                   onFocus={() => setShowDropdown(true)}
                   placeholder="Buscar producto..."
-                  className="w-full pl-9 pr-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                  className="w-full pl-9 pr-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-primary"
                   style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
                 />
               </div>
@@ -131,7 +131,7 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
               {showDropdown && (
                 <div
                   className="absolute z-10 w-full mt-1 rounded-xl overflow-hidden max-h-44 overflow-y-auto"
-                  style={{ backgroundColor: "#161616", border: "1px solid #2a2a2a" }}
+                  style={{ backgroundColor: "var(--gym-bg-elevated)", border: "1px solid #2a2a2a" }}
                 >
                   {filteredProducts.length === 0 ? (
                     <p className="px-3 py-3 text-sm text-[#555] text-center">Sin resultados</p>
@@ -141,7 +141,7 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
                         key={p.id}
                         type="button"
                         onClick={() => handleSelectProduct(p)}
-                        className="w-full flex items-center justify-between px-3 py-2.5 text-left hover:bg-[#1e1e1e] transition-colors cursor-pointer"
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-left hover:bg-border transition-colors cursor-pointer"
                       >
                         <div className="flex items-center gap-2 min-w-0">
                           <Package className="w-3.5 h-3.5 text-[#555] shrink-0" />
@@ -165,7 +165,7 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
           {selectedProduct && (
             <>
               {/* Stock actual del producto seleccionado */}
-              <div className="text-center py-3 rounded-xl" style={{ backgroundColor: "#0D0D0D", border: "1px solid #1e1e1e" }}>
+              <div className="text-center py-3 rounded-xl" style={{ backgroundColor: "var(--sidebar)", border: "1px solid var(--border)" }}>
                 <p className="text-xs text-[#555] mb-1">Stock actual — {selectedProduct.name}</p>
                 <p className="text-3xl font-bold font-barlow text-white">{selectedProduct.current_stock}</p>
                 <p className="text-xs text-[#555] mt-0.5">
@@ -182,9 +182,9 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
                     onClick={() => setType(t.value)}
                     className="flex flex-col items-center gap-1 py-3 px-2 rounded-xl text-center transition-all cursor-pointer"
                     style={{
-                      backgroundColor: type === t.value ? "rgba(255,94,20,0.15)" : "#0D0D0D",
-                      border: `1px solid ${type === t.value ? "#FF5E14" : "#1e1e1e"}`,
-                      color: type === t.value ? "#FF5E14" : "#737373",
+                      backgroundColor: type === t.value ? "color-mix(in srgb, var(--gym-accent) 15%, transparent)" : "#0D0D0D",
+                      border: `1px solid ${type === t.value ? "var(--gym-accent)" : "var(--border)"}`,
+                      color: type === t.value ? "var(--gym-accent)" : "#737373",
                     }}
                   >
                     <span className="text-lg">{t.icon}</span>
@@ -195,7 +195,7 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
 
               {/* Cantidad */}
               <div className="space-y-1">
-                <label className="text-xs font-medium text-[#737373]">Cantidad *</label>
+                <label className="text-xs font-medium text-muted-foreground">Cantidad *</label>
                 <input
                   type="number"
                   value={quantity}
@@ -203,7 +203,7 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
                   required
                   min={1}
                   placeholder="0"
-                  className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-[#FF5E14]"
+                  className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-primary"
                   style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
                 />
               </div>
@@ -226,13 +226,13 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
 
               {/* Notas */}
               <div className="space-y-1">
-                <label className="text-xs font-medium text-[#737373]">Notas</label>
+                <label className="text-xs font-medium text-muted-foreground">Notas</label>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
                   placeholder={selectedType.note}
-                  className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-[#FF5E14] resize-none"
+                  className="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-primary resize-none"
                   style={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a" }}
                 />
               </div>
@@ -246,7 +246,7 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
             <button
               type="button"
               onClick={handleClose}
-              className="px-4 py-2 rounded-lg text-sm font-medium text-[#737373] hover:text-white hover:bg-[#1a1a1a] transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-white hover:bg-muted transition-colors"
             >
               Cancelar
             </button>
@@ -254,7 +254,7 @@ export function QuickStockModal({ open, onClose, products }: QuickStockModalProp
               type="submit"
               disabled={!selectedProduct || isPending || isNegative || qty <= 0}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ backgroundColor: "#FF5E14" }}
+              style={{ backgroundColor: "var(--gym-accent)" }}
             >
               {isPending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               Confirmar ajuste

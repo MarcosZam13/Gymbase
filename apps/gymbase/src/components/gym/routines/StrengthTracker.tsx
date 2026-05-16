@@ -22,9 +22,9 @@ const MUSCLE_LABEL: Record<string, string> = {
 };
 
 const MUSCLE_COLOR: Record<string, string> = {
-  chest: "#FF5E14", back: "#38BDF8", shoulders: "#A855F7",
+  chest: "var(--gym-accent)", back: "#38BDF8", shoulders: "#A855F7",
   biceps: "#FACC15", triceps: "#FACC15", legs: "#EF4444",
-  core: "#22C55E", cardio: "#38BDF8", full_body: "#FF5E14",
+  core: "#22C55E", cardio: "#38BDF8", full_body: "var(--gym-accent)",
   quads: "#EF4444", hamstrings: "#EF4444", glutes: "#F97316",
   calves: "#EF4444", forearms: "#FACC15",
 };
@@ -134,7 +134,7 @@ function ExerciseCard({
   onLogRm,
 }: ExerciseCardProps): React.ReactNode {
   const { exercise_id, exercise_name, muscle_group, pr, best1rm, oneRepMaxTests } = entry;
-  const color = muscle_group ? (MUSCLE_COLOR[muscle_group] ?? "#FF5E14") : "#FF5E14";
+  const color = muscle_group ? (MUSCLE_COLOR[muscle_group] ?? "var(--gym-accent)") : "var(--gym-accent)";
 
   // Tab activa en el panel expandido — default a 1RM si hay tests, si no a sesiones
   const [chartTab, setChartTab] = useState<ChartTab>(
@@ -180,9 +180,9 @@ function ExerciseCard({
             onClick={() => onLogRm(exercise_id, exercise_name)}
             style={{
               display: "flex", alignItems: "center", gap: 5,
-              padding: "6px 10px", background: "rgba(255,94,20,0.08)",
-              border: "0.5px solid rgba(255,94,20,0.25)", borderRadius: 8,
-              fontSize: 11, fontWeight: 700, color: "#FF5E14",
+              padding: "6px 10px", background: "color-mix(in srgb, var(--gym-accent) 8%, transparent)",
+              border: "0.5px solid color-mix(in srgb, var(--gym-accent) 25%, transparent)", borderRadius: 8,
+              fontSize: 11, fontWeight: 700, color: "var(--gym-accent)",
               cursor: "pointer", flexShrink: 0, fontFamily: "inherit",
             }}
           >
@@ -195,7 +195,7 @@ function ExerciseCard({
 
         {/* Stats: PR de sesión y mejor 1RM */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-          <div style={{ background: "#0d0d0d", border: "0.5px solid #1e1e1e", borderRadius: 10, padding: "10px 12px" }}>
+          <div style={{ background: "var(--sidebar)", border: "0.5px solid var(--border)", borderRadius: 10, padding: "10px 12px" }}>
             <p style={{ fontSize: 9, fontWeight: 600, color: "#555", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>
               🏆 PR Sesión
             </p>
@@ -210,7 +210,7 @@ function ExerciseCard({
               <p style={{ fontSize: 14, color: "#333", fontWeight: 600 }}>—</p>
             )}
           </div>
-          <div style={{ background: "#0d0d0d", border: "0.5px solid #1e1e1e", borderRadius: 10, padding: "10px 12px" }}>
+          <div style={{ background: "var(--sidebar)", border: "0.5px solid var(--border)", borderRadius: 10, padding: "10px 12px" }}>
             <p style={{ fontSize: 9, fontWeight: 600, color: "#555", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>
               ⚡ Test 1RM
             </p>
@@ -280,7 +280,7 @@ function ExerciseCard({
             <>
               {progressState === "loading" ? (
                 <div style={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: "2px solid #222", borderTopColor: "#FF5E14", animation: "spin 0.8s linear infinite" }} />
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: "2px solid #222", borderTopColor: "var(--gym-accent)", animation: "spin 0.8s linear infinite" }} />
                 </div>
               ) : !hasSessionData ? (
                 <p style={{ fontSize: 12, color: "#333", textAlign: "center", padding: "20px 0" }}>
@@ -291,7 +291,7 @@ function ExerciseCard({
                   {/* Gráfica de progresión en sesiones */}
                   {progressChartPoints.length >= 2 && (
                     <div style={{ background: "#080808", border: "0.5px solid #1a1a1a", borderRadius: 10, padding: "10px 10px 6px", marginBottom: 10 }}>
-                      <MiniLineChart points={progressChartPoints} color="#FF5E14" label={`${exercise_id}-sessions`} />
+                      <MiniLineChart points={progressChartPoints} color="var(--gym-accent)" label={`${exercise_id}-sessions`} />
                     </div>
                   )}
 
@@ -304,7 +304,7 @@ function ExerciseCard({
                       const delta  = prev ? p.max_weight - prev.max_weight : null;
 
                       return (
-                        <div key={p.full_date} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#0d0d0d", border: "0.5px solid #1a1a1a", borderRadius: 8, padding: "7px 10px" }}>
+                        <div key={p.full_date} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "var(--sidebar)", border: "0.5px solid #1a1a1a", borderRadius: 8, padding: "7px 10px" }}>
                           <span style={{ fontSize: 11, color: "#555" }}>{p.date}</span>
                           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                             {delta !== null && (
@@ -313,7 +313,7 @@ function ExerciseCard({
                               </span>
                             )}
                             <span style={{ fontSize: 10, color: "#333" }}>{p.sets_count} series</span>
-                            <span style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed', sans-serif)", fontSize: 16, fontWeight: 700, color: i === 0 ? "#FF5E14" : "#ccc" }}>
+                            <span style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed', sans-serif)", fontSize: 16, fontWeight: 700, color: i === 0 ? "var(--gym-accent)" : "#ccc" }}>
                               {p.max_weight} kg
                             </span>
                           </div>
@@ -334,7 +334,7 @@ function ExerciseCard({
                   <p style={{ fontSize: 12, color: "#333", marginBottom: 12 }}>Sin tests de 1RM registrados</p>
                   <button
                     onClick={() => onLogRm(exercise_id, exercise_name)}
-                    style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "rgba(255,94,20,0.1)", border: "0.5px solid rgba(255,94,20,0.3)", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "#FF5E14", cursor: "pointer", fontFamily: "inherit" }}
+                    style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "color-mix(in srgb, var(--gym-accent) 10%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "var(--gym-accent)", cursor: "pointer", fontFamily: "inherit" }}
                   >
                     Registrar primer test
                   </button>
@@ -351,7 +351,7 @@ function ExerciseCard({
                   {/* Lista completa de tests — no se deduplica porque son tests deliberados */}
                   <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                     {oneRepMaxTests.map((t) => (
-                      <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 8, background: "#0d0d0d", border: "0.5px solid #1a1a1a", borderRadius: 8, padding: "8px 10px" }}>
+                      <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 8, background: "var(--sidebar)", border: "0.5px solid #1a1a1a", borderRadius: 8, padding: "8px 10px" }}>
                         <span style={{ fontSize: 10, color: "#555", minWidth: 48 }}>{formatDate(t.tested_at)}</span>
                         <span style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed', sans-serif)", fontSize: 17, fontWeight: 700, color: t.id === best1rm?.id ? color : "#fff", letterSpacing: "-0.01em" }}>
                           {t.weight_kg} kg
@@ -464,7 +464,7 @@ export function StrengthTracker({ initialTests, initialPRs }: StrengthTrackerPro
           onClick={() => setShowGlobalLogger(true)}
           style={{
             display: "flex", alignItems: "center", gap: 7,
-            padding: "10px 16px", background: "#FF5E14",
+            padding: "10px 16px", background: "var(--gym-accent)",
             border: "none", borderRadius: 12,
             fontSize: 13, fontWeight: 700, color: "#fff",
             cursor: "pointer", flexShrink: 0, fontFamily: "inherit",
@@ -478,23 +478,23 @@ export function StrengthTracker({ initialTests, initialPRs }: StrengthTrackerPro
       </div>
 
       {/* Leyenda explicativa */}
-      <div style={{ background: "rgba(255,94,20,0.04)", border: "0.5px solid rgba(255,94,20,0.15)", borderRadius: 12, padding: "12px 16px", marginBottom: 24, display: "flex", gap: 12, alignItems: "flex-start" }}>
+      <div style={{ background: "color-mix(in srgb, var(--gym-accent) 4%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 15%, transparent)", borderRadius: 12, padding: "12px 16px", marginBottom: 24, display: "flex", gap: 12, alignItems: "flex-start" }}>
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
-          <circle cx="9" cy="9" r="7.5" stroke="#FF5E14" strokeWidth="1.5" />
-          <path d="M9 8v5M9 6.5v-.5" stroke="#FF5E14" strokeWidth="1.8" strokeLinecap="round" />
+          <circle cx="9" cy="9" r="7.5" stroke="var(--gym-accent)" strokeWidth="1.5" />
+          <path d="M9 8v5M9 6.5v-.5" stroke="var(--gym-accent)" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
         <p style={{ fontSize: 12, color: "#666", lineHeight: 1.5 }}>
-          <strong style={{ color: "#FF5E14" }}>PR Sesión</strong> = mejor peso alcanzado en entrenamiento regular.{" "}
-          <strong style={{ color: "#FF5E14" }}>Test 1RM</strong> = repetición máxima deliberada registrada manualmente.
+          <strong style={{ color: "var(--gym-accent)" }}>PR Sesión</strong> = mejor peso alcanzado en entrenamiento regular.{" "}
+          <strong style={{ color: "var(--gym-accent)" }}>Test 1RM</strong> = repetición máxima deliberada registrada manualmente.
         </p>
       </div>
 
       {/* Estado vacío */}
       {isEmpty ? (
         <div style={{ textAlign: "center", padding: "60px 0" }}>
-          <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(255,94,20,0.08)", border: "0.5px solid rgba(255,94,20,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+          <div style={{ width: 56, height: 56, borderRadius: 16, background: "color-mix(in srgb, var(--gym-accent) 8%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M2 14h4M22 14h4M6 14h3V9h4v10h4v-7h4v7" stroke="#FF5E14" strokeWidth="2.2" strokeLinecap="round" />
+              <path d="M2 14h4M22 14h4M6 14h3V9h4v10h4v-7h4v7" stroke="var(--gym-accent)" strokeWidth="2.2" strokeLinecap="round" />
             </svg>
           </div>
           <p style={{ fontSize: 16, fontWeight: 700, color: "#888", marginBottom: 6 }}>Sin datos de rendimiento aún</p>
@@ -503,7 +503,7 @@ export function StrengthTracker({ initialTests, initialPRs }: StrengthTrackerPro
           </p>
           <button
             onClick={() => setShowGlobalLogger(true)}
-            style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", background: "#FF5E14", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, color: "#fff", cursor: "pointer", fontFamily: "inherit" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", background: "var(--gym-accent)", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, color: "#fff", cursor: "pointer", fontFamily: "inherit" }}
           >
             Registrar primer test 1RM
           </button>

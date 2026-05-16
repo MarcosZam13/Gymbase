@@ -107,7 +107,7 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
           <p className="text-xs text-[#555] mt-1">{content.length} recursos en la biblioteca</p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 h-[34px] bg-[#111] border border-[#222] rounded-lg px-3 w-[200px]">
+          <div className="flex items-center gap-2 h-[34px] bg-card border border-[#222] rounded-lg px-3 w-[200px]">
             <Search className="w-3.5 h-3.5 text-[#444] flex-shrink-0" />
             <input
               type="text"
@@ -118,23 +118,23 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
             />
           </div>
           {/* Toggle vista grid/lista */}
-          <div className="flex bg-[#111] border border-[#222] rounded-lg p-0.5">
+          <div className="flex bg-card border border-[#222] rounded-lg p-0.5">
             <button
               onClick={() => setViewMode("grid")}
-              className={`w-7 h-7 flex items-center justify-center rounded-md transition-colors ${viewMode === "grid" ? "bg-[#1e1e1e]" : ""}`}
+              className={`w-7 h-7 flex items-center justify-center rounded-md transition-colors ${viewMode === "grid" ? "bg-border" : ""}`}
             >
               <LayoutGrid className="w-3.5 h-3.5 text-[#666]" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`w-7 h-7 flex items-center justify-center rounded-md transition-colors ${viewMode === "list" ? "bg-[#1e1e1e]" : ""}`}
+              className={`w-7 h-7 flex items-center justify-center rounded-md transition-colors ${viewMode === "list" ? "bg-border" : ""}`}
             >
               <List className="w-3.5 h-3.5 text-[#666]" />
             </button>
           </div>
           <a
             href="/admin/content/new"
-            className="h-[34px] px-3.5 flex items-center gap-1.5 bg-[#FF5E14] hover:bg-[#e5540f] text-white text-xs font-semibold rounded-lg transition-colors"
+            className="h-[34px] px-3.5 flex items-center gap-1.5 bg-primary hover:bg-primary text-white text-xs font-semibold rounded-lg transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
             Nuevo
@@ -160,13 +160,13 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
               return (
                 <div
                   key={item.id}
-                  className={`bg-[#111] border border-[#1a1a1a] rounded-[14px] overflow-hidden transition-all hover:border-[#2a2a2a] flex flex-col ${
+                  className={`bg-card border border-border rounded-[14px] overflow-hidden transition-all hover:border-border flex flex-col ${
                     !item.is_published ? "opacity-60" : ""
                   }`}
                 >
                   {/* Thumbnail / placeholder */}
                   {item.thumbnail_url ? (
-                    <div className="h-[110px] overflow-hidden relative bg-[#1a1a1a]">
+                    <div className="h-[110px] overflow-hidden relative bg-muted">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={item.thumbnail_url}
@@ -177,19 +177,19 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
                         {typeLabel}
                       </span>
                       {newContent && (
-                        <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#FF5E14] text-white">
+                        <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-primary text-white">
                           NUEVO
                         </span>
                       )}
                     </div>
                   ) : (
-                    <div className="h-[110px] bg-[#1a1a1a] flex items-center justify-center relative">
+                    <div className="h-[110px] bg-muted flex items-center justify-center relative">
                       <Icon className={`w-9 h-9 ${iconCls}`} />
                       <span className={`absolute bottom-1.5 left-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold ${badgeCls}`}>
                         {typeLabel}
                       </span>
                       {newContent && (
-                        <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#FF5E14] text-white">
+                        <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-primary text-white">
                           NUEVO
                         </span>
                       )}
@@ -209,7 +209,7 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
                         {item.plan_ids.map((pid) => (
                           <span
                             key={pid}
-                            className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-[rgba(255,94,20,0.1)] text-[#FF5E14] border border-[rgba(255,94,20,0.2)]"
+                            className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-primary/10 text-primary border border-primary/20"
                           >
                             {planMap[pid] ?? "Plan"}
                           </span>
@@ -242,7 +242,7 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
                     {/* Editar */}
                     <a
                       href={`/admin/content/${item.id}/edit`}
-                      className="h-6 w-6 flex items-center justify-center bg-[#161616] border border-[#222] rounded hover:border-[#FF5E14] hover:text-[#FF5E14] text-[#555] transition-colors"
+                      className="h-6 w-6 flex items-center justify-center bg-[#161616] border border-[#222] rounded hover:border-primary hover:text-primary text-[#555] transition-colors"
                     >
                       <Pencil className="w-2.5 h-2.5" />
                     </a>
@@ -264,7 +264,7 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
 
       {/* Vista Lista */}
       {viewMode === "list" && (
-        <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[16px] overflow-hidden">
+        <div className="bg-sidebar border border-border rounded-[16px] overflow-hidden">
           <div className="divide-y divide-[#0f0f0f]">
             {filtered.length === 0 ? (
               <p className="text-center py-12 text-[#444] text-sm">No hay contenido</p>
@@ -278,9 +278,9 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
                 return (
                   <div
                     key={item.id}
-                    className={`flex items-center gap-3 px-4 py-3 hover:bg-[#111] transition-colors ${!item.is_published ? "opacity-60" : ""}`}
+                    className={`flex items-center gap-3 px-4 py-3 hover:bg-card transition-colors ${!item.is_published ? "opacity-60" : ""}`}
                   >
-                    <div className="w-9 h-9 bg-[#1a1a1a] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-9 h-9 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
                       <Icon className={`w-4 h-4 ${iconCls}`} />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -294,7 +294,7 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
                           {item.plan_ids.map((pid) => (
                             <span
                               key={pid}
-                              className="px-1 py-px rounded text-[9px] font-medium bg-[rgba(255,94,20,0.1)] text-[#FF5E14]"
+                              className="px-1 py-px rounded text-[9px] font-medium bg-primary/10 text-primary"
                             >
                               {planMap[pid] ?? "Plan"}
                             </span>
@@ -319,7 +319,7 @@ export function GymContentClient({ initialContent, plans }: GymContentClientProp
                       </button>
                       <a
                         href={`/admin/content/${item.id}/edit`}
-                        className="h-6 w-6 flex items-center justify-center bg-[#161616] border border-[#222] rounded hover:border-[#FF5E14] hover:text-[#FF5E14] text-[#555] transition-colors"
+                        className="h-6 w-6 flex items-center justify-center bg-[#161616] border border-[#222] rounded hover:border-primary hover:text-primary text-[#555] transition-colors"
                       >
                         <Pencil className="w-3 h-3" />
                       </a>

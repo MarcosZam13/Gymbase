@@ -15,15 +15,15 @@ interface HealthMetricsFormProps {
   profile: HealthProfile | null;
 }
 
-const inputCls = "w-full h-9 bg-[#0d0d0d] border border-[#222] rounded-lg px-3 text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-[#FF5E14] focus:outline-none transition-colors";
+const inputCls = "w-full h-9 bg-sidebar border border-[#222] rounded-lg px-3 text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-primary focus:outline-none transition-colors";
 const labelCls = "block text-[10px] font-semibold text-[#555] uppercase tracking-[0.07em] mb-1.5";
-const textareaCls = "w-full bg-[#0d0d0d] border border-[#222] rounded-lg px-3 py-2 text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-[#FF5E14] focus:outline-none transition-colors resize-none";
-const selectCls = "w-full h-9 bg-[#0d0d0d] border border-[#222] rounded-lg px-3 text-sm text-[#ddd] focus:border-[#FF5E14] focus:outline-none transition-colors appearance-none";
+const textareaCls = "w-full bg-sidebar border border-[#222] rounded-lg px-3 py-2 text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-primary focus:outline-none transition-colors resize-none";
+const selectCls = "w-full h-9 bg-sidebar border border-[#222] rounded-lg px-3 text-sm text-[#ddd] focus:border-primary focus:outline-none transition-colors appearance-none";
 
 const AdminBadge = () => (
   <span
     className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-medium"
-    style={{ backgroundColor: "#FF5E1415", color: "#FF5E14", border: "1px solid #FF5E1430" }}
+    style={{ backgroundColor: "var(--gym-accent-dim)", color: "var(--gym-accent)", border: "1px solid var(--gym-accent-dim)" }}
   >
     <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
@@ -157,7 +157,7 @@ export function HealthMetricsForm({ userId, profile }: HealthMetricsFormProps): 
         type="submit"
         disabled={isSubmitting}
         className="w-full h-9 rounded-lg text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-opacity disabled:opacity-50"
-        style={{ backgroundColor: "#FF5E14", color: "white" }}
+        style={{ backgroundColor: "var(--gym-accent)", color: "white" }}
       >
         {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
         {profile ? "Actualizar perfil" : "Crear perfil"}

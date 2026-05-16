@@ -11,7 +11,7 @@ import {
 import { getMemberById } from "@/actions/admin.actions";
 import { formatDate, formatPrice } from "@/lib/utils";
 import { fromOpaqueId, toOpaqueId } from "@/lib/utils/opaque-id";
-import { getHealthProfile, getHealthHistory, getProgressPhotos } from "@/actions/health.actions";
+import { getHealthProfile, getHealthHistory } from "@/actions/health.actions";
 import { getRoutines, getMemberActiveRoutine, getMemberRoutineStack, getRoutineById } from "@/actions/routine.actions";
 import { getMemberPRsAdmin } from "@/actions/workout.actions";
 import { getMemberAttendanceLogs, getMemberAttendanceLogsPaginated } from "@/actions/checkin.actions";
@@ -19,7 +19,6 @@ import { AttendancePaginatedTable } from "@/components/gym/members/AttendancePag
 import { HealthMetricsForm } from "@/components/gym/health/HealthMetricsForm";
 import { SnapshotForm } from "@/components/gym/health/SnapshotForm";
 import { HealthChartCard } from "@/components/gym/health/HealthChartCard";
-import { ProgressPhotoUpload } from "@/components/gym/health/ProgressPhotoUpload";
 import { RoutineDayAccordion } from "@/components/gym/routines/RoutineDayAccordion";
 import { MemberRoutineStack } from "@/components/gym/routines/MemberRoutineStack";
 import { MemberProfileEditForm } from "@/components/gym/members/MemberProfileEditForm";
@@ -32,7 +31,7 @@ import type { SubscriptionStatus } from "@/types/database";
 // Genera color de avatar basado en hash del userId
 function avatarColor(id: string): { bg: string; text: string; border: string } {
   const PALETTES = [
-    { bg: "#1e0f06", text: "#FF5E14", border: "#FF5E1430" },
+    { bg: "color-mix(in srgb, var(--gym-accent) 4%, transparent)", text: "var(--gym-accent)", border: "color-mix(in srgb, var(--gym-accent) 19%, transparent)" },
     { bg: "#0d1a0d", text: "#22C55E", border: "#22C55E30" },
     { bg: "#0d0d2a", text: "#818CF8", border: "#818CF830" },
     { bg: "#1a0d1a", text: "#E879F9", border: "#E879F930" },
@@ -96,7 +95,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
   const statusCfg = STATUS_CONFIG[status];
 
   // Cargar todos los datos en paralelo según módulos activos y pestaña
-  const [healthProfile, healthSnapshots, routines, memberRoutineStack, memberActiveRoutine, memberLogs, memberPayments, membershipPlans, progressPhotos, memberPRs, attendanceFirstPage] =
+  const [healthProfile, healthSnapshots, routines, memberRoutineStack, memberActiveRoutine, memberLogs, memberPayments, membershipPlans, memberPRs, attendanceFirstPage] =
     await Promise.all([
       themeConfig.features.gym_health_metrics ? getHealthProfile(id) : Promise.resolve(null),
       themeConfig.features.gym_health_metrics ? getHealthHistory(id, 50) : Promise.resolve([]),
@@ -106,7 +105,6 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
       getMemberAttendanceLogs(id),   // logs completos para heatmap y stats
       getMemberPayments(id),
       getPlans(true),
-      themeConfig.features.gym_progress ? getProgressPhotos(id) : Promise.resolve([]),
       themeConfig.features.gym_routines ? getMemberPRsAdmin(id) : Promise.resolve([]),
       getMemberAttendanceLogsPaginated(id, 1, 20), // primera página para la tabla
     ]);
@@ -185,7 +183,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
   const membershipBarColor =
     membershipRemainingRatio <= 0.1 ? "#EF4444" :
     membershipRemainingRatio <= 0.3 ? "#F59E0B" :
-    "#FF5E14";
+    "var(--gym-accent)";
 
   // Días hasta vencimiento para la alerta en el tab de pagos
   const daysUntilExpiry = sub?.expires_at
@@ -321,7 +319,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
 
       {/* Header del perfil */}
       <div
-        className="flex items-start gap-4 p-4 bg-[#111] border border-[#1e1e1e] rounded-[14px]"
+        className="flex items-start gap-4 p-4 bg-card border border-border rounded-[14px]"
       >
         {/* Avatar grande — foto real si existe, iniciales de hash como fallback */}
         <div
@@ -359,12 +357,12 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
       {/* 4-stat mini-grid */}
       <div className="grid grid-cols-4 gap-2">
         {[
-          { val: monthAttendance, lbl: "Asistencias", color: "#FF5E14" },
+          { val: monthAttendance, lbl: "Asistencias", color: "var(--gym-accent)" },
           { val: streak, lbl: "Racha actual", color: "#fff" },
           { val: 0, lbl: "Retos", color: "#fff" },
-          { val: currentWeight ? `${currentWeight}kg` : "—", lbl: "Peso", color: "#FF5E14" },
+          { val: currentWeight ? `${currentWeight}kg` : "—", lbl: "Peso", color: "var(--gym-accent)" },
         ].map(({ val, lbl, color }) => (
-          <div key={lbl} className="bg-[#111] border border-[#1a1a1a] rounded-[12px] p-3 text-center">
+          <div key={lbl} className="bg-card border border-border rounded-[12px] p-3 text-center">
             <p className="text-[22px] font-bold font-barlow leading-none tracking-tight" style={{ color }}>
               {val}
             </p>
@@ -374,14 +372,14 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
       </div>
 
       {/* Tabs de navegación */}
-      <div className="flex gap-0.5 bg-[#111] border border-[#1a1a1a] rounded-[12px] p-1">
+      <div className="flex gap-0.5 bg-card border border-border rounded-[12px] p-1">
         {TABS.map(({ key, label }) => (
           <Link
             key={key}
             href={`/admin/members/${opaqueId}?tab=${key}`}
             className={`flex-1 h-8 rounded-[8px] flex items-center justify-center text-[11px] font-medium transition-colors ${
               tab === key
-                ? "bg-[#1e1e1e] text-white"
+                ? "bg-border text-white"
                 : "text-[#555] hover:text-[#888]"
             }`}
           >
@@ -398,11 +396,11 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
           <div className="lg:col-span-2 space-y-3">
 
             {/* Card: Membresía */}
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
+            <div className="bg-card border border-border rounded-[14px] p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-1.5">
-                  <CreditCard className="w-3.5 h-3.5 text-[#FF5E14]" />
-                  <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+                  <CreditCard className="w-3.5 h-3.5 text-primary" />
+                  <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                     Membresía
                   </p>
                 </div>
@@ -438,11 +436,11 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
 
                   {/* Fechas de inicio y vencimiento */}
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5">
+                    <div className="bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5">
                       <p className="text-[9px] text-[#444] uppercase tracking-[0.07em] mb-0.5">Inicio</p>
                       <p className="text-[13px] text-[#ccc] font-medium">{formatDate(sub.starts_at ?? null)}</p>
                     </div>
-                    <div className="bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5">
+                    <div className="bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5">
                       <p className="text-[9px] text-[#444] uppercase tracking-[0.07em] mb-0.5">Vencimiento</p>
                       <p className="text-[13px] text-[#ccc] font-medium">{formatDate(sub.expires_at ?? null)}</p>
                     </div>
@@ -454,10 +452,10 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
             </div>
 
             {/* Card: Últimas asistencias */}
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
+            <div className="bg-card border border-border rounded-[14px] p-4">
               <div className="flex items-center gap-1.5 mb-3">
-                <Clock className="w-3.5 h-3.5 text-[#FF5E14]" />
-                <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+                <Clock className="w-3.5 h-3.5 text-primary" />
+                <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                   Últimas asistencias
                 </p>
               </div>
@@ -483,7 +481,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
               <div className="mt-2 pt-2 border-t border-[#161616]">
                 <Link
                   href={`/admin/members/${opaqueId}?tab=attendance`}
-                  className="text-[11px] text-[#555] hover:text-[#FF5E14] transition-colors"
+                  className="text-[11px] text-[#555] hover:text-primary transition-colors"
                 >
                   Ver todas →
                 </Link>
@@ -496,10 +494,10 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
 
             {/* Card: Rutina activa */}
             {themeConfig.features.gym_routines && (
-              <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
+              <div className="bg-card border border-border rounded-[14px] p-4">
                 <div className="flex items-center gap-1.5 mb-3">
-                  <Dumbbell className="w-3.5 h-3.5 text-[#FF5E14]" />
-                  <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+                  <Dumbbell className="w-3.5 h-3.5 text-primary" />
+                  <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                     Rutina activa
                   </p>
                 </div>
@@ -518,7 +516,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                     </div>
                     <Link
                       href={`/admin/routines/${toOpaqueId(memberActiveRoutine.routine_id)}`}
-                      className="flex items-center justify-center h-7 w-full text-[11px] font-medium bg-[#1a1a1a] border border-[#2a2a2a] text-[#888] rounded-lg hover:text-white transition-colors"
+                      className="flex items-center justify-center h-7 w-full text-[11px] font-medium bg-muted border border-border text-[#888] rounded-lg hover:text-white transition-colors"
                     >
                       Ver rutina →
                     </Link>
@@ -528,7 +526,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                     <p className="text-[12px] text-[#555]">Sin rutina asignada</p>
                     <Link
                       href={`/admin/members/${opaqueId}?tab=routine`}
-                      className="flex items-center justify-center h-7 w-full text-[11px] font-medium bg-[#1a1a1a] border border-[#2a2a2a] text-[#888] rounded-lg hover:text-white transition-colors"
+                      className="flex items-center justify-center h-7 w-full text-[11px] font-medium bg-muted border border-border text-[#888] rounded-lg hover:text-white transition-colors"
                     >
                       Asignar rutina →
                     </Link>
@@ -538,16 +536,16 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
             )}
 
             {/* Card: Información personal */}
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
+            <div className="bg-card border border-border rounded-[14px] p-4">
               <div className="flex items-center gap-1.5 mb-3">
-                <User className="w-3.5 h-3.5 text-[#FF5E14]" />
-                <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+                <User className="w-3.5 h-3.5 text-primary" />
+                <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                   Información
                 </p>
               </div>
 
               <div className="space-y-1.5">
-                <div className="bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5">
+                <div className="bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5">
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <Mail className="w-3 h-3 text-[#444]" />
                     <p className="text-[9px] text-[#444] uppercase tracking-[0.07em]">Email</p>
@@ -555,7 +553,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                   <p className="text-[12px] text-[#ccc] font-medium truncate">{member.email}</p>
                 </div>
 
-                <div className="bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5">
+                <div className="bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5">
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <Phone className="w-3 h-3 text-[#444]" />
                     <p className="text-[9px] text-[#444] uppercase tracking-[0.07em]">Teléfono</p>
@@ -563,7 +561,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                   <p className="text-[12px] text-[#ccc] font-medium">{member.phone ?? "Sin teléfono"}</p>
                 </div>
 
-                <div className="bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5">
+                <div className="bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5">
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <Calendar className="w-3 h-3 text-[#444]" />
                     <p className="text-[9px] text-[#444] uppercase tracking-[0.07em]">Miembro desde</p>
@@ -571,11 +569,11 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                   <p className="text-[12px] text-[#ccc] font-medium">{formatDate(member.created_at)}</p>
                 </div>
 
-                <div className="bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2.5">
+                <div className="bg-sidebar border border-[#161616] rounded-lg px-3 py-2.5">
                   <p className="text-[9px] text-[#444] uppercase tracking-[0.07em] mb-1">Rol</p>
                   <span
                     className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium"
-                    style={{ backgroundColor: "#FF5E1420", color: "#FF5E14", border: "1px solid #FF5E1440" }}
+                    style={{ backgroundColor: "var(--gym-accent-dim)", color: "var(--gym-accent)", border: "1px solid var(--gym-accent-dim)" }}
                   >
                     <Shield className="w-3 h-3" />
                     {member.role === "owner" ? "Owner" : member.role === "admin" ? "Administrador" : "Miembro"}
@@ -608,9 +606,9 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
               { label: "Día favorito",  value: favDay ? favDay.charAt(0).toUpperCase() + favDay.slice(1) : "—", accent: false },
               { label: "Hora favorita", value: favHourLabel ?? "—",     accent: false },
             ].map(({ label, value, accent }) => (
-              <div key={label} className="bg-[#111] border border-[#1a1a1a] rounded-[12px] px-3 py-3 text-center">
+              <div key={label} className="bg-card border border-border rounded-[12px] px-3 py-3 text-center">
                 <p className="text-[10px] text-[#444] uppercase tracking-[0.07em] mb-1">{label}</p>
-                <p className={`text-[16px] font-bold font-barlow ${accent ? "text-[#FF5E14]" : "text-[#ccc]"}`}>
+                <p className={`text-[16px] font-bold font-barlow ${accent ? "text-primary" : "text-[#ccc]"}`}>
                   {value}
                 </p>
               </div>
@@ -618,8 +616,8 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
           </div>
 
           {/* Sección 2 — Gráfica de barras: asistencias por mes (últimos 6 meses) */}
-          <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
-            <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em] mb-4">
+          <div className="bg-card border border-border rounded-[14px] p-4">
+            <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em] mb-4">
               Asistencias por mes
             </p>
             <div className="flex items-end gap-2 h-24">
@@ -637,8 +635,8 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                         className="w-full rounded-[4px] transition-all"
                         style={{
                           height: `${heightPct}%`,
-                          backgroundColor: isCurrentMonth ? "#FF5E14" : "#1e1e1e",
-                          border: isCurrentMonth ? "1px solid #FF5E1460" : "1px solid #222",
+                          backgroundColor: isCurrentMonth ? "var(--gym-accent)" : "var(--border)",
+                          border: isCurrentMonth ? "1px solid color-mix(in srgb, var(--gym-accent) 38%, transparent)" : "1px solid #222",
                         }}
                       />
                       <span className="text-[9px] text-[#444] capitalize">{month}</span>
@@ -656,9 +654,9 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
           </div>
 
           {/* Sección 3 — Heatmap anual estilo GitHub (52 semanas × 7 días) */}
-          <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
+          <div className="bg-card border border-border rounded-[14px] p-4">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+              <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                 Actividad del último año
               </p>
               <p className="text-[10px] text-[#444]">
@@ -736,9 +734,9 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                                 backgroundColor: isFuture
                                   ? "transparent"
                                   : attended
-                                  ? "#FF5E14"
+                                  ? "var(--gym-accent)"
                                   : "#1a1a1a",
-                                border: isToday ? "1px solid #FF5E14" : "none",
+                                border: isToday ? "1px solid var(--gym-accent)" : "none",
                                 opacity: isFuture ? 0 : 1,
                               }}
                             />
@@ -751,7 +749,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                   {/* Leyenda */}
                   <div className="flex items-center gap-2 mt-2 justify-end">
                     <span className="text-[8px] text-[#444]">Menos</span>
-                    {["#1a1a1a", "#FF5E1440", "#FF5E1480", "#FF5E14"].map((color) => (
+                    {["#1a1a1a", "color-mix(in srgb, var(--gym-accent) 25%, transparent)", "color-mix(in srgb, var(--gym-accent) 50%, transparent)", "var(--gym-accent)"].map((color) => (
                       <div
                         key={color}
                         style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: color }}
@@ -787,14 +785,14 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                   value: healthProfile.weight_kg ? `${healthProfile.weight_kg} kg` : "—",
                   delta: weightDelta,
                   deltaUnit: "kg",
-                  accentColor: "#FF5E14",
+                  accentColor: "var(--gym-accent)",
                 },
                 {
                   label: "Grasa corporal",
                   value: healthProfile.body_fat_pct ? `${healthProfile.body_fat_pct}%` : "—",
                   delta: fatDelta,
                   deltaUnit: "%",
-                  accentColor: "#FF5E14",
+                  accentColor: "var(--gym-accent)",
                 },
                 {
                   label: "Masa muscular",
@@ -808,10 +806,10 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                   value: healthProfile.bmi ? `${healthProfile.bmi}` : "—",
                   delta: null,
                   deltaUnit: "",
-                  accentColor: "#FF5E14",
+                  accentColor: "var(--gym-accent)",
                 },
               ].map(({ label, value, delta, deltaUnit, accentColor }) => (
-                <div key={label} className="bg-[#111] border border-[#1a1a1a] rounded-[12px] px-3 py-3">
+                <div key={label} className="bg-card border border-border rounded-[12px] px-3 py-3">
                   <p className="text-[9px] text-[#444] uppercase tracking-[0.07em] mb-1">{label}</p>
                   <p className="text-[18px] font-bold font-barlow leading-none" style={{ color: accentColor }}>
                     {value}
@@ -832,7 +830,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
               {weightPoints.length >= 1 && (
                 <HealthChartCard
                   points={weightPoints}
-                  color="#FF5E14"
+                  color="var(--gym-accent)"
                   unit="kg"
                   label="weight"
                   title="Peso (kg)"
@@ -861,7 +859,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
 
           {/* Estado vacío si no hay ningún snapshot registrado */}
           {healthSnapshots.length === 0 && (
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-8 text-center">
+            <div className="bg-card border border-border rounded-[14px] p-8 text-center">
               <p className="text-[12px] text-[#444]">
                 Sin mediciones registradas — las gráficas aparecerán aquí
               </p>
@@ -870,14 +868,14 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
 
           {/* Sección 3 — Formularios: perfil base y nuevo snapshot */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4 space-y-3">
-              <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+            <div className="bg-card border border-border rounded-[14px] p-4 space-y-3">
+              <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                 Perfil de salud
               </p>
               <HealthMetricsForm userId={id} profile={healthProfile} />
             </div>
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4 space-y-3">
-              <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+            <div className="bg-card border border-border rounded-[14px] p-4 space-y-3">
+              <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                 Registrar medición
               </p>
               <SnapshotForm userId={id} />
@@ -886,15 +884,15 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
 
           {/* Sección 4 — Timeline de snapshots */}
           {healthSnapshots.length > 0 && (
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] overflow-hidden">
-              <div className="px-4 py-3 border-b border-[#1a1a1a] flex items-center justify-between">
-                <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+            <div className="bg-card border border-border rounded-[14px] overflow-hidden">
+              <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+                <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                   Historial de mediciones
                 </p>
                 <span className="text-[10px] text-[#444]">{healthSnapshots.length} registros</span>
               </div>
 
-              <div className="divide-y divide-[#0d0d0d]">
+              <div className="divide-y divide-border">
                 {healthSnapshots.map((snap, i) => {
                   // Los snapshots vienen desc; el siguiente índice es la medición anterior
                   const prev = healthSnapshots[i + 1];
@@ -910,7 +908,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                       <div className="flex items-start justify-between gap-4">
                         {/* Fecha y notas del snapshot */}
                         <div className="flex items-start gap-3">
-                          <div className="w-1.5 h-1.5 rounded-full bg-[#FF5E14] mt-1.5 shrink-0" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
                           <div>
                             <p className="text-[12px] font-medium text-[#ccc]">
                               {new Date(snap.recorded_at).toLocaleDateString("es-CR", {
@@ -926,7 +924,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                         {/* Métricas con delta vs snapshot anterior */}
                         <div className="flex items-center gap-4 shrink-0">
                           <div className="text-right">
-                            <p className="text-[13px] font-semibold font-barlow text-[#FF5E14]">
+                            <p className="text-[13px] font-semibold font-barlow text-primary">
                               {snap.weight_kg} kg
                             </p>
                             {weightChange !== null && (
@@ -971,83 +969,6 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
             </div>
           )}
 
-          {/* Sección 5 — Fotos de progreso (condicionada al feature flag gym_progress) */}
-          {themeConfig.features.gym_progress && (
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4 space-y-4">
-              <div className="flex items-center justify-between">
-                <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
-                  Fotos de progreso
-                </p>
-                <ProgressPhotoUpload memberId={id} />
-              </div>
-
-              {progressPhotos.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <p className="text-[12px] text-[#444]">Sin fotos registradas</p>
-                  <p className="text-[10px] text-[#333] mt-1">
-                    Agrega fotos front / side / back para comparar la evolución
-                  </p>
-                </div>
-              ) : (
-                // Agrupar fotos por fecha (taken_at)
-                (() => {
-                  const grouped = progressPhotos.reduce<Record<string, typeof progressPhotos>>(
-                    (acc, p) => {
-                      const key = new Date(p.taken_at).toLocaleDateString("es-CR", {
-                        day: "numeric", month: "long", year: "numeric",
-                      });
-                      if (!acc[key]) acc[key] = [];
-                      acc[key].push(p);
-                      return acc;
-                    },
-                    {}
-                  );
-
-                  return Object.entries(grouped).map(([dateLabel, photos]) => (
-                    <div key={dateLabel} className="space-y-2">
-                      <p className="text-[10px] text-[#555] uppercase tracking-[0.06em]">{dateLabel}</p>
-                      <div className="grid grid-cols-3 gap-2">
-                        {(["front", "side", "back"] as const).map((type) => {
-                          const photo = photos.find((p) => p.photo_type === type);
-                          const typeLabel = { front: "Frente", side: "Lado", back: "Espalda" }[type];
-                          return (
-                            <div
-                              key={type}
-                              className="aspect-[3/4] relative rounded-[10px] overflow-hidden"
-                              style={{ backgroundColor: "#0d0d0d", border: "1px solid #1a1a1a" }}
-                            >
-                              {photo ? (
-                                <>
-                                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img
-                                    src={photo.photo_url}
-                                    alt={`${typeLabel} — ${dateLabel}`}
-                                    className="w-full h-full object-cover"
-                                  />
-                                  <div
-                                    className="absolute bottom-0 left-0 right-0 px-2 py-1"
-                                    style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.7))" }}
-                                  >
-                                    <p className="text-[9px] text-white font-medium">{typeLabel}</p>
-                                  </div>
-                                </>
-                              ) : (
-                                <div className="w-full h-full flex flex-col items-center justify-center gap-1">
-                                  <p className="text-[9px] text-[#333]">{typeLabel}</p>
-                                  <p className="text-[8px] text-[#272727]">Sin foto</p>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ));
-                })()
-              )}
-            </div>
-          )}
-
         </div>
       )}
 
@@ -1060,10 +981,10 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
             {memberActiveRoutine && activeRoutineDetail ? (
               <>
                 {/* Card: header, stats y grupos musculares de la rutina destacada */}
-                <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
+                <div className="bg-card border border-border rounded-[14px] p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em] mb-1">
+                      <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em] mb-1">
                         Rutina destacada
                       </p>
                       <p className="text-[17px] font-bold font-barlow text-white leading-tight">
@@ -1075,9 +996,9 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                     </div>
                     <span
                       className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium shrink-0"
-                      style={{ backgroundColor: "#FF5E1420", color: "#FF5E14", border: "1px solid #FF5E1430" }}
+                      style={{ backgroundColor: "var(--gym-accent-dim)", color: "var(--gym-accent)", border: "1px solid var(--gym-accent-dim)" }}
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5E14]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                       Destacada
                     </span>
                   </div>
@@ -1090,8 +1011,8 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                         { label: "Ejercicios",  value: routineStats.totalExercises },
                         { label: "Series tot.", value: routineStats.totalSets },
                       ].map(({ label, value }) => (
-                        <div key={label} className="bg-[#0d0d0d] border border-[#161616] rounded-lg px-3 py-2 text-center">
-                          <p className="text-[16px] font-bold font-barlow text-[#FF5E14]">{value}</p>
+                        <div key={label} className="bg-sidebar border border-[#161616] rounded-lg px-3 py-2 text-center">
+                          <p className="text-[16px] font-bold font-barlow text-primary">{value}</p>
                           <p className="text-[9px] text-[#444] uppercase tracking-[0.06em]">{label}</p>
                         </div>
                       ))}
@@ -1105,7 +1026,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                         <span
                           key={mg}
                           className="px-2 py-0.5 rounded-full text-[9px] font-medium"
-                          style={{ backgroundColor: "#FF5E1415", color: "#FF5E14", border: "1px solid #FF5E1425" }}
+                          style={{ backgroundColor: "var(--gym-accent-dim)", color: "var(--gym-accent)", border: "1px solid var(--gym-accent-dim)" }}
                         >
                           {MUSCLE_LABELS[mg] ?? mg}
                         </span>
@@ -1114,10 +1035,10 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                   )}
 
                   {/* Link a rutina completa + fecha de asignación */}
-                  <div className="mt-3 pt-3 border-t border-[#1a1a1a] flex items-center gap-3">
+                  <div className="mt-3 pt-3 border-t border-border flex items-center gap-3">
                     <Link
                       href={`/admin/routines/${toOpaqueId(memberActiveRoutine.routine_id)}`}
-                      className="text-[11px] text-[#FF5E14] hover:underline"
+                      className="text-[11px] text-primary hover:underline"
                     >
                       Ver rutina completa →
                     </Link>
@@ -1128,13 +1049,13 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                 </div>
 
                 {/* Acordeón de días con ejercicios de la rutina destacada */}
-                <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] overflow-hidden">
-                  <div className="px-4 py-3 border-b border-[#1a1a1a]">
-                    <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+                <div className="bg-card border border-border rounded-[14px] overflow-hidden">
+                  <div className="px-4 py-3 border-b border-border">
+                    <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                       Días de la rutina
                     </p>
                   </div>
-                  <div className="divide-y divide-[#0d0d0d]">
+                  <div className="divide-y divide-border">
                     {(activeRoutineDetail.days ?? [])
                       .sort((a, b) => a.day_number - b.day_number)
                       .map((day) => (
@@ -1145,7 +1066,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
               </>
             ) : (
               /* Estado vacío: el miembro no tiene ninguna rutina destacada */
-              <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-8 text-center">
+              <div className="bg-card border border-border rounded-[14px] p-8 text-center">
                 <p className="text-[13px] text-[#555] mb-1">Sin rutina destacada</p>
                 <p className="text-[11px] text-[#333]">Asigna rutinas desde el panel derecho</p>
               </div>
@@ -1168,9 +1089,9 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
       {/* Tab: Rutina — sección PRs del miembro (debajo del grid principal) */}
       {tab === "routine" && themeConfig.features.gym_routines && (
         <div className="mt-3">
-          <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] overflow-hidden">
-            <div className="px-4 py-3 border-b border-[#1a1a1a] flex items-center justify-between">
-              <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+          <div className="bg-card border border-border rounded-[14px] overflow-hidden">
+            <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+              <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                 Records personales
               </p>
               <span className="text-[10px] text-[#444]">{memberPRs.length} ejercicios</span>
@@ -1188,7 +1109,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                 {memberPRs.map((pr) => (
                   <div
                     key={pr.id}
-                    className="bg-[#0d0d0d] border border-[#161616] rounded-[12px] p-3"
+                    className="bg-sidebar border border-[#161616] rounded-[12px] p-3"
                   >
                     <div className="flex items-start justify-between gap-1 mb-2">
                       <p className="text-[11px] font-semibold text-[#ccc] leading-tight line-clamp-2">
@@ -1196,7 +1117,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                       </p>
                       <span
                         className="text-[8px] font-medium px-1.5 py-0.5 rounded-full shrink-0"
-                        style={{ backgroundColor: "#FF5E1415", color: "#FF5E14", border: "1px solid #FF5E1425" }}
+                        style={{ backgroundColor: "var(--gym-accent-dim)", color: "var(--gym-accent)", border: "1px solid var(--gym-accent-dim)" }}
                       >
                         PR
                       </span>
@@ -1207,7 +1128,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                           (pr.exercise as { name: string; muscle_group: string | null }).muscle_group}
                       </p>
                     )}
-                    <p className="text-[20px] font-bold font-barlow text-[#FF5E14] leading-none">
+                    <p className="text-[20px] font-bold font-barlow text-primary leading-none">
                       {pr.max_weight ?? "—"} <span className="text-[13px] font-normal text-[#666]">kg</span>
                     </p>
                     <p className="text-[9px] text-[#444] mt-1">
@@ -1229,9 +1150,9 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
 
           {/* Card: estado actual de membresía */}
           {sub ? (
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4 space-y-3">
+            <div className="bg-card border border-border rounded-[14px] p-4 space-y-3">
               <div className="flex items-center justify-between">
-                <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+                <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
                   Membresía actual
                 </p>
                 <span
@@ -1251,7 +1172,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
               {/* Barra de progreso: días consumidos vs duración total del plan */}
               {membershipTotalDays > 0 && (
                 <div className="space-y-1">
-                  <div className="h-1.5 w-full bg-[#1a1a1a] rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all"
                       style={{ width: `${membershipProgressPct}%`, backgroundColor: membershipBarColor }}
@@ -1281,14 +1202,14 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
               )}
             </div>
           ) : (
-            <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
+            <div className="bg-card border border-border rounded-[14px] p-4">
               <p className="text-[12px] text-[#555]">Sin membresía registrada</p>
             </div>
           )}
 
           {/* Header con botón de pago manual */}
           <div className="flex items-center justify-between">
-            <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+            <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
               Historial de pagos
             </p>
             {sub && membershipPlans.length > 0 && (
@@ -1302,7 +1223,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
           </div>
 
           {/* Tabla de pagos: Fecha / Plan / Monto / Método / Estado / Comprobante */}
-          <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] overflow-hidden">
+          <div className="bg-card border border-border rounded-[14px] overflow-hidden">
             {memberPayments.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <Receipt className="w-8 h-8 text-[#333] mb-2" />
@@ -1311,7 +1232,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
             ) : (
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[#1a1a1a]">
+                  <tr className="border-b border-border">
                     {["Fecha", "Plan", "Monto", "Método", "Estado", "Comprobante"].map((h) => (
                       <th
                         key={h}
@@ -1375,7 +1296,7 @@ export default async function MemberDetailPage({ params, searchParams }: MemberD
                               href={payment.file_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[10px] text-[#FF5E14] hover:underline"
+                              className="text-[10px] text-primary hover:underline"
                             >
                               Ver
                             </a>

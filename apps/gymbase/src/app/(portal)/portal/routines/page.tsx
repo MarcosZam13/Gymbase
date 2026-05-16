@@ -15,9 +15,9 @@ export default async function PortalRoutinesPage(): Promise<React.ReactNode> {
   if (memberRoutines.length === 0) {
     return (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 400, gap: 12 }}>
-        <div style={{ width: 48, height: 48, borderRadius: 14, background: "rgba(255,94,20,0.08)", border: "0.5px solid rgba(255,94,20,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 48, height: 48, borderRadius: 14, background: "color-mix(in srgb, var(--gym-accent) 8%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M2 12h3M19 12h3M5 12h3v-3h3v6h3v-4h3v4" stroke="#FF5E14" strokeWidth="2" strokeLinecap="round" />
+            <path d="M2 12h3M19 12h3M5 12h3v-3h3v6h3v-4h3v4" stroke="var(--gym-accent)" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </div>
         <p style={{ fontSize: 16, fontWeight: 600, color: "#888" }}>Sin rutinas asignadas</p>

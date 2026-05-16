@@ -31,7 +31,7 @@ const BLOCK_GAP = 2;
 export function ClassBlock({ scheduledClass, myBooking, top, height, col, totalCols, isAdmin = false }: ClassBlockProps): React.ReactNode {
   const [isLoading, setIsLoading] = useState(false);
 
-  const color = scheduledClass.class_type?.color ?? "#FF5E14";
+  const color = scheduledClass.class_type?.color ?? "var(--gym-accent)";
   const localStart = utcToLocalDate(scheduledClass.starts_at);
   const localEnd = utcToLocalDate(scheduledClass.ends_at);
   const pad = (n: number): string => String(n).padStart(2, "0");

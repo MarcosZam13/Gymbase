@@ -131,9 +131,9 @@ export function WeekView({ classes, myBookings, weekStart }: WeekViewProps): Rea
   const totalGridHeight = HOURS.length * HOUR_HEIGHT;
 
   return (
-    <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[18px] overflow-hidden">
+    <div className="bg-sidebar border border-border rounded-[18px] overflow-hidden">
       {/* Encabezado con días */}
-      <div className="grid border-b border-[#1a1a1a]" style={{ gridTemplateColumns: "52px repeat(7, 1fr)" }}>
+      <div className="grid border-b border-border" style={{ gridTemplateColumns: "52px repeat(7, 1fr)" }}>
         <div className="border-r border-[#111]" />
         {days.map((day, i) => {
           // dateKey en la zona horaria del gym para comparar con todayKey
@@ -146,7 +146,7 @@ export function WeekView({ classes, myBookings, weekStart }: WeekViewProps): Rea
               <div className="text-[10px] text-[#555] uppercase font-semibold tracking-[0.06em]">
                 {DOW_SHORT[i]}
               </div>
-              <div className={`text-[20px] font-bold leading-tight mt-0.5 font-barlow ${isToday ? "text-[#FF5E14]" : "text-white"}`}>
+              <div className={`text-[20px] font-bold leading-tight mt-0.5 font-barlow ${isToday ? "text-primary" : "text-white"}`}>
                 {dayNumber}
               </div>
             </div>
@@ -183,7 +183,7 @@ export function WeekView({ classes, myBookings, weekStart }: WeekViewProps): Rea
             return (
               <div
                 key={i}
-                className={`relative border-r border-[#111] last:border-r-0 ${isToday ? "bg-[rgba(255,94,20,0.015)]" : ""}`}
+                className={`relative border-r border-[#111] last:border-r-0 ${isToday ? "bg-primary/[1.5%]" : ""}`}
                 style={{ height: totalGridHeight }}
               >
                 {/* Líneas de hora */}

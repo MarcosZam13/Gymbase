@@ -5,8 +5,6 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient, getCurrentUser, getOrgId, createAdminClient } from "@/lib/supabase/server";
-import { DEFAULT_ORG_CONFIG } from "@/types/org-config";
-import type { OrgConfig } from "@/types/org-config";
 import type { ActionResult } from "@/types/database";
 
 // Schema de validación para actualizar la configuración del gym
@@ -105,20 +103,25 @@ export async function updateOrgSettings(input: unknown): Promise<ActionResult> {
   }
 }
 
-// Lista todos los usuarios con rol admin u owner — accesible por admins y owners
+// Lista todos los usuarios con rol admin u owner en el gym actual
 export async function getAdmins(): Promise<AdminProfile[]> {
   const user = await getCurrentUser();
   if (!user || (user.role !== "admin" && user.role !== "owner")) return [];
 
   const supabase = await createClient();
   try {
+    const orgId = await getOrgId();
     const { data, error } = await supabase
-      .from("profiles")
-      .select("id, full_name, email, role, created_at")
+      .from("org_members")
+      .select("role, joined_at, profiles!inner(id, full_name, email)")
+      .eq("org_id", orgId)
       .in("role", ["admin", "owner"])
-      .order("created_at");
+      .order("joined_at");
     if (error) throw error;
-    return (data ?? []) as AdminProfile[];
+    return (data ?? []).map((m) => {
+      const p = (Array.isArray(m.profiles) ? m.profiles[0] : m.profiles) as { id: string; full_name: string | null; email: string };
+      return { id: p.id, full_name: p.full_name, email: p.email, role: m.role, created_at: m.joined_at };
+    });
   } catch (error) {
     console.error("[getAdmins] Error:", error);
     return [];
@@ -126,7 +129,6 @@ export async function getAdmins(): Promise<AdminProfile[]> {
 }
 
 // Promueve a admin un usuario existente o envía invitación si no existe
-// Pueden llamar tanto admins como owners
 export async function promoteToAdmin(email: string): Promise<ActionResult> {
   const user = await getCurrentUser();
   if (!user || (user.role !== "admin" && user.role !== "owner")) {
@@ -137,32 +139,37 @@ export async function promoteToAdmin(email: string): Promise<ActionResult> {
   if (!emailParsed.success) return { success: false, error: "Email inválido" };
 
   const supabase = await createClient();
+  const orgId = await getOrgId();
   try {
-    // Verificar si el usuario ya existe en profiles
+    // Buscar el profile por email
     const { data: profile } = await supabase
       .from("profiles")
-      .select("id, role")
+      .select("id")
       .eq("email", emailParsed.data)
       .maybeSingle();
 
     if (profile) {
-      if (profile.role === "admin") {
-        return { success: false, error: "Este usuario ya es administrador" };
-      }
-      if (profile.role === "owner") {
-        return { success: false, error: "Este usuario ya es owner" };
-      }
-      // Usuario existe: promover a admin
+      // Verificar membresía actual en este gym
+      const { data: membership } = await supabase
+        .from("org_members")
+        .select("role")
+        .eq("user_id", profile.id)
+        .eq("org_id", orgId)
+        .maybeSingle();
+
+      if (membership?.role === "admin") return { success: false, error: "Este usuario ya es administrador" };
+      if (membership?.role === "owner") return { success: false, error: "Este usuario ya es owner" };
+
+      // Upsert a admin en este gym
       const { error } = await supabase
-        .from("profiles")
-        .update({ role: "admin" })
-        .eq("id", profile.id);
+        .from("org_members")
+        .upsert({ user_id: profile.id, org_id: orgId, role: "admin" }, { onConflict: "user_id,org_id" });
       if (error) throw error;
     } else {
-      // Usuario no existe: enviar invitación — requiere service_role_key
+      // Usuario no existe: enviar invitación con org_id y role en metadata
       const adminSupabase = createAdminClient();
       const { error } = await adminSupabase.auth.admin.inviteUserByEmail(emailParsed.data, {
-        data: { role: "admin" },
+        data: { role: "admin", org_id: orgId },
       });
       if (error) throw error;
     }
@@ -184,27 +191,32 @@ export async function promoteToOwner(email: string): Promise<ActionResult> {
   if (!emailParsed.success) return { success: false, error: "Email inválido" };
 
   const supabase = await createClient();
+  const orgId = await getOrgId();
   try {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("id, role")
+      .select("id")
       .eq("email", emailParsed.data)
       .maybeSingle();
 
     if (profile) {
-      if (profile.role === "owner") {
-        return { success: false, error: "Este usuario ya es owner" };
-      }
+      const { data: membership } = await supabase
+        .from("org_members")
+        .select("role")
+        .eq("user_id", profile.id)
+        .eq("org_id", orgId)
+        .maybeSingle();
+
+      if (membership?.role === "owner") return { success: false, error: "Este usuario ya es owner" };
+
       const { error } = await supabase
-        .from("profiles")
-        .update({ role: "owner" })
-        .eq("id", profile.id);
+        .from("org_members")
+        .upsert({ user_id: profile.id, org_id: orgId, role: "owner" }, { onConflict: "user_id,org_id" });
       if (error) throw error;
     } else {
-      // Usuario no existe: invitar directamente como owner
       const adminSupabase = createAdminClient();
       const { error } = await adminSupabase.auth.admin.inviteUserByEmail(emailParsed.data, {
-        data: { role: "owner" },
+        data: { role: "owner", org_id: orgId },
       });
       if (error) throw error;
     }
@@ -217,8 +229,7 @@ export async function promoteToOwner(email: string): Promise<ActionResult> {
   }
 }
 
-// Busca miembros por nombre o email — usado en el combobox del panel de settings
-// Solo retorna usuarios que aún no son owners (se pueden promover)
+// Busca miembros del gym actual por nombre o email
 export async function searchMembers(
   query: string,
 ): Promise<Array<{ id: string; full_name: string | null; email: string; role: string }>> {
@@ -227,22 +238,27 @@ export async function searchMembers(
   if (query.trim().length < 2) return [];
 
   const supabase = await createClient();
+  const orgId = await getOrgId();
   try {
     const { data } = await supabase
-      .from("profiles")
-      .select("id, full_name, email, role")
+      .from("org_members")
+      .select("role, profiles!inner(id, full_name, email)")
+      .eq("org_id", orgId)
       .neq("role", "owner")
-      .or(`full_name.ilike.%${query}%,email.ilike.%${query}%`)
-      .order("full_name")
+      .or(`profiles.full_name.ilike.%${query}%,profiles.email.ilike.%${query}%`)
+      .order("role")
       .limit(8);
-    return data ?? [];
+
+    return (data ?? []).map((m) => {
+      const p = (Array.isArray(m.profiles) ? m.profiles[0] : m.profiles) as { id: string; full_name: string | null; email: string };
+      return { id: p.id, full_name: p.full_name, email: p.email, role: m.role };
+    });
   } catch {
     return [];
   }
 }
 
-// Revoca el rol privilegiado de un usuario, lo degrada a miembro
-// Regla: admins solo pueden revocar a otros admins, no a owners
+// Revoca el rol privilegiado de un usuario, lo degrada a miembro en este gym
 export async function revokeAdmin(userId: string): Promise<ActionResult> {
   const user = await getCurrentUser();
   if (!user || (user.role !== "admin" && user.role !== "owner")) {
@@ -254,23 +270,24 @@ export async function revokeAdmin(userId: string): Promise<ActionResult> {
   }
 
   const supabase = await createClient();
+  const orgId = await getOrgId();
   try {
-    // Obtener el rol actual del objetivo antes de modificar
     const { data: target } = await supabase
-      .from("profiles")
+      .from("org_members")
       .select("role")
-      .eq("id", userId)
+      .eq("user_id", userId)
+      .eq("org_id", orgId)
       .single();
 
-    // Un admin no puede degradar a un owner — solo el owner puede hacerlo
     if (user.role === "admin" && target?.role === "owner") {
       return { success: false, error: "No tienes permisos para revocar a un owner" };
     }
 
     const { error } = await supabase
-      .from("profiles")
+      .from("org_members")
       .update({ role: "member" })
-      .eq("id", userId);
+      .eq("user_id", userId)
+      .eq("org_id", orgId);
     if (error) throw error;
     revalidatePath("/admin/settings");
     return { success: true };
@@ -280,108 +297,47 @@ export async function revokeAdmin(userId: string): Promise<ActionResult> {
   }
 }
 
-// ─── Apariencia visual (config JSONB) ────────────────────────────────────────
+// ─── Upload de avatar propio (miembro actualiza su propia foto) ───────────────
 
-const hexColor = z.string().regex(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, "Color hex inválido");
+const MIME_TO_EXT: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
 
-const orgAppearanceSchema = z.object({
-  colors: z.object({
-    primary: hexColor,
-    background: hexColor,
-    surface: hexColor,
-    border: hexColor,
-    text: hexColor,
-    textMuted: hexColor,
-  }),
-  design: z.object({
-    preset: z.enum(["bold", "modern", "minimal", "classic"]),
-    cardRadius: z.string().max(20),
-    font: z.string().max(50),
-    headingFont: z.string().max(50),
-    shadow: z.enum(["none", "sm", "md"]),
-  }),
-  media: z.object({
-    logoUrl: z.string().url("URL inválida").nullable().optional(),
-    portalBgImage: z.string().url("URL inválida").nullable().optional(),
-    faviconUrl: z.string().url("URL inválida").nullable().optional(),
-  }),
-});
-
-// Retorna la sección de apariencia del config actual del gym (colors + design + media)
-export async function getOrgAppearance(): Promise<Pick<OrgConfig, "colors" | "design" | "media"> | null> {
+export async function uploadMyAvatar(formData: FormData): Promise<ActionResult<{ url: string }>> {
   const user = await getCurrentUser();
-  if (!user || user.role !== "owner") return null;
+  if (!user) return { success: false, error: "No autenticado" };
+
+  const file = formData.get("file");
+  if (!(file instanceof Blob)) return { success: false, error: "Archivo requerido" };
+
+  const ext = MIME_TO_EXT[file.type];
+  if (!ext) return { success: false, error: "Solo se permiten imágenes JPG, PNG o WebP" };
+  if (file.size > 2 * 1024 * 1024) return { success: false, error: "La imagen no puede superar 2 MB" };
+
+  const adminClient = createAdminClient();
+  const path = `${user.id}.${ext}`;
+  const arrayBuffer = await file.arrayBuffer();
+
+  const { error: uploadError } = await adminClient.storage
+    .from("avatars")
+    .upload(path, new Uint8Array(arrayBuffer), { contentType: file.type, upsert: true });
+
+  if (uploadError) {
+    console.error("[uploadMyAvatar] Upload error:", uploadError.message);
+    return { success: false, error: "Error al subir la imagen" };
+  }
+
+  const { data: { publicUrl } } = adminClient.storage.from("avatars").getPublicUrl(path);
 
   const supabase = await createClient();
-  try {
-    const orgId = await getOrgId();
-    const { data, error } = await supabase
-      .from("organizations")
-      .select("config")
-      .eq("id", orgId)
-      .single();
-    if (error) throw error;
+  const { error: updateError } = await supabase
+    .from("profiles")
+    .update({ avatar_url: publicUrl })
+    .eq("id", user.id);
 
-    const config = data?.config as OrgConfig | null;
-    return {
-      colors: config?.colors ?? DEFAULT_ORG_CONFIG.colors,
-      design: config?.design ?? DEFAULT_ORG_CONFIG.design,
-      media: config?.media ?? DEFAULT_ORG_CONFIG.media,
-    };
-  } catch (error) {
-    console.error("[getOrgAppearance] Error:", error);
-    return null;
+  if (updateError) {
+    console.error("[uploadMyAvatar] DB update error:", updateError.message);
+    return { success: false, error: "Imagen subida pero no se pudo actualizar el perfil" };
   }
-}
 
-// Guarda los cambios visuales (colors, design, media) sin tocar features ni gym settings
-export async function saveOrgAppearance(
-  input: unknown
-): Promise<ActionResult> {
-  const user = await getCurrentUser();
-  if (!user || user.role !== "owner") return { success: false, error: "Sin permisos" };
-
-  const parsed = orgAppearanceSchema.safeParse(input);
-  if (!parsed.success) return { success: false, error: parsed.error.flatten().fieldErrors };
-
-  const supabase = await createClient();
-  try {
-    const orgId = await getOrgId();
-
-    // Leer config actual para hacer merge — no sobreescribir features ni gym settings
-    const { data: current } = await supabase
-      .from("organizations")
-      .select("config")
-      .eq("id", orgId)
-      .single();
-
-    const currentConfig = (current?.config ?? {}) as Partial<OrgConfig>;
-    const newConfig: OrgConfig = {
-      ...DEFAULT_ORG_CONFIG,
-      ...currentConfig,
-      colors: parsed.data.colors,
-      design: parsed.data.design,
-      media: {
-        logoUrl: parsed.data.media?.logoUrl ?? null,
-        portalBgImage: parsed.data.media?.portalBgImage ?? null,
-        faviconUrl: parsed.data.media?.faviconUrl ?? null,
-      },
-    };
-
-    const { error } = await supabase
-      .from("organizations")
-      .update({ config: newConfig })
-      .eq("id", orgId);
-
-    if (error) throw error;
-
-    // Invalidar caché de Next.js para que el próximo request regenere el layout con el nuevo config.
-    // El cache del middleware expira en 1 min — los cambios serán visibles dentro de ese margen.
-    revalidatePath("/", "layout");
-
-    return { success: true };
-  } catch (error) {
-    console.error("[saveOrgAppearance] Error:", error);
-    return { success: false, error: "No se pudo guardar la configuración visual" };
-  }
+  revalidatePath("/portal/profile");
+  return { success: true, data: { url: publicUrl } };
 }

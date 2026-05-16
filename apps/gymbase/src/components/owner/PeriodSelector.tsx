@@ -31,7 +31,7 @@ export function PeriodSelector({ current }: PeriodSelectorProps): React.ReactEle
   );
 
   return (
-    <div className="flex items-center gap-1 bg-[#111111] border border-[#1E1E1E] rounded-lg p-1">
+    <div className="flex items-center gap-1 bg-card border border-border rounded-lg p-1">
       {PERIODS.map((p) => (
         <button
           key={p.value}
@@ -39,8 +39,8 @@ export function PeriodSelector({ current }: PeriodSelectorProps): React.ReactEle
           className={[
             "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
             current === p.value
-              ? "bg-[#FF5E14] text-white"
-              : "text-[#737373] hover:text-white hover:bg-white/5",
+              ? "bg-primary text-white"
+              : "text-muted-foreground hover:text-white hover:bg-white/5",
           ].join(" ")}
         >
           {p.label}

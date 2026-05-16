@@ -127,13 +127,13 @@ export function RoutineSelector({
           style={{
             display: "flex", alignItems: "center", gap: 6, flexShrink: 0,
             padding: "8px 14px",
-            background: "rgba(255,94,20,0.06)", border: "0.5px solid rgba(255,94,20,0.2)",
-            borderRadius: 10, fontSize: 12, fontWeight: 600, color: "#FF5E14",
+            background: "color-mix(in srgb, var(--gym-accent) 6%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)",
+            borderRadius: 10, fontSize: 12, fontWeight: 600, color: "var(--gym-accent)",
             textDecoration: "none", transition: "all 0.15s",
           }}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 10l3-4 3 2 3-5" stroke="#FF5E14" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M2 10l3-4 3 2 3-5" stroke="var(--gym-accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           Mi Fuerza
         </a>
@@ -160,8 +160,8 @@ export function RoutineSelector({
             <div
               key={mr.id}
               style={{
-                background: mr.is_featured ? "rgba(255,94,20,0.04)" : "#111",
-                border: `0.5px solid ${mr.is_featured ? "rgba(255,94,20,0.35)" : "#1e1e1e"}`,
+                background: mr.is_featured ? "color-mix(in srgb, var(--gym-accent) 4%, transparent)" : "#111",
+                border: `0.5px solid ${mr.is_featured ? "color-mix(in srgb, var(--gym-accent) 35%, transparent)" : "var(--border)"}`,
                 borderRadius: 14,
                 overflow: "hidden",
                 display: "flex",
@@ -171,13 +171,13 @@ export function RoutineSelector({
               {/* Strip "Destacada" */}
               {mr.is_featured && (
                 <div style={{
-                  background: "rgba(255,94,20,0.12)",
-                  borderBottom: "0.5px solid rgba(255,94,20,0.2)",
+                  background: "color-mix(in srgb, var(--gym-accent) 12%, transparent)",
+                  borderBottom: "0.5px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)",
                   padding: "5px 12px",
                   display: "flex", alignItems: "center", gap: 5,
                 }}>
-                  <Star style={{ width: 10, height: 10, fill: "#FF5E14", color: "#FF5E14" }} />
-                  <span style={{ fontSize: 9, fontWeight: 700, color: "#FF5E14", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                  <Star style={{ width: 10, height: 10, fill: "var(--gym-accent)", color: "var(--gym-accent)" }} />
+                  <span style={{ fontSize: 9, fontWeight: 700, color: "var(--gym-accent)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
                     Destacada
                   </span>
                 </div>
@@ -200,7 +200,7 @@ export function RoutineSelector({
                           if (e.key === "Escape") setRenamingId(null);
                         }}
                         style={{
-                          flex: 1, background: "#1a1a1a", border: "0.5px solid #FF5E14",
+                          flex: 1, background: "var(--gym-bg-elevated)", border: "0.5px solid var(--gym-accent)",
                           borderRadius: 6, color: "#fff", fontSize: 13, fontWeight: 600,
                           padding: "4px 8px", fontFamily: "inherit", outline: "none",
                         }}
@@ -343,7 +343,7 @@ export function RoutineSelector({
                   disabled={!hasDetail}
                   style={{
                     width: "100%", padding: "8px 0",
-                    background: "#FF5E14", color: "#fff",
+                    background: "var(--gym-accent)", color: "#fff",
                     border: "none", borderRadius: 10,
                     fontSize: 12, fontWeight: 700, cursor: hasDetail ? "pointer" : "not-allowed",
                     opacity: hasDetail ? 1 : 0.4,
@@ -392,10 +392,10 @@ export function RoutineSelector({
             position: "fixed", bottom: 90, right: 20,
             display: "flex", alignItems: "center", gap: 8,
             padding: "12px 18px",
-            background: "#FF5E14", color: "#fff",
+            background: "var(--gym-accent)", color: "#fff",
             borderRadius: 100, fontSize: 13, fontWeight: 700,
             textDecoration: "none", zIndex: 40,
-            boxShadow: "0 4px 20px rgba(255,94,20,0.4)",
+            boxShadow: "0 4px 20px color-mix(in srgb, var(--gym-accent) 40%, transparent)",
           }}
         >
           <Plus style={{ width: 16, height: 16 }} />

@@ -11,7 +11,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { createChallenge } from "@/actions/challenge.actions";
+import { toast } from "sonner";
+import { createChallenge, uploadChallengeBanner } from "@/actions/challenge.actions";
+import { ImageUploadButton } from "@/components/shared/ImageUploadButton";
 import { createChallengeSchema, type CreateChallengeInput } from "@/lib/validations/challenges";
 import { cn } from "@/lib/utils";
 import type { Exercise, Routine } from "@/types/gym-routines";
@@ -32,7 +34,7 @@ const CHALLENGE_TYPES = [
     name: "Workout",
     desc: "Sesiones de rutina completadas en la app.",
     unit: "sesiones",
-    color: "#FF5E14",
+    color: "var(--gym-accent)",
   },
   {
     value: "personal_record",
@@ -134,11 +136,11 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
   }
 
   const sectionClass =
-    "text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.1em] mb-3 mt-6 pb-2 border-b border-[#1a1a1a]";
+    "text-[10px] font-semibold text-primary uppercase tracking-[0.1em] mb-3 mt-6 pb-2 border-b border-border";
   const labelClass =
     "text-[10px] font-semibold text-[#666] uppercase tracking-[0.08em] mb-1.5 block";
   const inputClass =
-    "h-9 bg-[#161616] border-[#2a2a2a] text-sm focus-visible:ring-0 focus:border-[#FF5E14]";
+    "h-9 bg-[#161616] border-border text-sm focus-visible:ring-0 focus:border-primary";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl space-y-0">
@@ -153,7 +155,7 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
 
       <div className="mb-4">
         <label className={labelClass}>
-          Título del reto <span className="text-[#FF5E14]">*</span>
+          Título del reto <span className="text-primary">*</span>
         </label>
         <Input placeholder="Ej: Reto Enero Activo" className={inputClass} {...register("title")} />
         {errors.title && <p className="text-xs text-destructive mt-1">{errors.title.message}</p>}
@@ -164,14 +166,14 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
         <Textarea
           rows={3}
           placeholder="Explicá las reglas y el objetivo del reto…"
-          className="bg-[#161616] border-[#2a2a2a] text-sm focus-visible:ring-0 focus:border-[#FF5E14] resize-none"
+          className="bg-[#161616] border-border text-sm focus-visible:ring-0 focus:border-primary resize-none"
           {...register("description")}
         />
       </div>
 
       {/* ── Sección: Tipo de reto ── */}
       <div className={sectionClass}>
-        Tipo de reto <span className="text-[#FF5E14]">*</span>
+        Tipo de reto <span className="text-primary">*</span>
       </div>
 
       <div className="grid grid-cols-2 gap-2 mb-4 sm:grid-cols-3">
@@ -182,8 +184,8 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
             className={cn(
               "p-3 rounded-xl bg-[#161616] border cursor-pointer transition-all",
               selectedType === t.value
-                ? "border-[#FF5E14] bg-[rgba(255,94,20,0.06)]"
-                : "border-[#2a2a2a] hover:border-[#333]"
+                ? "border-primary bg-primary/[6%]"
+                : "border-border hover:border-[#333]"
             )}
           >
             <div className="text-xl mb-1.5">{t.icon}</div>
@@ -208,13 +210,13 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
       {selectedType === "personal_record" && (
         <div className="mb-4 p-3.5 bg-[rgba(239,68,68,0.05)] border border-[rgba(239,68,68,0.15)] rounded-xl">
           <label className={labelClass}>
-            Ejercicio del reto <span className="text-[#FF5E14]">*</span>
+            Ejercicio del reto <span className="text-primary">*</span>
           </label>
           <div className="relative">
             <button
               type="button"
               onClick={() => setExerciseOpen(!exerciseOpen)}
-              className="w-full h-9 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg px-3 text-sm text-left flex items-center justify-between hover:border-[#FF5E14] transition-colors"
+              className="w-full h-9 bg-muted border border-border rounded-lg px-3 text-sm text-left flex items-center justify-between hover:border-primary transition-colors"
             >
               <span className={selectedExercise ? "text-white" : "text-[#555]"}>
                 {selectedExercise ? selectedExercise.name : "Seleccionar ejercicio…"}
@@ -223,7 +225,7 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
             </button>
 
             {exerciseOpen && (
-              <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-[#161616] border border-[#2a2a2a] rounded-xl overflow-hidden shadow-xl">
+              <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-[#161616] border border-border rounded-xl overflow-hidden shadow-xl">
                 <div className="p-2 border-b border-[#222] flex items-center gap-2">
                   <Search className="w-3.5 h-3.5 text-[#555] flex-shrink-0" />
                   <input
@@ -272,7 +274,7 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
 
       {/* workout: toggle de rutina específica */}
       {selectedType === "workout" && (
-        <div className="mb-4 p-3.5 bg-[rgba(255,94,20,0.04)] border border-[rgba(255,94,20,0.12)] rounded-xl">
+        <div className="mb-4 p-3.5 bg-primary/[4%] border border-primary/[12%] rounded-xl">
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-sm font-medium text-[#ccc]">¿Rutina específica?</p>
@@ -288,7 +290,7 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
                 if (!next) setValue("target_routine_id", null);
               }}
               className={`w-9 h-5 rounded-full relative transition-colors flex-shrink-0 ${
-                useSpecificRoutine ? "bg-[#FF5E14]" : "bg-[#2a2a2a]"
+                useSpecificRoutine ? "bg-primary" : "bg-muted"
               }`}
             >
               <div
@@ -303,7 +305,7 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
             <div>
               <label className={labelClass}>Seleccionar rutina</label>
               <select
-                className="w-full h-9 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg px-3 text-sm text-[#ccc] focus:border-[#FF5E14] focus:outline-none appearance-none"
+                className="w-full h-9 bg-muted border border-border rounded-lg px-3 text-sm text-[#ccc] focus:border-primary focus:outline-none appearance-none"
                 style={{ colorScheme: "dark" }}
                 {...register("target_routine_id")}
               >
@@ -338,7 +340,7 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
                   "p-2.5 rounded-lg border text-left transition-all",
                   weightLossMode === opt.value
                     ? "border-[rgba(34,197,94,0.4)] bg-[rgba(34,197,94,0.08)]"
-                    : "border-[#2a2a2a] bg-[#1a1a1a] hover:border-[#333]"
+                    : "border-border bg-muted hover:border-[#333]"
                 )}
               >
                 <p
@@ -374,7 +376,7 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div>
           <label className={labelClass}>
-            Meta numérica <span className="text-[#FF5E14]">*</span>
+            Meta numérica <span className="text-primary">*</span>
           </label>
           <Input
             type="number"
@@ -389,7 +391,7 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
         </div>
         <div>
           <label className={labelClass}>
-            Unidad <span className="text-[#FF5E14]">*</span>
+            Unidad <span className="text-primary">*</span>
           </label>
           <Input
             placeholder={
@@ -412,11 +414,11 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div>
           <label className={labelClass}>
-            Inicio <span className="text-[#FF5E14]">*</span>
+            Inicio <span className="text-primary">*</span>
           </label>
           <input
             type="date"
-            className="w-full h-9 bg-[#161616] border border-[#2a2a2a] rounded-md px-3 text-sm text-white focus:border-[#FF5E14] focus:outline-none"
+            className="w-full h-9 bg-[#161616] border border-border rounded-md px-3 text-sm text-white focus:border-primary focus:outline-none"
             onChange={(e) => setValue("starts_at", e.target.value ? `${e.target.value}T00:00` : "")}
           />
           {errors.starts_at && (
@@ -426,11 +428,11 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
         </div>
         <div>
           <label className={labelClass}>
-            Cierre <span className="text-[#FF5E14]">*</span>
+            Cierre <span className="text-primary">*</span>
           </label>
           <input
             type="date"
-            className="w-full h-9 bg-[#161616] border border-[#2a2a2a] rounded-md px-3 text-sm text-white focus:border-[#FF5E14] focus:outline-none"
+            className="w-full h-9 bg-[#161616] border border-border rounded-md px-3 text-sm text-white focus:border-primary focus:outline-none"
             onChange={(e) => setValue("ends_at", e.target.value ? `${e.target.value}T23:59` : "")}
           />
           {errors.ends_at && (
@@ -463,16 +465,35 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
       </div>
 
       <div className="mb-4">
-        <label className={labelClass}>URL de banner (opcional)</label>
-        <Input
-          type="url"
-          placeholder="https://…"
-          className={inputClass}
-          {...register("banner_url")}
-        />
-        {errors.banner_url && (
-          <p className="text-xs text-destructive mt-1">{errors.banner_url.message}</p>
-        )}
+        <label className={labelClass}>Banner del reto (opcional)</label>
+        <div className="flex gap-3 items-start">
+          <ImageUploadButton
+            currentUrl={watch("banner_url") ?? undefined}
+            onUpload={async (file) => {
+              const fd = new FormData();
+              fd.append("file", file);
+              const result = await uploadChallengeBanner(fd);
+              if (!result.success) throw new Error(typeof result.error === "string" ? result.error : "Error");
+              setValue("banner_url", result.data!.url);
+              toast.success("Banner subido");
+              return result.data!.url;
+            }}
+            shape="rect"
+            width="w-32"
+            height="h-20"
+          />
+          <div className="flex-1">
+            <Input
+              type="url"
+              placeholder="O pega una URL de imagen"
+              className={inputClass}
+              {...register("banner_url")}
+            />
+            {errors.banner_url && (
+              <p className="text-xs text-destructive mt-1">{errors.banner_url.message}</p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Visibilidad */}
@@ -492,8 +513,8 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
             className={cn(
               "p-3 rounded-xl bg-[#161616] border cursor-pointer transition-all",
               visibility === opt.value
-                ? "border-[#FF5E14] bg-[rgba(255,94,20,0.06)]"
-                : "border-[#2a2a2a] hover:border-[#333]"
+                ? "border-primary bg-primary/[6%]"
+                : "border-border hover:border-[#333]"
             )}
           >
             <div className="text-xl mb-1.5">{opt.icon}</div>
@@ -512,11 +533,11 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
       <input type="hidden" {...register("is_public")} />
 
       {/* Botones */}
-      <div className="flex gap-2 pt-2 border-t border-[#1a1a1a]">
+      <div className="flex gap-2 pt-2 border-t border-border">
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="gap-2 bg-[#FF5E14] hover:bg-[#e5540f] text-white"
+          className="gap-2 bg-primary hover:bg-primary text-white"
         >
           {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
           Crear reto
@@ -524,7 +545,7 @@ export function ChallengeForm({ exercises, routines }: ChallengeFormProps): Reac
         <Button
           type="button"
           variant="outline"
-          className="border-[#2a2a2a] text-[#666] hover:text-white"
+          className="border-border text-[#666] hover:text-white"
           onClick={() => router.back()}
         >
           Cancelar

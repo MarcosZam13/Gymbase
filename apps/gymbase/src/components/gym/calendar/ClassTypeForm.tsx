@@ -62,11 +62,11 @@ export function ClassTypeForm(): React.ReactNode {
       {/* Nombre */}
       <div className="space-y-1.5">
         <label className="text-[10px] font-semibold text-[#666] uppercase tracking-[0.08em]">
-          Nombre <span className="text-[#FF5E14]">*</span>
+          Nombre <span className="text-primary">*</span>
         </label>
         <Input
           placeholder="Yoga, Spinning, CrossFit..."
-          className="h-9 bg-[#161616] border-[#2a2a2a] text-sm focus:border-[#FF5E14]"
+          className="h-9 bg-[#161616] border-border text-sm focus:border-primary"
           {...register("name")}
         />
         {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
@@ -79,7 +79,7 @@ export function ClassTypeForm(): React.ReactNode {
         </label>
         <Input
           placeholder="Descripción breve del tipo de clase"
-          className="h-9 bg-[#161616] border-[#2a2a2a] text-sm focus:border-[#FF5E14]"
+          className="h-9 bg-[#161616] border-border text-sm focus:border-primary"
           {...register("description")}
         />
       </div>
@@ -87,7 +87,7 @@ export function ClassTypeForm(): React.ReactNode {
       {/* Color — chips visuales */}
       <div className="space-y-2">
         <label className="text-[10px] font-semibold text-[#666] uppercase tracking-[0.08em]">
-          Color identificador <span className="text-[#FF5E14]">*</span>
+          Color identificador <span className="text-primary">*</span>
         </label>
         {/* Campo oculto para el color */}
         <input type="hidden" {...register("color")} value={selectedColor} />
@@ -100,7 +100,7 @@ export function ClassTypeForm(): React.ReactNode {
               className={cn(
                 "w-7 h-7 rounded-full border-2 transition-all hover:scale-110 flex items-center justify-center",
                 selectedColor === color
-                  ? "border-white shadow-[0_0_0_2px_#FF5E14]"
+                  ? "border-white shadow-[0_0_0_2px_var(--gym-accent)]"
                   : "border-transparent"
               )}
               style={{ backgroundColor: color }}
@@ -116,7 +116,7 @@ export function ClassTypeForm(): React.ReactNode {
         type="submit"
         size="sm"
         disabled={isSubmitting}
-        className="gap-1.5 w-full bg-[#FF5E14] hover:bg-[#e5540f] text-white"
+        className="gap-1.5 w-full bg-primary hover:bg-primary text-white"
       >
         {isSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
         Crear tipo

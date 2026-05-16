@@ -104,8 +104,8 @@ export async function uploadPaymentProof(formData: FormData): Promise<ActionResu
   const user = await getCurrentUser();
   if (!user) return { success: false, error: "No autenticado" };
 
-  const file = formData.get("file") as File | null;
-  const subscriptionId = formData.get("subscriptionId") as string | null;
+  const file = (formData.get("proof") ?? formData.get("file")) as File | null;
+  const subscriptionId = (formData.get("subscription_id") ?? formData.get("subscriptionId")) as string | null;
   const paymentMethod = (formData.get("paymentMethod") as string | null) ?? "transfer";
   const notes = (formData.get("notes") as string | null) ?? "";
 
@@ -118,19 +118,24 @@ export async function uploadPaymentProof(formData: FormData): Promise<ActionResu
   }
 
   const supabase = await createClient();
+  const adminClient = createAdminClient();
   const ext = file.name.split(".").pop() ?? "jpg";
   const filePath = `${user.id}/${subscriptionId}/${Date.now()}.${ext}`;
 
-  const { error: uploadError } = await supabase.storage
+  const arrayBuffer = await file.arrayBuffer();
+
+  // Usar admin client para el upload — el storage client con anon key falla con 400
+  // cuando la RLS de storage.objects no puede evaluar get_user_org_id() desde headers
+  const { error: uploadError } = await adminClient.storage
     .from("payment-proofs")
-    .upload(filePath, file, { contentType: file.type, upsert: true });
+    .upload(filePath, new Uint8Array(arrayBuffer), { contentType: file.type, upsert: true });
 
   if (uploadError) {
     console.error("[uploadPaymentProof] Upload error:", uploadError.message);
     return { success: false, error: "Error al subir el archivo" };
   }
 
-  const { data: urlData } = supabase.storage.from("payment-proofs").getPublicUrl(filePath);
+  const { data: urlData } = adminClient.storage.from("payment-proofs").getPublicUrl(filePath);
 
   const { error: insertError } = await supabase
     .from("payment_proofs")
@@ -154,7 +159,11 @@ export async function uploadPaymentProof(formData: FormData): Promise<ActionResu
   return { success: true };
 }
 
-const approvePaymentSchema = z.object({ paymentId: z.string().uuid() });
+const approvePaymentSchema = z.object({
+  paymentId:  z.string().uuid().optional(),
+  payment_id: z.string().uuid().optional(),
+}).transform((d) => ({ paymentId: d.paymentId ?? d.payment_id }))
+  .refine((d) => !!d.paymentId, { message: "paymentId requerido" });
 
 // Aprueba un comprobante y activa la suscripción con las fechas calculadas según el plan
 export async function approvePayment(formData: unknown): Promise<ActionResult> {
@@ -178,10 +187,36 @@ export async function approvePayment(formData: unknown): Promise<ActionResult> {
 
   try {
     const now = new Date();
-    const sub = proof.subscription as { plan?: { duration_days?: number } } | null;
+    const sub = proof.subscription as { plan?: { duration_days?: number }; user_id?: string } | null;
     const durationDays = sub?.plan?.duration_days ?? 30;
     const expiresAt = new Date(now);
     expiresAt.setDate(expiresAt.getDate() + durationDays);
+
+    // Obtener el user_id de la suscripción para cancelar la activa previa
+    const { data: subRow } = await supabase
+      .from("subscriptions")
+      .select("user_id")
+      .eq("id", proof.subscription_id)
+      .single();
+
+    // Cancelar suscripción activa previa del mismo usuario en el mismo org.
+    // Aplica cuando había demo data activa y el miembro paga de nuevo en el mismo gym.
+    if (subRow?.user_id) {
+      const { data: activeSub } = await supabase
+        .from("subscriptions")
+        .select("id, org_id")
+        .eq("user_id", subRow.user_id)
+        .eq("status", "active")
+        .neq("id", proof.subscription_id)
+        .maybeSingle();
+
+      if (activeSub) {
+        await supabase
+          .from("subscriptions")
+          .update({ status: "cancelled" })
+          .eq("id", activeSub.id);
+      }
+    }
 
     // Actualizar comprobante y suscripción en paralelo — ambos deben completarse
     const [{ error: updateProofError }, { error: updateSubError }] = await Promise.all([
@@ -210,9 +245,14 @@ export async function approvePayment(formData: unknown): Promise<ActionResult> {
 }
 
 const rejectPaymentSchema = z.object({
-  paymentId: z.string().uuid(),
-  rejectionReason: z.string().optional(),
-});
+  paymentId:        z.string().uuid().optional(),
+  payment_id:       z.string().uuid().optional(),
+  rejectionReason:  z.string().optional(),
+  rejection_reason: z.string().optional(),
+}).transform((d) => ({
+  paymentId:       d.paymentId ?? d.payment_id,
+  rejectionReason: d.rejectionReason ?? d.rejection_reason,
+})).refine((d) => !!d.paymentId, { message: "paymentId requerido" });
 
 // Rechaza un comprobante y registra el motivo para notificar al miembro
 export async function rejectPayment(formData: unknown): Promise<ActionResult> {

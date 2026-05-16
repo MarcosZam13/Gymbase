@@ -20,7 +20,7 @@ interface ChallengeCardProps {
 // Paleta visual completa para los 6 tipos
 const TYPE_META: Record<string, { accent: string; gradFrom: string; gradTo: string; icon: string; label: string }> = {
   attendance:      { accent: "#38BDF8", gradFrom: "#001624", gradTo: "#002a3a", icon: "🏃", label: "Asistencia"      },
-  workout:         { accent: "#FF5E14", gradFrom: "#1a0800", gradTo: "#3a1200", icon: "💪", label: "Workout"         },
+  workout:         { accent: "var(--gym-accent)", gradFrom: "#1a0800", gradTo: "#3a1200", icon: "💪", label: "Workout"         },
   weight:          { accent: "#22C55E", gradFrom: "#001a0d", gradTo: "#002a14", icon: "⚖️", label: "Peso"            },
   weight_loss:     { accent: "#22C55E", gradFrom: "#001a0d", gradTo: "#002a14", icon: "⚖️", label: "Pérdida de Peso" },
   personal_record: { accent: "#EF4444", gradFrom: "#1a0000", gradTo: "#2a0000", icon: "🏋️", label: "Récord Personal" },
@@ -79,7 +79,7 @@ export function ChallengeCard({
   }
 
   return (
-    <div className="bg-[#111] border border-[#1e1e1e] rounded-[18px] overflow-hidden hover:border-[#2a2a2a] transition-all">
+    <div className="bg-card border border-border rounded-[18px] overflow-hidden hover:border-border transition-all">
 
       {/* Banner: imagen o gradiente con ícono */}
       {challenge.banner_url ? (
@@ -155,7 +155,7 @@ export function ChallengeCard({
       <div className="p-4">
         <Link href={`/portal/challenges/${challenge.id}`} className="block">
           <h3
-            className="text-[15px] font-semibold text-white mb-0.5 hover:text-[#FF5E14] transition-colors"
+            className="text-[15px] font-semibold text-white mb-0.5 hover:text-primary transition-colors"
             style={{ fontFamily: "var(--font-barlow)" }}
           >
             {challenge.title}
@@ -167,7 +167,7 @@ export function ChallengeCard({
           {!isActive && !isUpcoming && " · Finalizado"}
           {isUpcoming && ` · Inicia en ${daysUntilStart} días`}
           {challenge.prize_description && (
-            <span className="ml-2 text-[#FF5E14]">🎁 {challenge.prize_description}</span>
+            <span className="ml-2 text-primary">🎁 {challenge.prize_description}</span>
           )}
         </p>
 
@@ -183,7 +183,7 @@ export function ChallengeCard({
               </span>
             </div>
             {(!isWeightType || baselineSet) && (
-              <div className="h-1.5 bg-[#1e1e1e] rounded-full overflow-hidden">
+              <div className="h-1.5 bg-border rounded-full overflow-hidden">
                 <div
                   className="h-full rounded-full transition-all duration-700"
                   style={{ width: `${progressPct}%`, backgroundColor: meta.accent }}
@@ -196,7 +196,7 @@ export function ChallengeCard({
         {/* Footer */}
         <div className="flex items-center justify-between">
           {isJoined && myRank ? (
-            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#1a1a1a] border border-[#2a2a2a] rounded-full">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-muted border border-border rounded-full">
               <span className="text-sm font-bold font-barlow text-[#FACC15]">{myRank}°</span>
               <span className="text-[10px] text-[#555]">posición</span>
             </div>

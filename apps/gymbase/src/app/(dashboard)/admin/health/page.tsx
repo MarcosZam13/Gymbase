@@ -8,7 +8,7 @@ import { themeConfig } from "@/lib/theme";
 
 function avatarColor(id: string): { bg: string; text: string } {
   const PALETTES = [
-    { bg: "#1e0f06", text: "#FF5E14" }, { bg: "#0d1a0d", text: "#22C55E" },
+    { bg: "var(--gym-accent-dim)", text: "var(--gym-accent)" }, { bg: "#0d1a0d", text: "#22C55E" },
     { bg: "#0d0d2a", text: "#818CF8" }, { bg: "#1a0d1a", text: "#E879F9" },
     { bg: "#0d1a1a", text: "#38BDF8" }, { bg: "#1a1a0d", text: "#FACC15" },
   ];
@@ -67,13 +67,13 @@ function WeightHistogram({
               className="h-full rounded-full flex items-center pl-2 transition-all"
               style={{
                 width: `${(count / maxCount) * 100}%`,
-                backgroundColor: "#FF5E1430",
-                border: "1px solid #FF5E1450",
+                backgroundColor: "color-mix(in srgb, var(--gym-accent) 19%, transparent)",
+                border: "1px solid var(--gym-accent-dim)",
                 minWidth: count > 0 ? "20px" : "0",
               }}
             />
           </div>
-          <span className="text-[11px] w-6 shrink-0 font-semibold" style={{ color: count > 0 ? "#FF5E14" : "#333" }}>
+          <span className="text-[11px] w-6 shrink-0 font-semibold" style={{ color: count > 0 ? "var(--gym-accent)" : "#333" }}>
             {count}
           </span>
         </div>
@@ -115,13 +115,13 @@ export default async function AdminHealthPage(): Promise<React.ReactNode> {
             label: "Con perfil de salud",
             value: stats?.membersWithProfile ?? "—",
             icon: <Users className="w-4 h-4" />,
-            color: "#FF5E14",
+            color: "var(--gym-accent)",
           },
           {
             label: "Peso promedio",
             value: stats?.avgWeight != null ? `${stats.avgWeight} kg` : "—",
             icon: <Scale className="w-4 h-4" />,
-            color: "#FF5E14",
+            color: "var(--gym-accent)",
           },
           {
             label: "Activos este mes",
@@ -136,7 +136,7 @@ export default async function AdminHealthPage(): Promise<React.ReactNode> {
             color: "#818CF8",
           },
         ].map(({ label, value, icon, color }) => (
-          <div key={label} className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
+          <div key={label} className="bg-card border border-border rounded-[14px] p-4">
             <div className="flex items-center gap-1.5 mb-2" style={{ color }}>
               {icon}
               <p className="text-[9px] font-semibold uppercase tracking-[0.08em]">{label}</p>
@@ -149,11 +149,11 @@ export default async function AdminHealthPage(): Promise<React.ReactNode> {
       </div>
 
       {/* Tabla de miembros con métricas */}
-      <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] overflow-hidden">
-        <div className="px-4 py-3 border-b border-[#1a1a1a] flex items-center justify-between">
+      <div className="bg-card border border-border rounded-[14px] overflow-hidden">
+        <div className="px-4 py-3 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <HeartPulse className="w-3.5 h-3.5 text-[#FF5E14]" />
-            <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+            <HeartPulse className="w-3.5 h-3.5 text-primary" />
+            <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
               Métricas por miembro
             </p>
           </div>
@@ -168,7 +168,7 @@ export default async function AdminHealthPage(): Promise<React.ReactNode> {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-[#1a1a1a]">
+                <tr className="border-b border-border">
                   {["Miembro", "Último peso", "Grasa %", "Músculo", "Último registro", "Fotos"].map((h) => (
                     <th key={h} className="px-4 py-2.5 text-left text-[9px] text-[#444] uppercase tracking-[0.07em] font-medium">
                       {h}
@@ -205,7 +205,7 @@ export default async function AdminHealthPage(): Promise<React.ReactNode> {
                           </span>
                         </Link>
                       </td>
-                      <td className="px-4 py-3 text-[13px] font-semibold font-barlow text-[#FF5E14]">
+                      <td className="px-4 py-3 text-[13px] font-semibold font-barlow text-primary">
                         {m.lastWeight != null ? `${m.lastWeight} kg` : "—"}
                       </td>
                       <td className="px-4 py-3 text-[12px] text-[#F59E0B]">
@@ -240,8 +240,8 @@ export default async function AdminHealthPage(): Promise<React.ReactNode> {
 
       {/* Histograma de distribución de pesos */}
       {weights.length > 0 && (
-        <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] p-4">
-          <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em] mb-3">
+        <div className="bg-card border border-border rounded-[14px] p-4">
+          <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em] mb-3">
             Distribución de pesos
           </p>
           <WeightHistogram weights={weights} />

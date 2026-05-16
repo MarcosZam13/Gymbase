@@ -40,7 +40,7 @@ export function ProductDetailActions({ product }: ProductDetailActionsProps): Re
           type="button"
           onClick={() => setAdjustOpen(true)}
           className="flex items-center gap-2 flex-1 justify-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer text-white"
-          style={{ backgroundColor: "#FF5E14" }}
+          style={{ backgroundColor: "var(--gym-accent)" }}
         >
           <BarChart2 className="w-4 h-4" />
           Ajustar Stock

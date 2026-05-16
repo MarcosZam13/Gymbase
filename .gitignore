@@ -74,3 +74,12 @@ docs/obsidian/
 GymBaseObsidian/
 
 gymbase-demo/
+
+# Env file downloads (contienen keys sensibles)
+*.download
+
+# npm lockfile — este repo usa pnpm
+package-lock.json
+
+# Engram tool readme (auto-generado por la herramienta)
+ENGRAM.md

@@ -98,15 +98,15 @@ export function MemberRoutineStack({
     <div className="space-y-3">
 
       {/* ── Sección superior: Stack de rutinas activas ── */}
-      <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] overflow-hidden">
+      <div className="bg-card border border-border rounded-[14px] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#1a1a1a]">
-          <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em]">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+          <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em]">
             Rutinas activas
           </p>
           <button
             onClick={() => setShowAssignSheet(true)}
-            className="flex items-center gap-1.5 h-7 px-3 text-[11px] font-semibold rounded-lg border border-[#2a2a2a] bg-[#1a1a1a] text-[#888] hover:border-[rgba(255,94,20,0.4)] hover:text-[#FF5E14] transition-colors"
+            className="flex items-center gap-1.5 h-7 px-3 text-[11px] font-semibold rounded-lg border border-border bg-muted text-[#888] hover:border-primary/40 hover:text-primary transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
             Asignar rutina
@@ -122,7 +122,7 @@ export function MemberRoutineStack({
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-[#0d0d0d]">
+          <div className="divide-y divide-border">
             {activeRoutines.map((mr) => {
               const routineName = mr.routine?.name ?? "Rutina sin nombre";
               const isRemoving = removingId === mr.id;
@@ -138,7 +138,7 @@ export function MemberRoutineStack({
                   {/* Indicador featured */}
                   <Star
                     className={`w-3.5 h-3.5 shrink-0 ${
-                      mr.is_featured ? "text-[#FF5E14] fill-[#FF5E14]" : "text-[#2a2a2a]"
+                      mr.is_featured ? "text-primary fill-primary" : "text-muted-foreground"
                     }`}
                   />
 
@@ -153,13 +153,13 @@ export function MemberRoutineStack({
                       {mr.is_featured && (
                         <span
                           className="px-1.5 py-0.5 rounded text-[9px] font-semibold shrink-0"
-                          style={{ backgroundColor: "#FF5E1420", color: "#FF5E14", border: "1px solid #FF5E1430" }}
+                          style={{ backgroundColor: "var(--gym-accent-dim)", color: "var(--gym-accent)", border: "1px solid var(--gym-accent-dim)" }}
                         >
                           Destacada
                         </span>
                       )}
                       {mr.label && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-medium shrink-0 bg-[#1a1a1a] text-[#666] border border-[#222]">
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-medium shrink-0 bg-muted text-[#666] border border-[#222]">
                           {mr.label}
                         </span>
                       )}
@@ -177,7 +177,7 @@ export function MemberRoutineStack({
                         onClick={() => handleSetFeatured(mr.id)}
                         disabled={isFeaturing}
                         title="Marcar como destacada"
-                        className="h-7 px-2.5 text-[10px] font-medium rounded-lg border border-[#222] text-[#555] hover:border-[rgba(255,94,20,0.4)] hover:text-[#FF5E14] transition-colors disabled:opacity-40 flex items-center gap-1"
+                        className="h-7 px-2.5 text-[10px] font-medium rounded-lg border border-[#222] text-[#555] hover:border-primary/40 hover:text-primary transition-colors disabled:opacity-40 flex items-center gap-1"
                       >
                         {isFeaturing ? (
                           <Loader2 className="w-3 h-3 animate-spin" />
@@ -216,7 +216,7 @@ export function MemberRoutineStack({
             onClick={() => setShowAssignSheet(false)}
           />
           {/* Panel */}
-          <div className="relative z-10 w-full sm:max-w-sm bg-[#111] border border-[#1e1e1e] rounded-t-[20px] sm:rounded-[16px] p-5 space-y-4 mx-4 mb-0 sm:mb-4">
+          <div className="relative z-10 w-full sm:max-w-sm bg-card border border-border rounded-t-[20px] sm:rounded-[16px] p-5 space-y-4 mx-4 mb-0 sm:mb-4">
             <div className="flex items-center justify-between">
               <p className="text-[13px] font-semibold text-white">Asignar rutina</p>
               <button
@@ -244,12 +244,12 @@ export function MemberRoutineStack({
                       onClick={() => setSelectedRoutineId(r.id)}
                       className={`w-full text-left px-3 py-2.5 rounded-[10px] border transition-all ${
                         selectedRoutineId === r.id
-                          ? "border-[rgba(255,94,20,0.5)] bg-[rgba(255,94,20,0.08)]"
-                          : "border-[#1e1e1e] hover:border-[#2a2a2a]"
+                          ? "border-primary/50 bg-primary/[8%]"
+                          : "border-border hover:border-border"
                       }`}
                     >
                       <p className={`text-[12px] font-medium ${
-                        selectedRoutineId === r.id ? "text-[#FF5E14]" : "text-[#ccc]"
+                        selectedRoutineId === r.id ? "text-primary" : "text-[#ccc]"
                       }`}>
                         {r.name}
                       </p>
@@ -273,7 +273,7 @@ export function MemberRoutineStack({
                 value={labelInput}
                 onChange={(e) => setLabelInput(e.target.value)}
                 maxLength={50}
-                className="w-full h-9 bg-[#0d0d0d] border border-[#1e1e1e] rounded-[10px] px-3 text-[12px] text-[#ccc] placeholder:text-[#333] outline-none focus:border-[#2a2a2a] transition-colors"
+                className="w-full h-9 bg-sidebar border border-border rounded-[10px] px-3 text-[12px] text-[#ccc] placeholder:text-[#333] outline-none focus:border-border transition-colors"
               />
             </div>
 
@@ -281,7 +281,7 @@ export function MemberRoutineStack({
             <button
               onClick={handleAssign}
               disabled={assigning || !selectedRoutineId}
-              className="w-full h-9 bg-[#FF5E14] text-white text-[12px] font-semibold rounded-[10px] disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              className="w-full h-9 bg-primary text-white text-[12px] font-semibold rounded-[10px] disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
             >
               {assigning ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Asignando…</>
@@ -295,7 +295,7 @@ export function MemberRoutineStack({
 
       {/* ── Sección inferior: Historial de rutinas ── */}
       {historyRoutines.length > 0 && (
-        <div className="bg-[#111] border border-[#1a1a1a] rounded-[14px] overflow-hidden">
+        <div className="bg-card border border-border rounded-[14px] overflow-hidden">
           <button
             onClick={() => setHistoryExpanded((v) => !v)}
             className="w-full flex items-center justify-between px-4 py-3 hover:bg-[#0f0f0f] transition-colors"
@@ -310,7 +310,7 @@ export function MemberRoutineStack({
           </button>
 
           {historyExpanded && (
-            <div className="divide-y divide-[#0d0d0d] border-t border-[#1a1a1a]">
+            <div className="divide-y divide-border border-t border-border">
               {historyRoutines.map((mr) => (
                 <div key={mr.id} className="flex items-center gap-3 px-4 py-3 opacity-60">
                   <div className="flex-1 min-w-0">
@@ -319,7 +319,7 @@ export function MemberRoutineStack({
                         {mr.routine?.name ?? "Rutina eliminada"}
                       </p>
                       {mr.label && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-medium shrink-0 bg-[#161616] text-[#444] border border-[#1e1e1e]">
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-medium shrink-0 bg-[#161616] text-[#444] border border-border">
                           {mr.label}
                         </span>
                       )}

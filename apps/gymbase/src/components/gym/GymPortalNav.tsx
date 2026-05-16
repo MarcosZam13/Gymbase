@@ -93,7 +93,7 @@ export function GymPortalNav({ profile, isActive = true, gymName }: GymPortalNav
         <Link href="/portal/dashboard" className="flex items-center gap-2 shrink-0 mr-2">
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: "#FF5E14" }}
+            style={{ backgroundColor: "var(--gym-accent)" }}
           >
             <Zap className="w-3.5 h-3.5 text-white" />
           </div>
@@ -117,10 +117,10 @@ export function GymPortalNav({ profile, isActive = true, gymName }: GymPortalNav
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150",
                   active
-                    ? "text-[#FF5E14] bg-[#FF5E1415]"
-                    : "hover:bg-[#1A1A1A]"
+                    ? "text-primary bg-primary/10"
+                    : "hover:bg-muted"
                 )}
-                style={{ color: active ? "#FF5E14" : "var(--gym-text-muted)" }}
+                style={{ color: active ? "var(--gym-accent)" : "var(--gym-text-muted)" }}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span className="hidden md:block">{label}</span>
@@ -141,7 +141,7 @@ export function GymPortalNav({ profile, isActive = true, gymName }: GymPortalNav
           >
             <div
               className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
-              style={{ backgroundColor: "rgba(255,94,20,0.15)", color: "#FF5E14" }}
+              style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 15%, transparent)", color: "var(--gym-accent)" }}
             >
               {firstName.charAt(0).toUpperCase()}
             </div>
@@ -182,11 +182,11 @@ export function GymPortalNav({ profile, isActive = true, gymName }: GymPortalNav
                 onClick={() => setUserMenuOpen(false)}
                 className="flex items-center gap-2 w-full px-3 py-2.5 text-xs font-medium transition-colors"
                 style={{ color: "var(--gym-text-secondary)" }}
-                onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+                onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
                   (e.currentTarget as HTMLElement).style.backgroundColor = "var(--gym-bg-hover)";
                   (e.currentTarget as HTMLElement).style.color = "var(--gym-text-primary)";
                 }}
-                onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+                onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
                   (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
                   (e.currentTarget as HTMLElement).style.color = "var(--gym-text-secondary)";
                 }}

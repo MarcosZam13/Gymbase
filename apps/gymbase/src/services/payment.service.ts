@@ -65,7 +65,7 @@ export async function fetchPendingPayments(
       id, subscription_id, user_id, file_url, file_path, amount,
       payment_method, notes, status, reviewed_by, reviewed_at,
       rejection_reason, created_at,
-      profile:profiles!payment_proofs_user_id_fkey(id, email, full_name, role, avatar_url, phone, created_at, updated_at),
+      profile:profiles!payment_proofs_user_id_fkey(id, email, full_name, avatar_url, phone, created_at, updated_at),
       subscription:subscriptions(
         id, user_id, plan_id, status, starts_at, expires_at, created_at, updated_at,
         plan:membership_plans(id, name, description, price, currency, duration_days, features, is_active, sort_order, created_at, updated_at)

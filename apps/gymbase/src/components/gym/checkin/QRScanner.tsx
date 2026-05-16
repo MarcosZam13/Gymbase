@@ -156,7 +156,7 @@ export function QRScanner(): React.ReactNode {
                 key={i}
                 className={`absolute w-8 h-8 ${pos}`}
                 style={{
-                  borderColor: "#FF5E14",
+                  borderColor: "var(--gym-accent)",
                   borderStyle: "solid",
                   borderWidth: 0,
                   ...(i === 0 ? { borderTopWidth: 3, borderLeftWidth: 3 } : {}),
@@ -172,8 +172,8 @@ export function QRScanner(): React.ReactNode {
             <div
               className="absolute left-2 right-2 h-0.5 rounded-full"
               style={{
-                backgroundColor: "#FF5E14",
-                boxShadow: "0 0 8px #FF5E14",
+                backgroundColor: "var(--gym-accent)",
+                boxShadow: "0 0 8px var(--gym-accent)",
                 animation: "scanLine 2s ease-in-out infinite",
                 top: "50%",
               }}
@@ -306,8 +306,8 @@ export function QRScanner(): React.ReactNode {
           <div
             className="w-14 h-14 rounded-full flex items-center justify-center"
             style={{
-              backgroundColor: "#FF5E14",
-              boxShadow: "0 0 24px rgba(255,94,20,0.4)",
+              backgroundColor: "var(--gym-accent)",
+              boxShadow: "0 0 24px color-mix(in srgb, var(--gym-accent) 40%, transparent)",
             }}
           >
             <ScanLine className="w-6 h-6 text-white" />

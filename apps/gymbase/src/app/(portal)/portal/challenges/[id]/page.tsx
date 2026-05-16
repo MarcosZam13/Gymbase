@@ -14,7 +14,7 @@ interface Props {
 
 const TYPE_META: Record<string, { icon: string; label: string; accent: string }> = {
   attendance:      { icon: "🏃", label: "Asistencia",       accent: "#38BDF8" },
-  workout:         { icon: "💪", label: "Workout",           accent: "#FF5E14" },
+  workout:         { icon: "💪", label: "Workout",           accent: "var(--gym-accent)" },
   weight:          { icon: "⚖️", label: "Peso",              accent: "#22C55E" },
   weight_loss:     { icon: "⚖️", label: "Pérdida de Peso",   accent: "#22C55E" },
   personal_record: { icon: "🏋️", label: "Récord Personal",   accent: "#EF4444" },
@@ -73,7 +73,7 @@ export default async function PortalChallengeDetailPage({ params }: Props): Prom
 
       {/* Mi progreso — solo si está inscrito */}
       {myParticipation && (
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-[16px] p-4">
+        <div className="bg-card border border-border rounded-[16px] p-4">
           <div className="flex items-center gap-2 mb-3">
             <Target className="w-4 h-4" style={{ color: meta.accent }} />
             <p className="text-[10px] font-semibold text-[#555] uppercase tracking-[0.08em]">Mi progreso</p>
@@ -96,7 +96,7 @@ export default async function PortalChallengeDetailPage({ params }: Props): Prom
                   {progressPct}%
                 </span>
               </div>
-              <div className="w-full h-2 bg-[#1e1e1e] rounded-full overflow-hidden mb-3">
+              <div className="w-full h-2 bg-border rounded-full overflow-hidden mb-3">
                 <div
                   className="h-full rounded-full transition-all"
                   style={{ width: `${progressPct}%`, backgroundColor: meta.accent }}
@@ -107,7 +107,7 @@ export default async function PortalChallengeDetailPage({ params }: Props): Prom
 
           {/* Formulario de progreso manual — solo para retos custom y si está activo */}
           {isActive && isCustomOrManual && (
-            <div className="mt-3 pt-3 border-t border-[#1e1e1e]">
+            <div className="mt-3 pt-3 border-t border-border">
               <LogProgressForm challengeId={challenge.id} goalUnit={challenge.goal_unit} />
             </div>
           )}

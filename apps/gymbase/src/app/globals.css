@@ -286,7 +286,7 @@
 
   /* Glow naranja — para elementos destacados */
   .glow-accent {
-    box-shadow: 0 0 20px rgba(255, 94, 20, 0.25);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--gym-accent) 25%, transparent);
   }
 
   /* Sidebar active indicator */
@@ -303,7 +303,7 @@
 
   /* Gradient de fondo para cards de stats */
   .stat-gradient-orange {
-    background: linear-gradient(135deg, rgba(255, 94, 20, 0.15) 0%, rgba(255, 94, 20, 0.05) 100%);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--gym-accent) 15%, transparent) 0%, color-mix(in srgb, var(--gym-accent) 5%, transparent) 100%);
   }
   .stat-gradient-green {
     background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%);

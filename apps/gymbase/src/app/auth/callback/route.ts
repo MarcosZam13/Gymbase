@@ -27,6 +27,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
           );
         },
       },
+      global: {
+        headers: process.env.GYMBASE_ORG_ID ? { "x-org-id": process.env.GYMBASE_ORG_ID } : {},
+      },
     }
   );
 
@@ -41,18 +44,32 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.redirect(`${origin}/login?error=oauth_failed`);
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+    const orgId = process.env.GYMBASE_ORG_ID;
 
-    const destination = profile?.role === "admin" || profile?.role === "owner" ? "/admin" : next;
-    return NextResponse.redirect(`${origin}${destination}`);
+    if (orgId) {
+      // Verificar/crear membresía en este gym (auto-join para Google OAuth)
+      const { data: membership } = await supabase
+        .from("org_members")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("org_id", orgId)
+        .maybeSingle();
+
+      if (!membership) {
+        // Primera vez en este gym — crear fila como miembro
+        await supabase.from("org_members").insert({ user_id: user.id, org_id: orgId, role: "member" });
+        return NextResponse.redirect(`${origin}${next}`);
+      }
+
+      const role = membership.role;
+      const destination = role === "owner" ? "/owner/dashboard" : role === "admin" ? "/admin" : next;
+      return NextResponse.redirect(`${origin}${destination}`);
+    }
+
+    return NextResponse.redirect(`${origin}${next}`);
   }
 
   // ── Flujo 2: Invitación o recuperación de contraseña ────────────────────────
-  // El email de invitación / reset llega con ?token_hash=...&type=invite|recovery
   if (tokenHash && type) {
     const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type });
     if (error) {
@@ -60,10 +77,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return NextResponse.redirect(`${origin}/login?error=invalid_link`);
     }
 
-    // Tras verificar, la sesión está activa — redirigir a la página para establecer contraseña
-    return NextResponse.redirect(`${origin}/reset-password`);
+    // invite y recovery → establecer/cambiar contraseña
+    // email → confirmación de cuenta → ir al dashboard
+    const destination = type === "email" ? next : "/reset-password";
+    return NextResponse.redirect(`${origin}${destination}`);
   }
 
-  // Sin parámetros válidos — link inválido o expirado
   return NextResponse.redirect(`${origin}/login?error=invalid_link`);
 }

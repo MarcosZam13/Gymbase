@@ -41,7 +41,7 @@ export function RevenueChart({
 
   if (!data.length) {
     return (
-      <div className="h-[300px] flex items-center justify-center text-[#737373] text-sm">
+      <div className="h-[300px] flex items-center justify-center text-muted-foreground text-sm">
         Sin datos para el período seleccionado
       </div>
     );
@@ -65,12 +65,12 @@ export function RevenueChart({
       {/* Leyenda */}
       <div className="flex items-center gap-4 mb-3">
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-sm bg-[#FF5E14]" />
-          <span className="text-xs text-[#737373]">Membresías</span>
+          <span className="w-3 h-3 rounded-sm bg-primary" />
+          <span className="text-xs text-muted-foreground">Membresías</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-sm bg-[#22C55E]" />
-          <span className="text-xs text-[#737373]">Ventas</span>
+          <span className="text-xs text-muted-foreground">Ventas</span>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ export function RevenueChart({
                 y1={y}
                 x2={PAD.left + CHART_W}
                 y2={y}
-                stroke="#1E1E1E"
+                stroke="var(--border)"
                 strokeWidth="1"
               />
               <text x={PAD.left - 8} y={y + 4} textAnchor="end" fill="#737373" fontSize="11">
@@ -123,7 +123,7 @@ export function RevenueChart({
                 y={baseY - mH}
                 width={barWidth}
                 height={mH}
-                fill="#FF5E14"
+                fill="var(--gym-accent)"
                 rx="2"
                 opacity={tooltip?.entry === d ? 1 : 0.85}
               />
@@ -163,7 +163,7 @@ export function RevenueChart({
           }}
         >
           <p className="font-semibold text-white mb-1">{tooltip.entry.period_label}</p>
-          <p className="text-[#FF5E14]">
+          <p className="text-primary">
             Membresías: {formatCurrency(tooltip.entry.membership_revenue, currency)}
           </p>
           <p className="text-green-400">

@@ -1,7 +1,7 @@
 // page.tsx — Ventas: admin puede registrar y ver historial; owner ve además los stats de ingresos
 
 import { ShoppingCart, TrendingUp, CreditCard } from "lucide-react";
-import { createClient, getCurrentUser } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/supabase/server";
 import { getSalesPaginated, getProducts, getInventoryStats } from "@/actions/inventory.actions";
 import { getMembers } from "@/actions/admin.actions";
 import { SalesClient } from "@/components/gym/inventory/SalesClient";
@@ -31,14 +31,7 @@ export default async function AdminSalesPage({ searchParams }: PageProps): Promi
   const user = await getCurrentUser();
   if (!user) return null;
 
-  const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-
-  const isOwner = profile?.role === "owner";
+  const isOwner = user.role === "owner";
 
   // getInventoryStats solo funciona para owner — admin no obtiene stats de ingresos
   const [result, productsResult, statsResult, allMembers] = await Promise.all([
@@ -78,36 +71,36 @@ export default async function AdminSalesPage({ searchParams }: PageProps): Promi
       {/* Stats de ingresos — solo visibles para el owner */}
       {isOwner && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="rounded-2xl p-4" style={{ backgroundColor: "#111111", border: "1px solid #1e1e1e" }}>
+          <div className="rounded-2xl p-4" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(255,94,20,0.12)" }}>
-                <ShoppingCart className="w-4 h-4" style={{ color: "#FF5E14" }} />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 12%, transparent)" }}>
+                <ShoppingCart className="w-4 h-4" style={{ color: "var(--gym-accent)" }} />
               </div>
-              <p className="text-xs font-medium text-[#737373] uppercase tracking-wider">Ventas del mes</p>
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Ventas del mes</p>
             </div>
             <p className="text-3xl font-bold font-barlow text-white">
               {stats?.total_sales_this_month ?? result.total}
             </p>
           </div>
 
-          <div className="rounded-2xl p-4" style={{ backgroundColor: "#111111", border: "1px solid #1e1e1e" }}>
+          <div className="rounded-2xl p-4" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(34,197,94,0.1)" }}>
                 <TrendingUp className="w-4 h-4 text-green-400" />
               </div>
-              <p className="text-xs font-medium text-[#737373] uppercase tracking-wider">Ingresos del mes</p>
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Ingresos del mes</p>
             </div>
             <p className="text-2xl font-bold font-barlow text-white">
               {stats ? formatPrice(stats.total_revenue_this_month) : "₡0"}
             </p>
           </div>
 
-          <div className="rounded-2xl p-4" style={{ backgroundColor: "#111111", border: "1px solid #1e1e1e" }}>
+          <div className="rounded-2xl p-4" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(59,130,246,0.1)" }}>
                 <CreditCard className="w-4 h-4 text-blue-400" />
               </div>
-              <p className="text-xs font-medium text-[#737373] uppercase tracking-wider">Método más usado</p>
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Método más usado</p>
             </div>
             <p className="text-2xl font-bold font-barlow text-white">
               {topMethod ? METHOD_LABELS[topMethod[0] as SalePaymentMethod] : "—"}

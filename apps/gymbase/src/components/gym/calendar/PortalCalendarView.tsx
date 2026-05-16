@@ -111,7 +111,7 @@ export function PortalCalendarView({ classes: initialClasses, myBookings, classT
         <button
           onClick={() => navigateWeek(-1)}
           disabled={weekOffset === 0 || isPending}
-          className="w-8 h-8 flex items-center justify-center rounded-lg border border-[#1e1e1e] text-[#555] hover:border-[#333] hover:text-[#aaa] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          className="w-8 h-8 flex items-center justify-center rounded-lg border border-border text-[#555] hover:border-[#333] hover:text-[#aaa] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -123,7 +123,7 @@ export function PortalCalendarView({ classes: initialClasses, myBookings, classT
         <button
           onClick={() => navigateWeek(1)}
           disabled={isPending}
-          className="w-8 h-8 flex items-center justify-center rounded-lg border border-[#1e1e1e] text-[#555] hover:border-[#333] hover:text-[#aaa] disabled:opacity-30 transition-all"
+          className="w-8 h-8 flex items-center justify-center rounded-lg border border-border text-[#555] hover:border-[#333] hover:text-[#aaa] disabled:opacity-30 transition-all"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -143,19 +143,19 @@ export function PortalCalendarView({ classes: initialClasses, myBookings, classT
               className={cn(
                 "flex-1 min-w-[44px] text-center py-2 px-1 rounded-xl border transition-all cursor-pointer",
                 selectedDay === i
-                  ? "bg-[#FF5E14] border-[#FF5E14]"
+                  ? "bg-primary border-primary"
                   : "bg-transparent border-transparent hover:bg-[#161616]"
               )}
             >
               <div className={cn(
                 "text-[9px] uppercase font-medium tracking-wide mb-1",
-                selectedDay === i ? "text-white" : isToday ? "text-[#FF5E14]" : "text-[#555]"
+                selectedDay === i ? "text-white" : isToday ? "text-primary" : "text-[#555]"
               )}>
                 {DOW_SHORT[i]}
               </div>
               <div className={cn(
                 "text-base font-bold font-barlow leading-tight",
-                selectedDay === i ? "text-white" : isToday ? "text-[#FF5E14]" : "text-[#aaa]"
+                selectedDay === i ? "text-white" : isToday ? "text-primary" : "text-[#aaa]"
               )}>
                 {day.getDate()}
               </div>
@@ -163,7 +163,7 @@ export function PortalCalendarView({ classes: initialClasses, myBookings, classT
               <div className={cn(
                 "w-1 h-1 rounded-full mx-auto mt-1 transition-colors",
                 hasClasses
-                  ? selectedDay === i ? "bg-white/60" : "bg-[#FF5E14]"
+                  ? selectedDay === i ? "bg-white/60" : "bg-primary"
                   : "invisible"
               )} />
             </button>
@@ -179,8 +179,8 @@ export function PortalCalendarView({ classes: initialClasses, myBookings, classT
             className={cn(
               "flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer",
               !activeTypeId
-                ? "bg-[#FF5E14] border-[#FF5E14] text-white"
-                : "bg-[#161616] border-[#2a2a2a] text-[#666] hover:border-[#444]"
+                ? "bg-primary border-primary text-white"
+                : "bg-[#161616] border-border text-[#666] hover:border-[#444]"
             )}
           >
             Todas
@@ -193,16 +193,16 @@ export function PortalCalendarView({ classes: initialClasses, myBookings, classT
                 "flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer",
                 activeTypeId === ct.id
                   ? "text-white"
-                  : "bg-[#161616] border-[#2a2a2a] text-[#666] hover:border-[#444]"
+                  : "bg-[#161616] border-border text-[#666] hover:border-[#444]"
               )}
               style={activeTypeId === ct.id ? {
-                backgroundColor: ct.color ?? "#FF5E14",
-                borderColor: ct.color ?? "#FF5E14",
+                backgroundColor: ct.color ?? "var(--gym-accent)",
+                borderColor: ct.color ?? "var(--gym-accent)",
               } : {}}
             >
               <span
                 className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                style={{ backgroundColor: ct.color ?? "#FF5E14" }}
+                style={{ backgroundColor: ct.color ?? "var(--gym-accent)" }}
               />
               {ct.name}
             </button>
@@ -217,7 +217,7 @@ export function PortalCalendarView({ classes: initialClasses, myBookings, classT
 
       {/* ── Cards de clases ── */}
       {dayClasses.length === 0 ? (
-        <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[16px] py-10 text-center">
+        <div className="bg-sidebar border border-border rounded-[16px] py-10 text-center">
           <p className="text-[#444] text-sm">
             {isPending ? "Cargando clases…" : "No hay clases programadas este día"}
           </p>

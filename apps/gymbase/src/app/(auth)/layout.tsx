@@ -26,7 +26,7 @@ export default function AuthLayout({
         <div
           className="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl pointer-events-none"
           style={{
-            backgroundColor: "rgba(255,94,20,0.08)",
+            backgroundColor: "color-mix(in srgb, var(--gym-accent) 8%, transparent)",
             transform: "translate(-30%, 30%)",
           }}
         />
@@ -35,7 +35,7 @@ export default function AuthLayout({
         <div className="flex items-center gap-3 relative">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ backgroundColor: "#FF5E14" }}
+            style={{ backgroundColor: "var(--gym-accent)" }}
           >
             <Zap className="w-5 h-5 text-white" />
           </div>
@@ -60,7 +60,7 @@ export default function AuthLayout({
           >
             Tu rendimiento,
             <br />
-            <span style={{ color: "#FF5E14" }}>en un solo lugar.</span>
+            <span style={{ color: "var(--gym-accent)" }}>en un solo lugar.</span>
           </p>
           <p className="text-sm mt-4" style={{ color: "var(--gym-text-muted)" }}>
             {themeConfig.brand.tagline}
@@ -77,7 +77,7 @@ export default function AuthLayout({
             <div key={text} className="flex items-center gap-2">
               <div
                 className="w-1.5 h-1.5 rounded-full shrink-0"
-                style={{ backgroundColor: "#FF5E14" }}
+                style={{ backgroundColor: "var(--gym-accent)" }}
               />
               <p className="text-sm" style={{ color: "var(--gym-text-secondary)" }}>
                 {text}
@@ -93,7 +93,7 @@ export default function AuthLayout({
         <div className="lg:hidden flex items-center gap-2 mb-10">
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ backgroundColor: "#FF5E14" }}
+            style={{ backgroundColor: "var(--gym-accent)" }}
           >
             <Zap className="w-4.5 h-4.5 text-white" />
           </div>

@@ -119,9 +119,9 @@ export function PortalContentGrid({
             onClick={() => { navigate({ search: "", category: "" }); setShowFavorites(false); }}
             className="h-7 px-3 rounded-full text-[11px] font-medium border transition-all"
             style={{
-              backgroundColor: !isAnyFilterActive && !showFavorites ? "rgba(255,94,20,0.12)" : "var(--gym-bg-card)",
-              borderColor: !isAnyFilterActive && !showFavorites ? "rgba(255,94,20,0.4)" : "var(--gym-border)",
-              color: !isAnyFilterActive && !showFavorites ? "#FF5E14" : "var(--gym-text-muted)",
+              backgroundColor: !isAnyFilterActive && !showFavorites ? "color-mix(in srgb, var(--gym-accent) 12%, transparent)" : "var(--gym-bg-card)",
+              borderColor: !isAnyFilterActive && !showFavorites ? "color-mix(in srgb, var(--gym-accent) 40%, transparent)" : "var(--gym-border)",
+              color: !isAnyFilterActive && !showFavorites ? "var(--gym-accent)" : "var(--gym-text-muted)",
             }}
           >
             Todo
@@ -202,7 +202,7 @@ export function PortalContentGrid({
           {filtered.map((item) => {
             const TypeIcon = TYPE_ICONS[item.type as ContentType];
             const typeColor = TYPE_COLORS[item.type as ContentType];
-            const catColor = (item.category as { color: string } | null)?.color ?? "#FF5E14";
+            const catColor = (item.category as { color: string } | null)?.color ?? "var(--gym-accent)";
             const catName = (item.category as { name: string } | null)?.name ?? "";
             const isFav = favoriteIds.has(item.id);
 
@@ -269,7 +269,7 @@ export function PortalContentGrid({
                     style={{ borderTop: "1px solid var(--gym-border)" }}
                   >
                     <span
-                      className="text-[11px] font-medium group-hover:text-[#FF5E14] transition-colors"
+                      className="text-[11px] font-medium group-hover:text-primary transition-colors"
                       style={{ color: "var(--gym-text-ghost)" }}
                     >
                       Ver contenido →

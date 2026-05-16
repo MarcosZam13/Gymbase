@@ -5,13 +5,31 @@ import type { AdminDashboardStats, MemberWithSubscription } from "@/types/databa
 import { buildPaginationRange, buildPaginatedResult } from "@/types/pagination";
 import type { PaginationParams, PaginatedResult } from "@/types/pagination";
 
+const SUBSCRIPTION_SELECT = `
+  id, user_id, plan_id, status, starts_at, expires_at, created_at, updated_at,
+  plan:membership_plans(id, name, description, price, currency, duration_days, features, is_active, sort_order, created_at, updated_at)
+`;
+
+const MEMBER_PROFILE_SELECT = `
+  id, email, full_name, avatar_url, phone, created_at, updated_at,
+  active_subscription:subscriptions(${SUBSCRIPTION_SELECT})
+`;
+
+// Obtiene los IDs de todos los miembros (role='member') del gym actual vía org_members (RLS-scoped)
+async function getMemberIds(supabase: SupabaseClient): Promise<string[]> {
+  const { data } = await supabase
+    .from("org_members")
+    .select("user_id")
+    .eq("role", "member");
+  return (data ?? []).map((m) => m.user_id as string);
+}
+
 // Obtiene los KPIs del dashboard ejecutando las queries en paralelo
 export async function fetchAdminStats(
   supabase: SupabaseClient
 ): Promise<AdminDashboardStats> {
   const now = new Date();
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-  // Inicio y fin del mes calendario actual para el cálculo de ingresos
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
   const startOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString();
 
@@ -26,7 +44,8 @@ export async function fetchAdminStats(
     supabase.from("payment_proofs").select("*", { count: "exact", head: true }).eq("status", "pending"),
     supabase.from("payment_proofs").select("amount").eq("status", "approved").gte("created_at", startOfMonth).lt("created_at", startOfNextMonth),
     supabase.from("content").select("*", { count: "exact", head: true }).eq("is_published", true),
-    supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "member").gte("created_at", thirtyDaysAgo),
+    // Contar miembros nuevos vía org_members (scoped al org actual por RLS)
+    supabase.from("org_members").select("*", { count: "exact", head: true }).eq("role", "member").gte("joined_at", thirtyDaysAgo),
   ]);
 
   const monthlyRevenue = (revenueData ?? []).reduce(
@@ -43,24 +62,21 @@ export async function fetchAdminStats(
   };
 }
 
-// Obtiene todos los miembros (role = member) con su suscripción activa
+// Obtiene todos los miembros del gym actual con su suscripción activa
 export async function fetchMembers(
   supabase: SupabaseClient
 ): Promise<MemberWithSubscription[]> {
+  const memberIds = await getMemberIds(supabase);
+  if (memberIds.length === 0) return [];
+
   const { data, error } = await supabase
     .from("profiles")
-    .select(`
-      id, email, full_name, avatar_url, role, phone, created_at, updated_at,
-      active_subscription:subscriptions(
-        id, user_id, plan_id, status, starts_at, expires_at, created_at, updated_at,
-        plan:membership_plans(id, name, description, price, currency, duration_days, features, is_active, sort_order, created_at, updated_at)
-      )
-    `)
-    .eq("role", "member")
+    .select(MEMBER_PROFILE_SELECT)
+    .in("id", memberIds)
     .order("created_at", { ascending: false });
 
   if (error) throw new Error(error.message);
-  return (data ?? []) as unknown as MemberWithSubscription[];
+  return (data ?? []).map((p) => ({ ...p, role: "member" })) as unknown as MemberWithSubscription[];
 }
 
 // ─── Tipos para el filtro de estado en la tabla de miembros ──────────────────
@@ -72,7 +88,7 @@ export interface MembersQueryParams extends PaginationParams {
   planId?: string;
 }
 
-// Obtiene IDs de miembros cuya suscripción más reciente coincide con el filtro de estado
+// Obtiene IDs de miembros cuya suscripción coincide con el filtro de estado
 async function getMemberIdsByStatus(
   supabase: SupabaseClient,
   status: MemberStatusFilter,
@@ -96,7 +112,6 @@ async function getMemberIdsByStatus(
   }
 
   if (status === "expired") {
-    // "Vencido" = subscription.status es expired/cancelled O está active pero ya pasó expires_at
     let q1 = supabase.from("subscriptions").select("user_id").in("status", ["expired", "cancelled"]);
     let q2 = supabase.from("subscriptions").select("user_id").eq("status", "active").lt("expires_at", now);
     if (planId) { q1 = q1.eq("plan_id", planId); q2 = q2.eq("plan_id", planId); }
@@ -104,7 +119,6 @@ async function getMemberIdsByStatus(
     return [...new Set([...(d1 ?? []), ...(d2 ?? [])].map((s) => s.user_id as string))];
   }
 
-  // status === "all" with optional plan filter
   if (planId) {
     const { data } = await supabase.from("subscriptions").select("user_id").eq("plan_id", planId);
     return [...new Set((data ?? []).map((s) => s.user_id as string))];
@@ -114,34 +128,31 @@ async function getMemberIdsByStatus(
 }
 
 // Obtiene miembros paginados con filtros de búsqueda, estado y plan (solo admin)
-// CORE CHANGE: paginación server-side para la tabla de miembros
 export async function fetchMembersPaginated(
   supabase: SupabaseClient,
   params: MembersQueryParams
 ): Promise<PaginatedResult<MemberWithSubscription>> {
   const { from, to } = buildPaginationRange(params);
 
-  // Resolver filtros de estado/plan en user_ids antes de la query principal
+  // Paso 1: IDs de miembros del org actual (role='member', scoped por RLS)
+  const orgMemberIds = await getMemberIds(supabase);
+  if (orgMemberIds.length === 0) return buildPaginatedResult([], 0, params);
+
+  // Paso 2: Filtrar por estado/plan si aplica
   const hasSubFilter = (params.status && params.status !== "all") || Boolean(params.planId);
-  let userIdFilter: string[] | null = null;
+  let userIdFilter: string[] = orgMemberIds;
 
   if (hasSubFilter) {
-    userIdFilter = await getMemberIdsByStatus(supabase, params.status ?? "all", params.planId);
-    // Ningún miembro coincide — retornar vacío sin hacer la query de profiles
+    const statusIds = await getMemberIdsByStatus(supabase, params.status ?? "all", params.planId);
+    // Intersección: miembros del org Y que coinciden con el filtro de estado
+    const statusSet = new Set(statusIds);
+    userIdFilter = orgMemberIds.filter((id) => statusSet.has(id));
     if (userIdFilter.length === 0) return buildPaginatedResult([], 0, params);
   }
 
-  const MEMBER_SELECT = `
-    id, email, full_name, avatar_url, role, phone, created_at, updated_at,
-    active_subscription:subscriptions(
-      id, user_id, plan_id, status, starts_at, expires_at, created_at, updated_at,
-      plan:membership_plans(id, name, description, price, currency, duration_days, features, is_active, sort_order, created_at, updated_at)
-    )
-  `;
-
-  // Construir query con count exacto para calcular totalPages
-  let countQ = supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "member");
-  let dataQ = supabase.from("profiles").select(MEMBER_SELECT).eq("role", "member").order("created_at", { ascending: false }).range(from, to);
+  // Paso 3: Paginar profiles con los IDs filtrados
+  let countQ = supabase.from("profiles").select("id", { count: "exact", head: true }).in("id", userIdFilter);
+  let dataQ = supabase.from("profiles").select(MEMBER_PROFILE_SELECT).in("id", userIdFilter).order("created_at", { ascending: false }).range(from, to);
 
   if (params.search?.trim()) {
     const filter = `full_name.ilike.%${params.search.trim()}%,email.ilike.%${params.search.trim()}%`;
@@ -149,15 +160,11 @@ export async function fetchMembersPaginated(
     dataQ = dataQ.or(filter);
   }
 
-  if (userIdFilter !== null) {
-    countQ = countQ.in("id", userIdFilter);
-    dataQ = dataQ.in("id", userIdFilter);
-  }
-
   const [{ count }, { data, error }] = await Promise.all([countQ, dataQ]);
   if (error) throw new Error(error.message);
 
-  return buildPaginatedResult((data ?? []) as unknown as MemberWithSubscription[], count ?? 0, params);
+  const members = (data ?? []).map((p) => ({ ...p, role: "member" })) as unknown as MemberWithSubscription[];
+  return buildPaginatedResult(members, count ?? 0, params);
 }
 
 // Obtiene el perfil completo de un miembro específico
@@ -165,19 +172,22 @@ export async function fetchMemberById(
   supabase: SupabaseClient,
   memberId: string
 ): Promise<MemberWithSubscription | null> {
+  // Verificar que el memberId es miembro de este org
+  const { data: membership } = await supabase
+    .from("org_members")
+    .select("role")
+    .eq("user_id", memberId)
+    .maybeSingle();
+
+  if (!membership) return null;
+
   const { data, error } = await supabase
     .from("profiles")
-    .select(`
-      id, email, full_name, avatar_url, role, phone, created_at, updated_at,
-      active_subscription:subscriptions(
-        id, user_id, plan_id, status, starts_at, expires_at, created_at, updated_at,
-        plan:membership_plans(id, name, description, price, currency, duration_days, features, is_active, sort_order, created_at, updated_at)
-      )
-    `)
+    .select(MEMBER_PROFILE_SELECT)
     .eq("id", memberId)
-    .eq("role", "member")
     .maybeSingle();
 
   if (error) throw new Error(error.message);
-  return data as unknown as MemberWithSubscription | null;
+  if (!data) return null;
+  return { ...data, role: membership.role } as unknown as MemberWithSubscription;
 }

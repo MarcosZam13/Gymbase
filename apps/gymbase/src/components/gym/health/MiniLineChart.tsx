@@ -100,7 +100,7 @@ export function MiniLineChart({
 
       {/* Líneas de cuadrícula */}
       {yLabels.map(({ y }) => (
-        <line key={y} x1={PAD.left} y1={y} x2={W - PAD.right} y2={y} stroke="#1e1e1e" strokeWidth="1" />
+        <line key={y} x1={PAD.left} y1={y} x2={W - PAD.right} y2={y} stroke="var(--border)" strokeWidth="1" />
       ))}
 
       {/* Área de relleno */}
@@ -111,7 +111,7 @@ export function MiniLineChart({
 
       {/* Puntos */}
       {coords.map((c, i) => (
-        <circle key={i} cx={c.x} cy={c.y} r={dotRadius} fill={color} stroke="#0d0d0d" strokeWidth={strokeWidth * 0.8} />
+        <circle key={i} cx={c.x} cy={c.y} r={dotRadius} fill={color} stroke="var(--gym-bg-surface)" strokeWidth={strokeWidth * 0.8} />
       ))}
 
       {/* Etiquetas eje Y */}

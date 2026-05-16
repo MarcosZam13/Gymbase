@@ -51,8 +51,8 @@ export default async function PortalCalendarPage(): Promise<React.ReactNode> {
 
         {/* Sidebar: mis reservas */}
         <div>
-          <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[16px] overflow-hidden">
-            <div className="px-4 py-3 border-b border-[#1a1a1a]">
+          <div className="bg-sidebar border border-border rounded-[16px] overflow-hidden">
+            <div className="px-4 py-3 border-b border-border">
               <p className="text-[10px] font-semibold text-[#666] uppercase tracking-[0.08em]">Mis reservas</p>
             </div>
             <div className="p-4">

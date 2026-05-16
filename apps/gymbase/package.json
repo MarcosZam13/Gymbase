@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
+    "dev": "NEXT_PUBLIC_GYM_CLIENT=zenith-club GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000002 next dev --port 3001",
+    "dev:iron-gym": "NEXT_PUBLIC_GYM_CLIENT=iron-gym GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000001 next dev --port 3001",
+    "dev:zenith-club": "NEXT_PUBLIC_GYM_CLIENT=zenith-club GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000002 next dev --port 3002",
     "build": "next build",
     "start": "next start --port 3001",
     "lint": "eslint",
@@ -15,8 +17,7 @@
   "dependencies": {
     "@base-ui/react": "^1.3.0",
     "@hookform/resolvers": "^5.2.2",
-    "@memberbase/core": "workspace:*",
-    "@radix-ui/react-slot": "^1.2.4",
+"@radix-ui/react-slot": "^1.2.4",
     "@react-email/components": "^1.0.12",
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.100.0",

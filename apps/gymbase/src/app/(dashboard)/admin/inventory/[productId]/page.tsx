@@ -48,7 +48,7 @@ export default async function ProductDetailPage({ params }: PageProps): Promise<
       <div className="flex items-start gap-4">
         <Link
           href="/admin/inventory"
-          className="mt-1 p-2 rounded-lg text-[#737373] hover:text-white hover:bg-[#1a1a1a] transition-colors"
+          className="mt-1 p-2 rounded-lg text-muted-foreground hover:text-white hover:bg-muted transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
         </Link>
@@ -59,7 +59,7 @@ export default async function ProductDetailPage({ params }: PageProps): Promise<
             </h1>
             <span
               className="text-xs font-medium px-2 py-0.5 rounded-full"
-              style={{ backgroundColor: "rgba(255,94,20,0.12)", color: "#FF5E14", border: "1px solid rgba(255,94,20,0.2)" }}
+              style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 12%, transparent)", color: "var(--gym-accent)", border: "1px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)" }}
             >
               {CATEGORY_LABELS[product.category] ?? product.category}
             </span>
@@ -83,7 +83,7 @@ export default async function ProductDetailPage({ params }: PageProps): Promise<
         {/* Columna izquierda — Info */}
         <div className="space-y-4">
           {/* Stock prominente */}
-          <div className="rounded-2xl p-5" style={{ backgroundColor: "#111111", border: "1px solid #1e1e1e" }}>
+          <div className="rounded-2xl p-5" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
             <p className="text-xs text-[#555] uppercase tracking-wider mb-2">Stock actual</p>
             <p className="text-5xl font-bold font-barlow" style={{ color: stockColor }}>
               {product.current_stock}
@@ -97,7 +97,7 @@ export default async function ProductDetailPage({ params }: PageProps): Promise<
           </div>
 
           {/* Detalles del producto */}
-          <div className="rounded-2xl p-5 space-y-3" style={{ backgroundColor: "#111111", border: "1px solid #1e1e1e" }}>
+          <div className="rounded-2xl p-5 space-y-3" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
             <h3 className="text-sm font-semibold text-white mb-3">Detalles</h3>
 
             {product.description && (
@@ -136,7 +136,7 @@ export default async function ProductDetailPage({ params }: PageProps): Promise<
         </div>
 
         {/* Columna derecha — Historial */}
-        <div className="rounded-2xl p-5" style={{ backgroundColor: "#111111", border: "1px solid #1e1e1e" }}>
+        <div className="rounded-2xl p-5" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
           <h3 className="text-sm font-semibold text-white mb-4">Historial de Movimientos</h3>
           <MovementHistory movements={movements} />
         </div>

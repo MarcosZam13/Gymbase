@@ -16,7 +16,7 @@ interface PortalClassCardProps {
 export function PortalClassCard({ scheduledClass, myBooking }: PortalClassCardProps): React.ReactNode {
   const [isLoading, setIsLoading] = useState(false);
 
-  const color = scheduledClass.class_type?.color ?? "#FF5E14";
+  const color = scheduledClass.class_type?.color ?? "var(--gym-accent)";
   const startTime = new Date(scheduledClass.starts_at).toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit" });
   const endTime = new Date(scheduledClass.ends_at).toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit" });
   const bookings = scheduledClass.bookings_count ?? 0;
@@ -33,10 +33,10 @@ export function PortalClassCard({ scheduledClass, myBooking }: PortalClassCardPr
 
   // Borde con acento naranja si hay reserva confirmada, amarillo si está en espera
   const cardBorder = isConfirmed
-    ? "border-[rgba(255,94,20,0.3)] bg-[#140d06]"
+    ? "border-primary/30 bg-primary/[3%]"
     : isWaitlisted
     ? "border-[rgba(250,204,21,0.25)] bg-[#111108]"
-    : "border-[#1e1e1e] hover:border-[#2a2a2a]";
+    : "border-border hover:border-border";
 
   async function handleBook(): Promise<void> {
     setIsLoading(true);
@@ -66,7 +66,7 @@ export function PortalClassCard({ scheduledClass, myBooking }: PortalClassCardPr
   const title = scheduledClass.title || scheduledClass.class_type?.name || "Clase";
 
   return (
-    <div className={`bg-[#111] border rounded-[16px] px-4 py-3.5 transition-all ${cardBorder}`}>
+    <div className={`bg-card border rounded-[16px] px-4 py-3.5 transition-all ${cardBorder}`}>
       <div className="flex gap-3 items-start mb-3">
         {/* Barra de color izquierda */}
         <div className="w-1 rounded-full self-stretch flex-shrink-0" style={{ backgroundColor: color, minHeight: "36px" }} />
@@ -97,7 +97,7 @@ export function PortalClassCard({ scheduledClass, myBooking }: PortalClassCardPr
       <div className="flex items-center gap-3">
         {maxCapacity > 0 ? (
           <>
-            <div className="flex-1 h-1 bg-[#1e1e1e] rounded-full overflow-hidden">
+            <div className="flex-1 h-1 bg-border rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-500"
                 style={{ width: `${capacityPct}%`, backgroundColor: barColor }}
@@ -116,13 +116,13 @@ export function PortalClassCard({ scheduledClass, myBooking }: PortalClassCardPr
           <div className="flex-shrink-0">
             {isConfirmed ? (
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-[rgba(255,94,20,0.1)] border border-[rgba(255,94,20,0.25)] text-[#FF5E14]">
+                <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary">
                   Reservada
                 </span>
                 <button
                   onClick={handleCancel}
                   disabled={isLoading}
-                  className="text-[11px] px-2.5 py-1 rounded-lg border border-[rgba(255,94,20,0.3)] text-[#FF5E14] hover:bg-[rgba(255,94,20,0.08)] transition-colors disabled:opacity-50 cursor-pointer"
+                  className="text-[11px] px-2.5 py-1 rounded-lg border border-primary/30 text-primary hover:bg-primary/[8%] transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   {isLoading ? <Loader2 className="w-3 h-3 animate-spin inline" /> : "Cancelar"}
                 </button>

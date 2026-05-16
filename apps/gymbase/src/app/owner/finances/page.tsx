@@ -20,7 +20,7 @@ function formatCurrency(value: number): string {
 }
 
 function DeltaBadge({ current, previous }: { current: number; previous: number }): React.ReactElement {
-  if (previous === 0) return <span className="text-[#737373] text-xs">—</span>;
+  if (previous === 0) return <span className="text-muted-foreground text-xs">—</span>;
   const delta = ((current - previous) / previous) * 100;
   const positive = delta >= 0;
   return (
@@ -91,7 +91,7 @@ export default async function OwnerFinancesPage({
           <h1 className="font-barlow font-bold text-3xl text-white tracking-wide uppercase">
             Finanzas
           </h1>
-          <p className="text-[#737373] text-sm mt-1">Análisis de ingresos por período</p>
+          <p className="text-muted-foreground text-sm mt-1">Análisis de ingresos por período</p>
         </div>
         <div className="flex items-center gap-3">
           <ExportCSVButton filename={`finanzas-${period}.csv`} rows={csvRows} />
@@ -103,24 +103,24 @@ export default async function OwnerFinancesPage({
 
       {/* KPI Cards — resumen del período seleccionado */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Total ingresos</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Total ingresos</p>
           <p className="font-barlow font-bold text-2xl text-white">{formatCurrency(periodTotals.total)}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Membresías</p>
-          <p className="font-barlow font-bold text-2xl text-[#FF5E14]">{formatCurrency(periodTotals.membership)}</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Membresías</p>
+          <p className="font-barlow font-bold text-2xl text-primary">{formatCurrency(periodTotals.membership)}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Ventas tienda</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Ventas tienda</p>
           <p className="font-barlow font-bold text-2xl text-green-400">{formatCurrency(periodTotals.sales)}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Egresos</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Egresos</p>
           <p className="font-barlow font-bold text-2xl text-red-400">{formatCurrency(expenseStats.total)}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-xs text-[#737373] mb-2 uppercase tracking-wider">Net</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Net</p>
           <p className={`font-barlow font-bold text-2xl ${periodNet >= 0 ? "text-green-400" : "text-red-400"}`}>
             {formatCurrency(periodNet)}
           </p>
@@ -128,7 +128,7 @@ export default async function OwnerFinancesPage({
       </div>
 
       {/* Gráfica de barras agrupadas */}
-      <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6 mb-8">
+      <div className="bg-card border border-border rounded-xl p-6 mb-8">
         <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
           Ingresos por período
         </h2>
@@ -136,13 +136,13 @@ export default async function OwnerFinancesPage({
       </div>
 
       {/* ── SECCIÓN DE GASTOS ──────────────────────────────────────────────────── */}
-      <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6 mb-8">
+      <div className="bg-card border border-border rounded-xl p-6 mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide">
               Gastos del período
             </h2>
-            <p className="text-[#737373] text-sm mt-0.5">
+            <p className="text-muted-foreground text-sm mt-0.5">
               Total: <span className="text-red-400 font-semibold">{formatCurrency(expenseStats.total)}</span>
             </p>
           </div>
@@ -160,8 +160,8 @@ export default async function OwnerFinancesPage({
                   servicios: "Servicios", marketing: "Marketing", otro: "Otro",
                 };
                 return (
-                  <div key={cat} className="bg-[#0A0A0A] border border-[#1E1E1E] rounded-lg p-3">
-                    <p className="text-[10px] text-[#737373] uppercase tracking-wider mb-1">{labels[cat] ?? cat}</p>
+                  <div key={cat} className="bg-background border border-border rounded-lg p-3">
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">{labels[cat] ?? cat}</p>
                     <p className="text-sm font-semibold text-red-400">{formatCurrency(amount)}</p>
                     <p className="text-[9px] text-[#555] mt-0.5">
                       {expenseStats.total > 0 ? `${((amount / expenseStats.total) * 100).toFixed(0)}%` : "—"}
@@ -174,18 +174,18 @@ export default async function OwnerFinancesPage({
 
         {/* Tabla de gastos */}
         {expenses.length === 0 ? (
-          <p className="text-center text-[#737373] text-sm py-6">
+          <p className="text-center text-muted-foreground text-sm py-6">
             Sin gastos registrados en este período
           </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1E1E1E]">
-                  <th className="text-left py-2.5 px-4 text-[#737373] font-medium text-xs">Fecha</th>
-                  <th className="text-left py-2.5 px-4 text-[#737373] font-medium text-xs">Categoría</th>
-                  <th className="text-left py-2.5 px-4 text-[#737373] font-medium text-xs">Descripción</th>
-                  <th className="text-right py-2.5 px-4 text-[#737373] font-medium text-xs">Monto</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2.5 px-4 text-muted-foreground font-medium text-xs">Fecha</th>
+                  <th className="text-left py-2.5 px-4 text-muted-foreground font-medium text-xs">Categoría</th>
+                  <th className="text-left py-2.5 px-4 text-muted-foreground font-medium text-xs">Descripción</th>
+                  <th className="text-right py-2.5 px-4 text-muted-foreground font-medium text-xs">Monto</th>
                 </tr>
               </thead>
               <tbody>
@@ -195,8 +195,8 @@ export default async function OwnerFinancesPage({
                     servicios: "Servicios", marketing: "Marketing", otro: "Otro",
                   };
                   return (
-                    <tr key={expense.id} className="border-b border-[#1E1E1E] last:border-0 hover:bg-white/[0.02] transition-colors">
-                      <td className="py-3 px-4 text-[#737373]">
+                    <tr key={expense.id} className="border-b border-border last:border-0 hover:bg-white/[0.02] transition-colors">
+                      <td className="py-3 px-4 text-muted-foreground">
                         {new Date(expense.expense_date + "T12:00:00").toLocaleDateString("es-CR", {
                           day: "numeric", month: "short", year: "numeric",
                         })}
@@ -206,7 +206,7 @@ export default async function OwnerFinancesPage({
                           {catLabels[expense.category] ?? expense.category}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-[#737373] text-xs">
+                      <td className="py-3 px-4 text-muted-foreground text-xs">
                         {expense.description ?? "—"}
                       </td>
                       <td className="py-3 px-4 text-right font-semibold text-red-400">
@@ -223,25 +223,25 @@ export default async function OwnerFinancesPage({
 
       {/* Tabla comparativa */}
       {comparison && (
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6">
+        <div className="bg-card border border-border rounded-xl p-6">
           <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
             Comparativa de ingresos
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1E1E1E]">
-                  <th className="text-left py-3 px-4 text-[#737373] font-medium">Período</th>
-                  <th className="text-right py-3 px-4 text-[#737373] font-medium">Membresías</th>
-                  <th className="text-right py-3 px-4 text-[#737373] font-medium">Ventas</th>
-                  <th className="text-right py-3 px-4 text-[#737373] font-medium">Total</th>
-                  <th className="text-right py-3 px-4 text-[#737373] font-medium">vs Anterior</th>
+                <tr className="border-b border-border">
+                  <th className="text-left py-3 px-4 text-muted-foreground font-medium">Período</th>
+                  <th className="text-right py-3 px-4 text-muted-foreground font-medium">Membresías</th>
+                  <th className="text-right py-3 px-4 text-muted-foreground font-medium">Ventas</th>
+                  <th className="text-right py-3 px-4 text-muted-foreground font-medium">Total</th>
+                  <th className="text-right py-3 px-4 text-muted-foreground font-medium">vs Anterior</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-[#1E1E1E] hover:bg-white/[0.02] transition-colors">
+                <tr className="border-b border-border hover:bg-white/[0.02] transition-colors">
                   <td className="py-3 px-4 font-medium text-white">Mes actual</td>
-                  <td className="py-3 px-4 text-right text-[#FF5E14] font-medium">
+                  <td className="py-3 px-4 text-right text-primary font-medium">
                     {formatCurrency(comparison.membership_breakdown)}
                   </td>
                   <td className="py-3 px-4 text-right text-green-400 font-medium">
@@ -254,10 +254,10 @@ export default async function OwnerFinancesPage({
                     <DeltaBadge current={comparison.current_month} previous={comparison.previous_month} />
                   </td>
                 </tr>
-                <tr className="border-b border-[#1E1E1E] hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 px-4 text-[#737373]">Mes anterior</td>
-                  <td colSpan={2} className="py-3 px-4 text-right text-[#737373]">—</td>
-                  <td className="py-3 px-4 text-right text-[#737373]">
+                <tr className="border-b border-border hover:bg-white/[0.02] transition-colors">
+                  <td className="py-3 px-4 text-muted-foreground">Mes anterior</td>
+                  <td colSpan={2} className="py-3 px-4 text-right text-muted-foreground">—</td>
+                  <td className="py-3 px-4 text-right text-muted-foreground">
                     {formatCurrency(comparison.previous_month)}
                   </td>
                   <td className="py-3 px-4 text-right">
@@ -265,12 +265,12 @@ export default async function OwnerFinancesPage({
                   </td>
                 </tr>
                 <tr className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 px-4 text-[#737373]">Mismo mes año anterior</td>
-                  <td colSpan={2} className="py-3 px-4 text-right text-[#737373]">—</td>
-                  <td className="py-3 px-4 text-right text-[#737373]">
+                  <td className="py-3 px-4 text-muted-foreground">Mismo mes año anterior</td>
+                  <td colSpan={2} className="py-3 px-4 text-right text-muted-foreground">—</td>
+                  <td className="py-3 px-4 text-right text-muted-foreground">
                     {formatCurrency(comparison.same_month_last_year)}
                   </td>
-                  <td className="py-3 px-4 text-right text-[#737373]">—</td>
+                  <td className="py-3 px-4 text-right text-muted-foreground">—</td>
                 </tr>
               </tbody>
             </table>

@@ -134,9 +134,9 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
     setTimeout(() => setFeedback(null), 5000);
   }
 
-  const sectionClass = "text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.1em] mb-3 mt-5 pb-2 border-b border-[#1a1a1a]";
+  const sectionClass = "text-[10px] font-semibold text-primary uppercase tracking-[0.1em] mb-3 mt-5 pb-2 border-b border-border";
   const labelClass = "text-[10px] font-semibold text-[#666] uppercase tracking-[0.08em] mb-1.5 block";
-  const inputClass = "h-9 bg-[#161616] border-[#2a2a2a] text-sm focus:border-[#FF5E14]";
+  const inputClass = "h-9 bg-[#161616] border-border text-sm focus:border-primary";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-0">
@@ -151,14 +151,14 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
 
       {/* Tipo de clase con dot de color */}
       <div className="mb-4">
-        <label className={labelClass}>Tipo de clase <span className="text-[#FF5E14]">*</span></label>
+        <label className={labelClass}>Tipo de clase <span className="text-primary">*</span></label>
         <Select onValueChange={(v: string | null) => { if (v) { setValue("type_id", v); setSelectedTypeId(v); } }}>
           <SelectTrigger className={inputClass}>
             {selectedTypeId ? (() => {
               const ct = classTypes.find((t) => t.id === selectedTypeId);
               return (
                 <span className="flex items-center gap-2">
-                  <span className="inline-block w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: ct?.color ?? "#FF5E14" }} />
+                  <span className="inline-block w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: ct?.color ?? "var(--gym-accent)" }} />
                   <span>{ct?.name}</span>
                 </span>
               );
@@ -170,7 +170,7 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
                 <span className="flex items-center gap-2">
                   <span
                     className="inline-block w-2 h-2 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: ct.color ?? "#FF5E14" }}
+                    style={{ backgroundColor: ct.color ?? "var(--gym-accent)" }}
                   />
                   {ct.name}
                 </span>
@@ -184,8 +184,8 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
           const ct = classTypes.find((t) => t.id === selectedTypeId);
           if (!ct) return null;
           return (
-            <div className="flex items-center gap-2.5 mt-2 px-3 py-2 bg-[#0d0d0d] border border-[#1e1e1e] rounded-lg">
-              <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: ct.color ?? "#FF5E14" }} />
+            <div className="flex items-center gap-2.5 mt-2 px-3 py-2 bg-sidebar border border-border rounded-lg">
+              <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: ct.color ?? "var(--gym-accent)" }} />
               <div>
                 <p className="text-[13px] font-semibold text-white leading-none">{ct.name}</p>
                 {ct.description && <p className="text-[11px] text-[#666] mt-0.5">{ct.description}</p>}
@@ -242,12 +242,12 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
 
       <div className="grid grid-cols-3 gap-3 mb-4">
         <div>
-          <label className={labelClass}>Fecha <span className="text-[#FF5E14]">*</span></label>
+          <label className={labelClass}>Fecha <span className="text-primary">*</span></label>
           <input
             type="date"
             id="class_date"
             style={{ colorScheme: "dark" }}
-            className="w-full h-9 bg-[#161616] border border-[#2a2a2a] rounded-md px-3 text-sm text-white focus:border-[#FF5E14] focus:outline-none"
+            className="w-full h-9 bg-[#161616] border border-border rounded-md px-3 text-sm text-white focus:border-primary focus:outline-none"
             onChange={(e) => {
               const timeInput = document.getElementById("class_time") as HTMLInputElement;
               const time = timeInput?.value ?? "09:00";
@@ -260,12 +260,12 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
           />
         </div>
         <div>
-          <label className={labelClass}>Hora inicio <span className="text-[#FF5E14]">*</span></label>
+          <label className={labelClass}>Hora inicio <span className="text-primary">*</span></label>
           <input
             type="time"
             id="class_time"
             style={{ colorScheme: "dark" }}
-            className="w-full h-9 bg-[#161616] border border-[#2a2a2a] rounded-md px-3 text-sm text-white focus:border-[#FF5E14] focus:outline-none"
+            className="w-full h-9 bg-[#161616] border border-border rounded-md px-3 text-sm text-white focus:border-primary focus:outline-none"
             defaultValue="09:00"
             onChange={(e) => {
               const dateInput = document.getElementById("class_date") as HTMLInputElement;
@@ -301,7 +301,7 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
       <div className={sectionClass}>Capacidad</div>
 
       <div className="mb-4">
-        <label className={labelClass}>Cupos máximos <span className="text-[#FF5E14]">*</span></label>
+        <label className={labelClass}>Cupos máximos <span className="text-primary">*</span></label>
         <Input
           type="number"
           min={1}
@@ -317,7 +317,7 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
 
       {/* Toggle clase recurrente */}
       <div
-        className="flex items-center justify-between px-3 py-2.5 bg-[#161616] border border-[#2a2a2a] rounded-lg cursor-pointer mb-3 hover:border-[#333] transition-colors"
+        className="flex items-center justify-between px-3 py-2.5 bg-[#161616] border border-border rounded-lg cursor-pointer mb-3 hover:border-[#333] transition-colors"
         onClick={handleToggleRecurring}
       >
         <div>
@@ -326,7 +326,7 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
         </div>
         <div className={cn(
           "w-9 h-5 rounded-full relative transition-colors",
-          isRecurring ? "bg-[#FF5E14]" : "bg-[#2a2a2a]"
+          isRecurring ? "bg-primary" : "bg-muted"
         )}>
           <div className={cn(
             "absolute top-0.5 w-4 h-4 bg-white rounded-full transition-transform",
@@ -348,8 +348,8 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
                 className={cn(
                   "px-3 py-1.5 rounded-full text-xs font-medium border transition-all",
                   recurrencePattern === value
-                    ? "bg-[rgba(255,94,20,0.1)] border-[#FF5E14] text-[#FF5E14]"
-                    : "bg-[#1a1a1a] border-[#2a2a2a] text-[#666] hover:border-[#444]"
+                    ? "bg-primary/10 border-primary text-primary"
+                    : "bg-muted border-border text-[#666] hover:border-[#444]"
                 )}
               >
                 {label}
@@ -370,7 +370,7 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
                     className={cn(
                       "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium border transition-all",
                       selectedDays.includes(iso)
-                        ? "bg-[#FF5E14] border-[#FF5E14] text-white"
+                        ? "bg-primary border-primary text-white"
                         : "border-[#333] text-[#555] hover:border-[#555]"
                     )}
                   >
@@ -386,7 +386,7 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
 
           {/* Campo: cuántas semanas hacia adelante */}
           <div>
-            <label className={labelClass}>Semanas hacia adelante <span className="text-[#FF5E14]">*</span></label>
+            <label className={labelClass}>Semanas hacia adelante <span className="text-primary">*</span></label>
             <Input
               type="number"
               min={1}
@@ -410,7 +410,7 @@ export function ScheduleForm({ classTypes, instructors = [] }: ScheduleFormProps
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="gap-2 w-full bg-[#FF5E14] hover:bg-[#e5540f] text-white mt-2"
+        className="gap-2 w-full bg-primary hover:bg-primary text-white mt-2"
       >
         {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
         {isRecurring ? "Programar serie de clases" : "Programar clase"}

@@ -12,7 +12,8 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VideoEmbed } from "./VideoEmbed";
-import { createContent } from "@/actions/content.actions";
+import { createContent, uploadContentThumbnail } from "@/actions/content.actions";
+import { ImageUploadButton } from "@/components/shared/ImageUploadButton";
 import type { MembershipPlan, ContentCategory, ContentType } from "@/types/database";
 
 // Los cuatro tipos disponibles al crear contenido
@@ -133,9 +134,9 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
     }
   }
 
-  const sectionClass = "text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.1em] mb-3 mt-6 pb-2 border-b border-[#1a1a1a]";
+  const sectionClass = "text-[10px] font-semibold text-primary uppercase tracking-[0.1em] mb-3 mt-6 pb-2 border-b border-border";
   const labelClass = "text-[10px] font-semibold text-[#555] uppercase tracking-[0.08em] mb-1.5 block";
-  const inputClass = "h-9 bg-[#111] border-[#222] text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-[#FF5E14] rounded-lg";
+  const inputClass = "h-9 bg-card border-[#222] text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-primary rounded-lg";
 
   const activePlans = plans.filter((p) => p.is_active);
   const allPlansSelected = selectedPlanIds.length === 0;
@@ -166,8 +167,8 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
               onClick={() => setContentType(value)}
               className={`flex flex-col items-center gap-2 p-4 rounded-[12px] border transition-all ${
                 isSelected
-                  ? "border-[rgba(255,94,20,0.4)] bg-[rgba(255,94,20,0.05)]"
-                  : "border-[#1e1e1e] bg-[#0d0d0d] hover:border-[#2a2a2a]"
+                  ? "border-primary/40 bg-primary/5"
+                  : "border-border bg-sidebar hover:border-border"
               }`}
             >
               <div
@@ -179,7 +180,7 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
                   <Icon className="w-[18px] h-[18px]" />
                 </div>
               </div>
-              <span className={`text-[11px] font-semibold ${isSelected ? "text-[#FF5E14]" : "text-[#666]"}`}>
+              <span className={`text-[11px] font-semibold ${isSelected ? "text-primary" : "text-[#666]"}`}>
                 {label}
               </span>
             </button>
@@ -190,7 +191,7 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
       {/* ── Título ── */}
       <div className="mb-4">
         <label className={labelClass}>
-          Título <span className="text-[#FF5E14]">*</span>
+          Título <span className="text-primary">*</span>
         </label>
         <Input
           placeholder="Ej: Técnica correcta del press banca"
@@ -206,7 +207,7 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
       <div className="mb-4">
         <label className={labelClass}>
           {contentType === "video" ? "URL del video" : contentType === "file" ? "URL del PDF" : contentType === "link" ? "URL del enlace" : "URL del artículo"}
-          {(contentType === "video" || contentType === "link") && <span className="text-[#FF5E14] ml-0.5">*</span>}
+          {(contentType === "video" || contentType === "link") && <span className="text-primary ml-0.5">*</span>}
         </label>
         <Input
           type="url"
@@ -228,11 +229,11 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
 
         {/* Preview de video embebido (YouTube / Vimeo) */}
         {contentType === "video" && mediaUrl && (mediaUrl.includes("youtube") || mediaUrl.includes("youtu.be") || mediaUrl.includes("vimeo")) ? (
-          <div className="mt-2 rounded-xl overflow-hidden border border-[#1e1e1e]">
+          <div className="mt-2 rounded-xl overflow-hidden border border-border">
             <VideoEmbed url={mediaUrl} title="Preview" />
           </div>
         ) : contentType === "video" && (
-          <div className="mt-2 h-8 bg-[#0d0d0d] border border-dashed border-[#1e1e1e] rounded-lg flex items-center justify-center">
+          <div className="mt-2 h-8 bg-sidebar border border-dashed border-border rounded-lg flex items-center justify-center">
             <p className="text-[10px] text-[#333]">El preview aparecerá al ingresar una URL de YouTube o Vimeo</p>
           </div>
         )}
@@ -243,7 +244,7 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
         <div className="mb-4">
           <label className={labelClass}>Categoría</label>
           <select
-            className="w-full h-9 bg-[#111] border border-[#222] rounded-lg px-3 text-sm text-[#888] focus:border-[#FF5E14] focus:outline-none appearance-none"
+            className="w-full h-9 bg-card border border-[#222] rounded-lg px-3 text-sm text-[#888] focus:border-primary focus:outline-none appearance-none"
             {...register("category_id")}
             style={{ colorScheme: "dark" }}
           >
@@ -262,26 +263,45 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
         <label className={labelClass}>Descripción</label>
         <textarea
           placeholder="Descripción del contenido..."
-          className="w-full min-h-[80px] bg-[#111] border border-[#222] rounded-lg px-3 py-2.5 text-sm text-[#888] placeholder-[#3a3a3a] focus:border-[#FF5E14] focus:outline-none resize-none font-sans"
+          className="w-full min-h-[80px] bg-card border border-[#222] rounded-lg px-3 py-2.5 text-sm text-[#888] placeholder-[#3a3a3a] focus:border-primary focus:outline-none resize-none font-sans"
           {...register("description")}
         />
       </div>
 
-      {/* ── Imagen de portada (manual) ── */}
+      {/* ── Imagen de portada (upload o URL) ── */}
       <div className="mb-4">
-        <label className={labelClass}>Imagen de portada (URL)</label>
-        <Input
-          type="url"
-          placeholder="https://ejemplo.com/imagen.jpg"
-          className={inputClass}
-          {...register("thumbnail_url")}
-        />
-        {errors.thumbnail_url && (
-          <p className="text-xs text-[#EF4444] mt-1">{errors.thumbnail_url.message}</p>
-        )}
-        {contentType === "video" && ytVideoId && (
-          <p className="text-[10px] text-[#444] mt-1">Auto-rellenado con el thumbnail de YouTube · puedes sobreescribirlo</p>
-        )}
+        <label className={labelClass}>Imagen de portada</label>
+        <div className="flex gap-3 items-start">
+          <ImageUploadButton
+            currentUrl={watch("thumbnail_url") || undefined}
+            onUpload={async (file) => {
+              const fd = new FormData();
+              fd.append("file", file);
+              const result = await uploadContentThumbnail(fd);
+              if (!result.success) throw new Error(typeof result.error === "string" ? result.error : "Error");
+              setValue("thumbnail_url", result.data!.url);
+              toast.success("Imagen subida");
+              return result.data!.url;
+            }}
+            shape="rect"
+            width="w-32"
+            height="h-20"
+          />
+          <div className="flex-1">
+            <Input
+              type="url"
+              placeholder="O pega una URL de imagen"
+              className={inputClass}
+              {...register("thumbnail_url")}
+            />
+            {errors.thumbnail_url && (
+              <p className="text-xs text-[#EF4444] mt-1">{errors.thumbnail_url.message}</p>
+            )}
+            {contentType === "video" && ytVideoId && (
+              <p className="text-[10px] text-[#444] mt-1">Auto-rellenado con el thumbnail de YouTube · puedes sobreescribirlo</p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* ── Visibilidad por plan ── */}
@@ -295,12 +315,12 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
               onClick={() => { setSelectedPlanIds([]); setValue("plan_ids", []); }}
               className={`h-7 px-3 flex items-center gap-1.5 rounded-full text-[11px] font-medium border transition-all ${
                 allPlansSelected
-                  ? "bg-[rgba(255,94,20,0.1)] border-[rgba(255,94,20,0.4)] text-[#FF5E14]"
-                  : "bg-[#111] border-[#222] text-[#666] hover:border-[#333]"
+                  ? "bg-primary/10 border-primary/40 text-primary"
+                  : "bg-card border-[#222] text-[#666] hover:border-[#333]"
               }`}
             >
               <div className={`w-3.5 h-3.5 rounded flex items-center justify-center border flex-shrink-0 ${
-                allPlansSelected ? "bg-[#FF5E14] border-[#FF5E14]" : "bg-[#1a1a1a] border-[#333]"
+                allPlansSelected ? "bg-primary border-primary" : "bg-muted border-[#333]"
               }`}>
                 {allPlansSelected && (
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
@@ -320,12 +340,12 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
                   onClick={() => togglePlan(plan.id)}
                   className={`h-7 px-3 flex items-center gap-1.5 rounded-full text-[11px] font-medium border transition-all ${
                     isActive
-                      ? "bg-[rgba(255,94,20,0.1)] border-[rgba(255,94,20,0.4)] text-[#FF5E14]"
-                      : "bg-[#111] border-[#222] text-[#666] hover:border-[#333]"
+                      ? "bg-primary/10 border-primary/40 text-primary"
+                      : "bg-card border-[#222] text-[#666] hover:border-[#333]"
                   }`}
                 >
                   <div className={`w-3.5 h-3.5 rounded flex items-center justify-center border flex-shrink-0 ${
-                    isActive ? "bg-[#FF5E14] border-[#FF5E14]" : "bg-[#1a1a1a] border-[#333]"
+                    isActive ? "bg-primary border-primary" : "bg-muted border-[#333]"
                   }`}>
                     {isActive && (
                       <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
@@ -362,7 +382,7 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
       </div>
 
       {/* ── Toggle publicar ── */}
-      <div className="flex items-center justify-between px-3.5 py-3 bg-[#111] border border-[#1a1a1a] rounded-xl mb-6">
+      <div className="flex items-center justify-between px-3.5 py-3 bg-card border border-border rounded-xl mb-6">
         <div>
           <p className="text-[13px] font-medium text-[#ccc]">Publicar inmediatamente</p>
           <p className="text-[10px] text-[#555] mt-0.5">
@@ -372,19 +392,19 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
         <button
           type="button"
           onClick={() => setValue("is_published", !isPublished)}
-          className={`w-9 h-5 rounded-full relative transition-colors flex-shrink-0 ${isPublished ? "bg-[#FF5E14]" : "bg-[#2a2a2a]"}`}
+          className={`w-9 h-5 rounded-full relative transition-colors flex-shrink-0 ${isPublished ? "bg-primary" : "bg-muted"}`}
         >
           <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-transform ${isPublished ? "translate-x-[18px]" : "translate-x-0.5"}`} />
         </button>
       </div>
 
       {/* ── Acciones ── */}
-      <div className="flex gap-2.5 justify-end pt-4 border-t border-[#1a1a1a]">
+      <div className="flex gap-2.5 justify-end pt-4 border-t border-border">
         <Button
           type="button"
           variant="outline"
           onClick={() => router.back()}
-          className="h-9 px-4 bg-[#1a1a1a] border-[#2a2a2a] text-[#777] hover:text-[#ccc] hover:bg-[#222]"
+          className="h-9 px-4 bg-muted border-border text-[#777] hover:text-[#ccc] hover:bg-[#222]"
         >
           Cancelar
         </Button>
@@ -393,14 +413,14 @@ export function AddContentForm({ plans, categories }: AddContentFormProps): Reac
           variant="outline"
           disabled={isSubmitting}
           onClick={() => { setValue("is_published", false); void handleSubmit(onSubmit)(); }}
-          className="h-9 px-4 bg-[#1a1a1a] border-[#2a2a2a] text-[#ccc] hover:bg-[#222]"
+          className="h-9 px-4 bg-muted border-border text-[#ccc] hover:bg-[#222]"
         >
           Guardar borrador
         </Button>
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-9 px-5 bg-[#FF5E14] hover:bg-[#e5540f] text-white gap-2"
+          className="h-9 px-5 bg-primary hover:bg-primary text-white gap-2"
         >
           {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
           {isPublished ? "Publicar" : "Guardar"}

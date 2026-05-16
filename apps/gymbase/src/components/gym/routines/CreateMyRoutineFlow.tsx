@@ -185,8 +185,8 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
 
   /* ── Estilos compartidos ── */
   const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "10px 12px", background: "#0d0d0d",
-    border: "0.5px solid #1e1e1e", borderRadius: 10, color: "#ddd",
+    width: "100%", padding: "10px 12px", background: "var(--sidebar)",
+    border: "0.5px solid var(--border)", borderRadius: 10, color: "#ddd",
     fontSize: 13, outline: "none", fontFamily: "inherit", boxSizing: "border-box",
   };
 
@@ -214,7 +214,7 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
           </div>
         </div>
 
-        <div style={{ background: "#111", border: "0.5px solid #1e1e1e", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 16 }}>
+        <div style={{ background: "#111", border: "0.5px solid var(--border)", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 16 }}>
           {/* Nombre */}
           <div>
             <label style={labelStyle}>Nombre de la rutina *</label>
@@ -255,7 +255,7 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
               onClick={() => setIsPublic((v) => !v)}
               style={{
                 width: 44, height: 24, borderRadius: 100, border: "none", cursor: "pointer", flexShrink: 0,
-                background: isPublic ? "#FF5E14" : "#1e1e1e",
+                background: isPublic ? "var(--gym-accent)" : "var(--border)",
                 transition: "background 0.2s", position: "relative",
               }}
             >
@@ -273,7 +273,7 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
             onClick={handleCreateRoutine}
             disabled={creating || !name.trim()}
             style={{
-              width: "100%", padding: "12px 0", background: "#FF5E14", color: "#fff",
+              width: "100%", padding: "12px 0", background: "var(--gym-accent)", color: "#fff",
               border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700,
               cursor: creating || !name.trim() ? "not-allowed" : "pointer",
               opacity: creating || !name.trim() ? 0.5 : 1,
@@ -311,12 +311,12 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
         <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
           {/* Lista de días creados */}
           {days.length === 0 ? (
-            <div style={{ background: "#111", border: "0.5px solid #1e1e1e", borderRadius: 12, padding: 20, textAlign: "center" }}>
+            <div style={{ background: "#111", border: "0.5px solid var(--border)", borderRadius: 12, padding: 20, textAlign: "center" }}>
               <p style={{ fontSize: 12, color: "#444" }}>Aún no hay días. Agregá el primero.</p>
             </div>
           ) : (
             days.map((day) => (
-              <div key={day.id} style={{ background: "#111", border: "0.5px solid #1e1e1e", borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", gap: 10 }}>
+              <div key={day.id} style={{ background: "#111", border: "0.5px solid var(--border)", borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", gap: 10 }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, background: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <Dumbbell style={{ width: 14, height: 14, color: "#555" }} />
                 </div>
@@ -344,7 +344,7 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
 
           {/* Input para nuevo día */}
           {showDayInput && (
-            <div style={{ background: "#111", border: "0.5px solid rgba(255,94,20,0.3)", borderRadius: 12, padding: 14, display: "flex", gap: 8 }}>
+            <div style={{ background: "#111", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)", borderRadius: 12, padding: 14, display: "flex", gap: 8 }}>
               <input
                 type="text"
                 placeholder="Ej: Pecho y Tríceps, Pierna…"
@@ -358,13 +358,13 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
               <button
                 onClick={handleAddDay}
                 disabled={addingDay || !newDayName.trim()}
-                style={{ padding: "8px 14px", background: "#FF5E14", border: "none", borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0, fontFamily: "inherit", opacity: addingDay || !newDayName.trim() ? 0.5 : 1 }}
+                style={{ padding: "8px 14px", background: "var(--gym-accent)", border: "none", borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0, fontFamily: "inherit", opacity: addingDay || !newDayName.trim() ? 0.5 : 1 }}
               >
                 {addingDay ? <Loader2 style={{ width: 14, height: 14 }} className="animate-spin" /> : <Check style={{ width: 14, height: 14 }} />}
               </button>
               <button
                 onClick={() => { setShowDayInput(false); setNewDayName(""); }}
-                style={{ padding: "8px", background: "transparent", border: "0.5px solid #1e1e1e", borderRadius: 8, color: "#555", cursor: "pointer" }}
+                style={{ padding: "8px", background: "transparent", border: "0.5px solid var(--border)", borderRadius: 8, color: "#555", cursor: "pointer" }}
               >
                 <X style={{ width: 14, height: 14 }} />
               </button>
@@ -394,7 +394,7 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
         <button
           onClick={() => router.push("/portal/routines")}
           style={{
-            width: "100%", padding: "13px 0", background: days.length > 0 ? "#FF5E14" : "#1a1a1a",
+            width: "100%", padding: "13px 0", background: days.length > 0 ? "var(--gym-accent)" : "#1a1a1a",
             color: days.length > 0 ? "#fff" : "#555",
             border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700,
             cursor: "pointer", fontFamily: "inherit",
@@ -429,7 +429,7 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
         <button
           onClick={handleBackToDays}
           style={{
-            padding: "7px 14px", background: "#FF5E14", color: "#fff",
+            padding: "7px 14px", background: "var(--gym-accent)", color: "#fff",
             border: "none", borderRadius: 10, fontSize: 12, fontWeight: 700,
             cursor: "pointer", display: "flex", alignItems: "center", gap: 5,
             fontFamily: "inherit", flexShrink: 0,
@@ -458,9 +458,9 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
           onClick={() => setMuscleFilter("")}
           style={{
             flexShrink: 0, padding: "4px 10px",
-            background: !muscleFilter ? "#FF5E14" : "#111",
+            background: !muscleFilter ? "var(--gym-accent)" : "#111",
             color: !muscleFilter ? "#fff" : "#666",
-            border: `0.5px solid ${!muscleFilter ? "#FF5E14" : "#252525"}`,
+            border: `0.5px solid ${!muscleFilter ? "var(--gym-accent)" : "#252525"}`,
             borderRadius: 100, fontSize: 10, fontWeight: 600, cursor: "pointer",
             fontFamily: "inherit", whiteSpace: "nowrap",
           }}
@@ -473,9 +473,9 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
             onClick={() => setMuscleFilter(muscleFilter === mg ? "" : mg)}
             style={{
               flexShrink: 0, padding: "4px 10px",
-              background: muscleFilter === mg ? "#FF5E14" : "#111",
+              background: muscleFilter === mg ? "var(--gym-accent)" : "#111",
               color: muscleFilter === mg ? "#fff" : "#666",
-              border: `0.5px solid ${muscleFilter === mg ? "#FF5E14" : "#252525"}`,
+              border: `0.5px solid ${muscleFilter === mg ? "var(--gym-accent)" : "#252525"}`,
               borderRadius: 100, fontSize: 10, fontWeight: 600, cursor: "pointer",
               fontFamily: "inherit", whiteSpace: "nowrap",
             }}
@@ -487,9 +487,9 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
 
       {/* Form de parámetros — aparece cuando se selecciona un ejercicio */}
       {selectedEx && (
-        <div style={{ background: "rgba(255,94,20,0.06)", border: "0.5px solid rgba(255,94,20,0.3)", borderRadius: 14, padding: 16, marginBottom: 14 }}>
+        <div style={{ background: "color-mix(in srgb, var(--gym-accent) 6%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)", borderRadius: 14, padding: 16, marginBottom: 14 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-            <p style={{ fontSize: 13, fontWeight: 600, color: "#FF5E14" }}>{selectedEx.name}</p>
+            <p style={{ fontSize: 13, fontWeight: 600, color: "var(--gym-accent)" }}>{selectedEx.name}</p>
             <button onClick={() => setSelectedEx(null)} style={{ background: "none", border: "none", color: "#555", cursor: "pointer" }}>
               <X style={{ width: 14, height: 14 }} />
             </button>
@@ -521,7 +521,7 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
             onClick={handleAddExercise}
             disabled={addingExercise}
             style={{
-              width: "100%", padding: "9px 0", background: "#FF5E14", color: "#fff",
+              width: "100%", padding: "9px 0", background: "var(--gym-accent)", color: "#fff",
               border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700,
               cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               fontFamily: "inherit", opacity: addingExercise ? 0.6 : 1,
@@ -552,15 +552,15 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
                 }}
                 style={{
                   textAlign: "left", padding: "10px 12px",
-                  background: isSelected ? "rgba(255,94,20,0.08)" : "#111",
-                  border: `0.5px solid ${isSelected ? "rgba(255,94,20,0.4)" : "#1a1a1a"}`,
+                  background: isSelected ? "color-mix(in srgb, var(--gym-accent) 8%, transparent)" : "#111",
+                  border: `0.5px solid ${isSelected ? "color-mix(in srgb, var(--gym-accent) 40%, transparent)" : "#1a1a1a"}`,
                   borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", gap: 10,
                   fontFamily: "inherit",
                 }}
               >
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ fontSize: 12, fontWeight: 600, color: isSelected ? "#FF5E14" : "#ccc" }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: isSelected ? "var(--gym-accent)" : "#ccc" }}>
                       {ex.name}
                     </span>
                     {isPrivate && (
@@ -573,7 +573,7 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
                     </span>
                   )}
                 </div>
-                {isSelected && <Check style={{ width: 14, height: 14, color: "#FF5E14", flexShrink: 0 }} />}
+                {isSelected && <Check style={{ width: 14, height: 14, color: "var(--gym-accent)", flexShrink: 0 }} />}
               </button>
             );
           })
@@ -582,9 +582,9 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
 
       {/* Formulario crear ejercicio propio */}
       {showPrivateForm ? (
-        <div style={{ background: "#111", border: "0.5px solid rgba(255,94,20,0.2)", borderRadius: 12, padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ background: "#111", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)", borderRadius: 12, padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#FF5E14" }}>Crear ejercicio propio</p>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "var(--gym-accent)" }}>Crear ejercicio propio</p>
             <button onClick={() => setShowPrivateForm(false)} style={{ background: "none", border: "none", color: "#555", cursor: "pointer" }}>
               <X style={{ width: 14, height: 14 }} />
             </button>
@@ -622,7 +622,7 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
             onClick={handleCreatePrivate}
             disabled={creatingPrivate || !privateExName.trim()}
             style={{
-              padding: "9px", background: "#FF5E14", color: "#fff",
+              padding: "9px", background: "var(--gym-accent)", color: "#fff",
               border: "none", borderRadius: 10,
               fontSize: 12, fontWeight: 700, cursor: "pointer",
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
@@ -639,8 +639,8 @@ export function CreateMyRoutineFlow({ exercises }: Props): React.ReactNode {
           onClick={() => setShowPrivateForm(true)}
           style={{
             width: "100%", padding: "9px 0",
-            background: "rgba(255,94,20,0.06)", color: "#FF5E14",
-            border: "0.5px solid rgba(255,94,20,0.3)", borderRadius: 10,
+            background: "color-mix(in srgb, var(--gym-accent) 6%, transparent)", color: "var(--gym-accent)",
+            border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)", borderRadius: 10,
             fontSize: 11, fontWeight: 600, cursor: "pointer",
             display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
             fontFamily: "inherit",

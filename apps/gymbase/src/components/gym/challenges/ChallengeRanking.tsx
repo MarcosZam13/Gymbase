@@ -63,9 +63,9 @@ export function ChallengeRanking({
   }
 
   return (
-    <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[18px] overflow-hidden">
+    <div className="bg-sidebar border border-border rounded-[18px] overflow-hidden">
       {/* Header */}
-      <div className="px-5 py-3.5 border-b border-[#1a1a1a] flex items-center justify-between">
+      <div className="px-5 py-3.5 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Trophy className="w-4 h-4 text-[#FACC15]" />
           <span className="text-xs font-semibold text-[#666] uppercase tracking-[0.08em]">
@@ -93,8 +93,8 @@ export function ChallengeRanking({
                 key={p.id}
                 className="px-4 py-3 flex items-center gap-3 transition-colors"
                 style={{
-                  backgroundColor: isMe ? "rgba(255,94,20,0.04)" : undefined,
-                  borderLeft: isMe ? "2px solid #FF5E14" : "2px solid transparent",
+                  backgroundColor: isMe ? "color-mix(in srgb, var(--gym-accent) 4%, transparent)" : undefined,
+                  borderLeft: isMe ? "2px solid var(--gym-accent)" : "2px solid transparent",
                 }}
               >
                 {/* Posición / emoji podio */}
@@ -112,7 +112,7 @@ export function ChallengeRanking({
                 {/* Avatar */}
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold font-barlow flex-shrink-0"
-                  style={{ backgroundColor: "#1e1e1e", color: "#888" }}
+                  style={{ backgroundColor: "var(--border)", color: "#888" }}
                 >
                   {p.profile?.avatar_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -133,7 +133,7 @@ export function ChallengeRanking({
                       {p.profile?.full_name ?? "Participante"}
                     </p>
                     {isMe && (
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-[rgba(255,94,20,0.15)] text-[#FF5E14] font-semibold flex-shrink-0">
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/[15%] text-primary font-semibold flex-shrink-0">
                         TÚ
                       </span>
                     )}
@@ -145,7 +145,7 @@ export function ChallengeRanking({
                     <p className="text-[10px] text-[#555] mt-0.5">Pesaje pendiente</p>
                   ) : (
                     <div className="flex items-center gap-2 mt-0.5">
-                      <div className="flex-1 h-1 bg-[#1e1e1e] rounded-full overflow-hidden max-w-[80px]">
+                      <div className="flex-1 h-1 bg-border rounded-full overflow-hidden max-w-[80px]">
                         <div
                           className="h-full rounded-full"
                           style={{
@@ -177,7 +177,7 @@ export function ChallengeRanking({
                           title={tip}
                           disabled={busy}
                           onClick={() => handleAwardBadge(p.user_id, type)}
-                          className="w-6 h-6 flex items-center justify-center rounded bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#FF5E14] transition-colors text-sm disabled:opacity-40"
+                          className="w-6 h-6 flex items-center justify-center rounded bg-muted border border-border hover:border-primary transition-colors text-sm disabled:opacity-40"
                         >
                           {busy ? <Loader2 className="w-3 h-3 animate-spin text-[#555]" /> : emoji}
                         </button>
@@ -193,8 +193,8 @@ export function ChallengeRanking({
 
       {/* Mensaje motivacional si el miembro está en top 3 */}
       {myUserId && sorted.slice(0, 3).some((p) => p.user_id === myUserId) && (
-        <div className="px-4 py-2.5 border-t border-[#1a1a1a] bg-[rgba(255,94,20,0.03)]">
-          <p className="text-[11px] text-[#FF5E14] font-medium text-center">
+        <div className="px-4 py-2.5 border-t border-border bg-[color-mix(in srgb, var(--gym-accent) 3%, transparent)]">
+          <p className="text-[11px] text-primary font-medium text-center">
             🔥 Estás en el top 3 — ¡seguí así!
           </p>
         </div>

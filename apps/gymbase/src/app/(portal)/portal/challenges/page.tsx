@@ -52,7 +52,7 @@ export default async function PortalChallengesPage(): Promise<React.ReactNode> {
 
       {/* Badges ganados */}
       {badges.length > 0 && (
-        <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[16px] p-4">
+        <div className="bg-sidebar border border-border rounded-[16px] p-4">
           <p className="text-[10px] font-semibold text-[#555] uppercase tracking-[0.08em] mb-3">
             Mis insignias
           </p>
@@ -60,7 +60,7 @@ export default async function PortalChallengesPage(): Promise<React.ReactNode> {
             {badges.map((badge) => (
               <div
                 key={badge.id}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#161616] border border-[#1e1e1e] rounded-full"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#161616] border border-border rounded-full"
               >
                 <span className="text-sm">
                   {badge.type === "winner" ? "🏆" : badge.type === "top3" ? "⚡" : "🎖️"}
@@ -75,7 +75,7 @@ export default async function PortalChallengesPage(): Promise<React.ReactNode> {
       )}
 
       {challenges.length === 0 ? (
-        <div className="bg-[#0D0D0D] border border-[#1e1e1e] rounded-[18px] py-10 text-center">
+        <div className="bg-sidebar border border-border rounded-[18px] py-10 text-center">
           <p className="text-[#444] text-sm">No hay retos disponibles por ahora.</p>
         </div>
       ) : (

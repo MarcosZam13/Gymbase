@@ -34,7 +34,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps): React.
       <button
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`${btnBase} border border-[#1E1E1E] text-white/50 hover:border-white/20 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed`}
+        className={`${btnBase} border border-border text-white/50 hover:border-white/20 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed`}
       >
         <ChevronLeft className="w-4 h-4" />
       </button>
@@ -50,8 +50,8 @@ export function Pagination({ totalPages, currentPage }: PaginationProps): React.
             onClick={() => goToPage(p as number)}
             className={`${btnBase} ${
               currentPage === p
-                ? "bg-[#FF5E14] text-white"
-                : "border border-[#1E1E1E] text-white/70 hover:border-white/20 hover:text-white"
+                ? "bg-primary text-white"
+                : "border border-border text-white/70 hover:border-white/20 hover:text-white"
             }`}
           >
             {p}
@@ -62,7 +62,7 @@ export function Pagination({ totalPages, currentPage }: PaginationProps): React.
       <button
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={`${btnBase} border border-[#1E1E1E] text-white/50 hover:border-white/20 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed`}
+        className={`${btnBase} border border-border text-white/50 hover:border-white/20 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed`}
       >
         <ChevronRight className="w-4 h-4" />
       </button>

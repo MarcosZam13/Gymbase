@@ -3,7 +3,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient, getCurrentUser } from "@/lib/supabase/server";
+import { createClient, getCurrentUser, createAdminClient } from "@/lib/supabase/server";
 import { createContentSchema, updateContentSchema } from "@/lib/validations/content";
 import { buildPaginationRange, buildPaginatedResult } from "@/types/pagination";
 import type { ActionResult, Content, MembershipPlan } from "@/types/database";
@@ -342,4 +342,36 @@ export async function getAllContentWithViews(): Promise<(Content & { view_count:
       plan_ids: rawPlans.map((p) => p.plan_id),
     };
   });
+}
+
+// ─── Upload de thumbnail a content-media ─────────────────────────────────────
+
+const MIME_TO_EXT: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+
+export async function uploadContentThumbnail(formData: FormData): Promise<ActionResult<{ url: string }>> {
+  const user = await getCurrentUser();
+  if (!user || (user.role !== "admin" && user.role !== "owner")) return { success: false, error: "Sin permisos" };
+
+  const file = formData.get("file");
+  if (!(file instanceof Blob)) return { success: false, error: "Archivo requerido" };
+
+  const ext = MIME_TO_EXT[file.type];
+  if (!ext) return { success: false, error: "Solo se permiten imágenes JPG, PNG o WebP" };
+  if (file.size > 2 * 1024 * 1024) return { success: false, error: "La imagen no puede superar 2 MB" };
+
+  const adminClient = createAdminClient();
+  const path = `thumbnails/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const arrayBuffer = await file.arrayBuffer();
+
+  const { error: uploadError } = await adminClient.storage
+    .from("content-media")
+    .upload(path, new Uint8Array(arrayBuffer), { contentType: file.type, upsert: false });
+
+  if (uploadError) {
+    console.error("[uploadContentThumbnail] Upload error:", uploadError.message);
+    return { success: false, error: "Error al subir la imagen" };
+  }
+
+  const { data: { publicUrl } } = adminClient.storage.from("content-media").getPublicUrl(path);
+  return { success: true, data: { url: publicUrl } };
 }

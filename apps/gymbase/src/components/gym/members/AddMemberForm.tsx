@@ -102,9 +102,9 @@ export function AddMemberForm({ plans }: AddMemberFormProps): React.ReactNode {
     }
   }
 
-  const sectionClass = "text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.1em] mb-3 mt-6 pb-2 border-b border-[#1a1a1a]";
+  const sectionClass = "text-[10px] font-semibold text-primary uppercase tracking-[0.1em] mb-3 mt-6 pb-2 border-b border-border";
   const labelClass = "text-[10px] font-semibold text-[#555] uppercase tracking-[0.08em] mb-1.5 block";
-  const inputClass = "h-9 bg-[#111] border-[#222] text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-[#FF5E14] rounded-lg";
+  const inputClass = "h-9 bg-card border-[#222] text-sm text-[#ddd] placeholder-[#3a3a3a] focus:border-primary rounded-lg";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-0 max-w-2xl">
@@ -124,7 +124,7 @@ export function AddMemberForm({ plans }: AddMemberFormProps): React.ReactNode {
 
       <div className="mb-4">
         <label className={labelClass}>
-          Nombre completo <span className="text-[#FF5E14]">*</span>
+          Nombre completo <span className="text-primary">*</span>
         </label>
         <Input
           placeholder="Ej: Ana Martínez"
@@ -139,7 +139,7 @@ export function AddMemberForm({ plans }: AddMemberFormProps): React.ReactNode {
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div>
           <label className={labelClass}>
-            Email <span className="text-[#FF5E14]">*</span>
+            Email <span className="text-primary">*</span>
           </label>
           <Input
             type="email"
@@ -178,19 +178,19 @@ export function AddMemberForm({ plans }: AddMemberFormProps): React.ReactNode {
                   onClick={() => handlePlanSelect(plan.id)}
                   className={`text-left p-3 rounded-[10px] border transition-all ${
                     isSelected
-                      ? "border-[rgba(255,94,20,0.4)] bg-[rgba(255,94,20,0.05)]"
-                      : "border-[#1e1e1e] bg-[#0d0d0d] hover:border-[#2a2a2a]"
+                      ? "border-primary/40 bg-primary/5"
+                      : "border-border bg-sidebar hover:border-border"
                   }`}
                 >
                   <div className="flex items-start justify-between">
-                    <p className={`text-[13px] font-semibold leading-none ${isSelected ? "text-[#FF5E14]" : "text-[#ddd]"}`}>
+                    <p className={`text-[13px] font-semibold leading-none ${isSelected ? "text-primary" : "text-[#ddd]"}`}>
                       {plan.name}
                     </p>
                     {isSelected && (
-                      <div className="w-2 h-2 rounded-full bg-[#FF5E14] flex-shrink-0 mt-0.5" />
+                      <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0 mt-0.5" />
                     )}
                   </div>
-                  <p className={`text-[18px] font-bold font-barlow tracking-tight mt-1 leading-none ${isSelected ? "text-[#FF5E14]" : "text-white"}`}>
+                  <p className={`text-[18px] font-bold font-barlow tracking-tight mt-1 leading-none ${isSelected ? "text-primary" : "text-white"}`}>
                     {plan.currency === "CRC" ? "₡" : "$"}{plan.price.toLocaleString()}
                   </p>
                   <p className="text-[10px] text-[#555] mt-1">
@@ -206,12 +206,12 @@ export function AddMemberForm({ plans }: AddMemberFormProps): React.ReactNode {
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div>
           <label className={labelClass}>
-            Fecha de inicio <span className="text-[#FF5E14]">*</span>
+            Fecha de inicio <span className="text-primary">*</span>
           </label>
           <input
             type="date"
             style={{ colorScheme: "dark" }}
-            className="w-full h-9 bg-[#111] border border-[#222] rounded-lg px-3 text-sm text-[#ddd] focus:border-[#FF5E14] focus:outline-none"
+            className="w-full h-9 bg-card border border-[#222] rounded-lg px-3 text-sm text-[#ddd] focus:border-primary focus:outline-none"
             {...register("starts_at")}
             onChange={handleStartsAtChange}
           />
@@ -224,7 +224,7 @@ export function AddMemberForm({ plans }: AddMemberFormProps): React.ReactNode {
           <input
             type="date"
             style={{ colorScheme: "dark" }}
-            className="w-full h-9 bg-[#111] border border-[#222] rounded-lg px-3 text-sm text-[#888] focus:border-[#FF5E14] focus:outline-none"
+            className="w-full h-9 bg-card border border-[#222] rounded-lg px-3 text-sm text-[#888] focus:border-primary focus:outline-none"
             {...register("expires_at")}
           />
           <p className="text-[10px] text-[#444] mt-1">Se calcula automático según el plan</p>
@@ -232,10 +232,10 @@ export function AddMemberForm({ plans }: AddMemberFormProps): React.ReactNode {
       </div>
 
       {/* Callout de invitación por email */}
-      <div className="flex gap-2.5 items-start p-3 bg-[rgba(255,94,20,0.05)] border border-[rgba(255,94,20,0.18)] rounded-lg mb-4">
-        <Info className="w-3.5 h-3.5 text-[#FF5E14] flex-shrink-0 mt-0.5" />
+      <div className="flex gap-2.5 items-start p-3 bg-primary/5 border border-primary/[18%] rounded-lg mb-4">
+        <Info className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
         <p className="text-[11px] text-[#888] leading-relaxed">
-          Se enviará un <span className="text-[#FF5E14] font-semibold">email de invitación</span> al
+          Se enviará un <span className="text-primary font-semibold">email de invitación</span> al
           correo ingresado con un enlace para que el miembro establezca su contraseña.
         </p>
       </div>
@@ -247,26 +247,26 @@ export function AddMemberForm({ plans }: AddMemberFormProps): React.ReactNode {
         <label className={labelClass}>Notas internas</label>
         <textarea
           placeholder="Observaciones opcionales sobre el miembro..."
-          className="w-full min-h-[72px] bg-[#111] border border-[#222] rounded-lg px-3 py-2.5 text-sm text-[#888] placeholder-[#3a3a3a] focus:border-[#FF5E14] focus:outline-none resize-none font-sans"
+          className="w-full min-h-[72px] bg-card border border-[#222] rounded-lg px-3 py-2.5 text-sm text-[#888] placeholder-[#3a3a3a] focus:border-primary focus:outline-none resize-none font-sans"
           {...register("notes")}
         />
         <p className="text-[10px] text-[#444] mt-1">Las notas son solo visibles para administradores</p>
       </div>
 
       {/* ── Acciones ── */}
-      <div className="flex gap-2.5 justify-end pt-4 border-t border-[#1a1a1a]">
+      <div className="flex gap-2.5 justify-end pt-4 border-t border-border">
         <Button
           type="button"
           variant="outline"
           onClick={() => router.back()}
-          className="h-9 px-4 bg-[#1a1a1a] border-[#2a2a2a] text-[#777] hover:text-[#ccc] hover:bg-[#222]"
+          className="h-9 px-4 bg-muted border-border text-[#777] hover:text-[#ccc] hover:bg-[#222]"
         >
           Cancelar
         </Button>
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-9 px-5 bg-[#FF5E14] hover:bg-[#e5540f] text-white gap-2"
+          className="h-9 px-5 bg-primary hover:bg-primary text-white gap-2"
         >
           {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
           Crear miembro

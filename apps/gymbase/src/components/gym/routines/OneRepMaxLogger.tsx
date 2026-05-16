@@ -114,7 +114,7 @@ export function OneRepMaxLogger({
         position: "fixed", top: "50%", left: "50%",
         transform: "translate(-50%, -50%)",
         width: "min(460px, calc(100vw - 32px))",
-        background: "#0d0d0d", border: "0.5px solid #1e1e1e",
+        background: "var(--sidebar)", border: "0.5px solid var(--border)",
         borderRadius: 20, zIndex: 101, overflow: "hidden",
         maxHeight: "85vh", display: "flex", flexDirection: "column",
       }}>
@@ -158,7 +158,7 @@ export function OneRepMaxLogger({
                   autoFocus
                   style={{
                     width: "100%", height: 38, paddingLeft: 34, paddingRight: 12,
-                    background: "#111", border: "0.5px solid #1e1e1e", borderRadius: 10,
+                    background: "#111", border: "0.5px solid var(--border)", borderRadius: 10,
                     fontSize: 13, color: "#fff", outline: "none", fontFamily: "inherit",
                     boxSizing: "border-box",
                   }}
@@ -170,7 +170,7 @@ export function OneRepMaxLogger({
             <div style={{ flex: 1, overflowY: "auto", padding: "0 20px 20px" }}>
               {loadingEx ? (
                 <div style={{ display: "flex", justifyContent: "center", paddingTop: 32 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: "50%", border: "2px solid #222", borderTopColor: "#FF5E14", animation: "spin 0.8s linear infinite" }} />
+                  <div style={{ width: 20, height: 20, borderRadius: "50%", border: "2px solid #222", borderTopColor: "var(--gym-accent)", animation: "spin 0.8s linear infinite" }} />
                 </div>
               ) : filteredExercises.length === 0 ? (
                 <p style={{ textAlign: "center", fontSize: 13, color: "#444", paddingTop: 24 }}>
@@ -214,10 +214,10 @@ export function OneRepMaxLogger({
         {step === "log" && (
           <div style={{ padding: "0 20px 20px", display: "flex", flexDirection: "column", gap: 16 }}>
             {/* Ejercicio seleccionado */}
-            <div style={{ background: "#111", border: "0.5px solid rgba(255,94,20,0.3)", borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(255,94,20,0.1)", border: "0.5px solid rgba(255,94,20,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <div style={{ background: "#111", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)", borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: "color-mix(in srgb, var(--gym-accent) 10%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M2 8h2M12 8h2M4 8h2V5h2v6h2V7h2v4" stroke="#FF5E14" strokeWidth="1.8" strokeLinecap="round" />
+                  <path d="M2 8h2M12 8h2M4 8h2V5h2v6h2V7h2v4" stroke="var(--gym-accent)" strokeWidth="1.8" strokeLinecap="round" />
                 </svg>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -259,7 +259,7 @@ export function OneRepMaxLogger({
                   onKeyDown={(e) => { if (e.key === "Enter") handleSave(); }}
                   style={{
                     width: "100%", height: 56, paddingLeft: 20, paddingRight: 50,
-                    background: "#111", border: "0.5px solid #1e1e1e", borderRadius: 12,
+                    background: "#111", border: "0.5px solid var(--border)", borderRadius: 12,
                     fontSize: 32, fontWeight: 700, color: "#fff", outline: "none",
                     fontFamily: "var(--font-barlow, 'Barlow Condensed')",
                     letterSpacing: "-0.02em", boxSizing: "border-box",
@@ -281,7 +281,7 @@ export function OneRepMaxLogger({
                 onChange={(e) => setNotes(e.target.value)}
                 style={{
                   width: "100%", padding: "10px 14px",
-                  background: "#111", border: "0.5px solid #1e1e1e", borderRadius: 10,
+                  background: "#111", border: "0.5px solid var(--border)", borderRadius: 10,
                   fontSize: 13, color: "#fff", outline: "none", resize: "none",
                   fontFamily: "inherit", boxSizing: "border-box", lineHeight: 1.5,
                 }}
@@ -294,7 +294,7 @@ export function OneRepMaxLogger({
               disabled={saving || !weight}
               style={{
                 width: "100%", height: 46,
-                background: saving || !weight ? "#1a1a1a" : "#FF5E14",
+                background: saving || !weight ? "#1a1a1a" : "var(--gym-accent)",
                 border: "none", borderRadius: 12,
                 fontSize: 14, fontWeight: 700, color: saving || !weight ? "#444" : "#fff",
                 cursor: saving || !weight ? "not-allowed" : "pointer",

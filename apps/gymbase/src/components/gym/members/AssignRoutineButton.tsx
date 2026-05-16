@@ -42,7 +42,7 @@ export function AssignRoutineButton({ memberId, routineId, isActive = false }: A
     <button
       onClick={handleAssign}
       disabled={loading}
-      className="h-7 px-3 text-[11px] font-semibold rounded-lg border border-[#2a2a2a] bg-[#1a1a1a] text-[#888] hover:border-[rgba(255,94,20,0.4)] hover:text-[#FF5E14] transition-colors disabled:opacity-50 flex items-center gap-1.5"
+      className="h-7 px-3 text-[11px] font-semibold rounded-lg border border-border bg-muted text-[#888] hover:border-primary/40 hover:text-primary transition-colors disabled:opacity-50 flex items-center gap-1.5"
     >
       {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
       {loading ? "Asignando…" : "Asignar"}

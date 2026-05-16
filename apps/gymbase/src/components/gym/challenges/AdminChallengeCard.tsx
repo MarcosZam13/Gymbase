@@ -7,7 +7,7 @@ import type { Challenge } from "@/types/gym-challenges";
 // Iconos, colores y labels para cada tipo (incluyendo los nuevos)
 const TYPE_META: Record<string, { icon: string; accent: string; bg: string; border: string; label: string }> = {
   attendance:      { icon: "🏃", accent: "#38BDF8", bg: "rgba(56,189,248,0.1)",  border: "rgba(56,189,248,0.2)",  label: "Asistencia"     },
-  workout:         { icon: "💪", accent: "#FF5E14", bg: "rgba(255,94,20,0.1)",   border: "rgba(255,94,20,0.25)",  label: "Workout"        },
+  workout:         { icon: "💪", accent: "var(--gym-accent)", bg: "color-mix(in srgb, var(--gym-accent) 10%, transparent)",   border: "color-mix(in srgb, var(--gym-accent) 25%, transparent)",  label: "Workout"        },
   weight:          { icon: "⚖️", accent: "#22C55E", bg: "rgba(34,197,94,0.08)",  border: "rgba(34,197,94,0.2)",   label: "Peso"           },
   weight_loss:     { icon: "⚖️", accent: "#22C55E", bg: "rgba(34,197,94,0.08)",  border: "rgba(34,197,94,0.2)",   label: "Pérdida Peso"   },
   personal_record: { icon: "🏋️", accent: "#EF4444", bg: "rgba(239,68,68,0.08)", border: "rgba(239,68,68,0.2)",   label: "Récord Personal"},
@@ -47,8 +47,8 @@ export function AdminChallengeCard({ challenge }: AdminChallengeCardProps): Reac
 
   return (
     <div
-      className={`bg-[#111] border rounded-[16px] overflow-hidden transition-all hover:border-[#2a2a2a] ${
-        isActive ? "border-[rgba(255,94,20,0.25)]" : isUpcoming ? "border-[rgba(56,189,248,0.15)]" : "border-[#1e1e1e] opacity-60"
+      className={`bg-card border rounded-[16px] overflow-hidden transition-all hover:border-border ${
+        isActive ? "border-primary/25" : isUpcoming ? "border-[rgba(56,189,248,0.15)]" : "border-border opacity-60"
       }`}
     >
       {/* Banner: imagen real o placeholder por tipo */}
@@ -84,7 +84,7 @@ export function AdminChallengeCard({ challenge }: AdminChallengeCardProps): Reac
         <div className="flex items-start justify-between gap-2 mb-1">
           <Link
             href={`/admin/challenges/${challenge.id}`}
-            className="text-[14px] font-semibold text-white hover:text-[#FF5E14] transition-colors leading-tight"
+            className="text-[14px] font-semibold text-white hover:text-primary transition-colors leading-tight"
             style={{ fontFamily: "var(--font-barlow)" }}
           >
             {challenge.title}
@@ -100,7 +100,7 @@ export function AdminChallengeCard({ challenge }: AdminChallengeCardProps): Reac
             </span>
           )}
           {!isActive && !isUpcoming && (
-            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#1a1a1a] border border-[#2a2a2a] text-[#555] flex-shrink-0">
+            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-muted border border-border text-[#555] flex-shrink-0">
               CERRADO
             </span>
           )}
@@ -111,7 +111,7 @@ export function AdminChallengeCard({ challenge }: AdminChallengeCardProps): Reac
           {isActive && ` · ${daysLeft}d restantes`}
           {isUpcoming && ` · Inicia en ${daysLeft}d`}
           {challenge.prize_description && (
-            <span className="ml-2 text-[#FF5E14]">🎁 {challenge.prize_description}</span>
+            <span className="ml-2 text-primary">🎁 {challenge.prize_description}</span>
           )}
         </p>
 
@@ -146,7 +146,7 @@ export function AdminChallengeCard({ challenge }: AdminChallengeCardProps): Reac
               <span>Progreso del período</span>
               <span style={{ color: meta.accent }}>{timePct}%</span>
             </div>
-            <div className="h-1 bg-[#1e1e1e] rounded-full overflow-hidden">
+            <div className="h-1 bg-border rounded-full overflow-hidden">
               <div className="h-full rounded-full" style={{ width: `${timePct}%`, backgroundColor: meta.accent }} />
             </div>
           </div>
@@ -161,7 +161,7 @@ export function AdminChallengeCard({ challenge }: AdminChallengeCardProps): Reac
                 {participants}/{maxPart}
               </span>
             </div>
-            <div className="h-1 bg-[#1e1e1e] rounded-full overflow-hidden">
+            <div className="h-1 bg-border rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full"
                 style={{
@@ -183,7 +183,7 @@ export function AdminChallengeCard({ challenge }: AdminChallengeCardProps): Reac
           <div className="flex gap-1.5">
             <Link
               href={`/admin/challenges/${challenge.id}`}
-              className="h-6 px-2.5 text-[11px] font-medium bg-[#1a1a1a] text-[#888] border border-[#2a2a2a] rounded-lg hover:text-white transition-colors flex items-center"
+              className="h-6 px-2.5 text-[11px] font-medium bg-muted text-[#888] border border-border rounded-lg hover:text-white transition-colors flex items-center"
             >
               Ranking
             </Link>

@@ -4,11 +4,11 @@ import { getCurrentUser } from "@/lib/supabase/server";
 import { getMyQR, getMyOpenCheckin, getMyAttendanceLogs } from "@/actions/checkin.actions";
 import { getUserSubscription } from "@/actions/payment.actions";
 import { getMyRoutine } from "@/actions/routine.actions";
-import { getMySnapshots, getMyProgressPhotos } from "@/actions/progress.actions";
+import { getMySnapshots } from "@/actions/progress.actions";
 import { getProgressChartData } from "@/actions/progress.actions";
 import { QRDisplay } from "@/components/gym/checkin/QRDisplay";
 import { MiniLineChart } from "@/components/gym/health/MiniLineChart";
-import { MemberProgressPhotoUpload } from "@/components/gym/health/MemberProgressPhotoUpload";
+import { AvatarUploadSection } from "@/components/gym/members/AvatarUploadSection";
 import { signOut } from "@/actions/auth.actions";
 import {
   CheckCircle,
@@ -50,7 +50,6 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
     memberRoutine,
     snapshots,
     weightChartData,
-    progressPhotos,
     attendanceLogs,
   ] = await Promise.all([
     getCurrentUser(),
@@ -60,7 +59,6 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
     themeConfig.features.gym_routines ? getMyRoutine() : Promise.resolve(null),
     themeConfig.features.gym_health_metrics ? getMySnapshots(10) : Promise.resolve([]),
     themeConfig.features.gym_health_metrics ? getProgressChartData(20) : Promise.resolve([]),
-    themeConfig.features.gym_progress ? getMyProgressPhotos() : Promise.resolve([]),
     themeConfig.features.gym_qr_checkin ? getMyAttendanceLogs(30) : Promise.resolve([]),
   ]);
 
@@ -77,7 +75,7 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
   const isExpired = subscription?.status === "expired" || (daysLeft != null && daysLeft <= 0);
   const isExpiringSoon = !isExpired && daysLeft != null && daysLeft <= 7;
 
-  const membershipBarColor = isExpired ? "#EF4444" : isExpiringSoon ? "#EAB308" : "#FF5E14";
+  const membershipBarColor = isExpired ? "#EF4444" : isExpiringSoon ? "#EAB308" : "var(--gym-accent)";
 
   // ─── Datos de salud ────────────────────────────────────────────────────────────
   // snapshots vienen en orden desc (más reciente primero)
@@ -131,18 +129,11 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
 
           {/* Lado izquierdo: avatar + nombre + badge */}
           <div className="flex items-start gap-4 min-w-0">
-            {/* Avatar con iniciales */}
-            <div
-              className="w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center text-lg font-bold"
-              style={{
-                backgroundColor: "rgba(255,94,20,0.12)",
-                color: "#FF5E14",
-                fontFamily: "var(--font-barlow)",
-                border: "1px solid rgba(255,94,20,0.2)",
-              }}
-            >
-              {initials}
-            </div>
+            {/* Avatar con upload */}
+            <AvatarUploadSection
+              currentUrl={profile?.avatar_url ?? null}
+              initials={initials}
+            />
 
             <div className="min-w-0">
               <h1
@@ -157,9 +148,9 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
                 <span
                   className="inline-block mt-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider"
                   style={{
-                    backgroundColor: "rgba(255,94,20,0.1)",
-                    color: "#FF5E14",
-                    border: "1px solid rgba(255,94,20,0.2)",
+                    backgroundColor: "color-mix(in srgb, var(--gym-accent) 10%, transparent)",
+                    color: "var(--gym-accent)",
+                    border: "1px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)",
                   }}
                 >
                   {subscription.plan.name}
@@ -198,7 +189,7 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
               ) : (
                 <div
                   className="w-[104px] h-[104px] rounded-xl flex flex-col items-center justify-center gap-1"
-                  style={{ backgroundColor: "#0d0d0d", border: "1px dashed #222" }}
+                  style={{ backgroundColor: "var(--sidebar)", border: "1px dashed #222" }}
                 >
                   <QrCode className="w-6 h-6" style={{ color: "#333" }} />
                   <p className="text-[9px] text-center px-2" style={{ color: "#444" }}>
@@ -313,7 +304,7 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
             }}
           >
             <div className="flex items-center gap-2">
-              <Dumbbell className="w-3.5 h-3.5 shrink-0" style={{ color: "#FF5E14" }} />
+              <Dumbbell className="w-3.5 h-3.5 shrink-0" style={{ color: "var(--gym-accent)" }} />
               <p className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--gym-text-ghost)" }}>
                 Rutina activa
               </p>
@@ -345,7 +336,7 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
                 <Link
                   href="/portal/routines"
                   className="flex items-center gap-1.5 text-[11px] font-medium mt-auto w-fit"
-                  style={{ color: "#FF5E14" }}
+                  style={{ color: "var(--gym-accent)" }}
                 >
                   Ver rutina completa
                   <ArrowRight className="w-3 h-3" />
@@ -372,7 +363,7 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
             }}
           >
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-3.5 h-3.5 shrink-0" style={{ color: "#FF5E14" }} />
+              <CheckCircle className="w-3.5 h-3.5 shrink-0" style={{ color: "var(--gym-accent)" }} />
               <p className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--gym-text-ghost)" }}>
                 Asistencia
               </p>
@@ -382,7 +373,7 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
             <div className="flex items-baseline gap-1">
               <span
                 className="text-3xl font-extrabold"
-                style={{ color: "#FF5E14", fontFamily: "var(--font-barlow)" }}
+                style={{ color: "var(--gym-accent)", fontFamily: "var(--font-barlow)" }}
               >
                 {thisMonthCount}
               </span>
@@ -434,7 +425,7 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
           }}
         >
           <div className="flex items-center gap-2">
-            <TrendingUp className="w-3.5 h-3.5 shrink-0" style={{ color: "#FF5E14" }} />
+            <TrendingUp className="w-3.5 h-3.5 shrink-0" style={{ color: "var(--gym-accent)" }} />
             <p className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--gym-text-ghost)" }}>
               Progreso físico
             </p>
@@ -480,7 +471,7 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
                   <div
                     key={m.label}
                     className="rounded-xl p-3 text-center"
-                    style={{ backgroundColor: "#0d0d0d", border: "1px solid #1a1a1a" }}
+                    style={{ backgroundColor: "var(--sidebar)", border: "1px solid #1a1a1a" }}
                   >
                     <p className="text-[9px] uppercase tracking-wider mb-1" style={{ color: "var(--gym-text-ghost)" }}>
                       {m.label}
@@ -512,63 +503,10 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
               </p>
               <div
                 className="rounded-xl overflow-hidden p-2"
-                style={{ backgroundColor: "#0d0d0d", border: "1px solid #1a1a1a" }}
+                style={{ backgroundColor: "var(--sidebar)", border: "1px solid #1a1a1a" }}
               >
-                <MiniLineChart points={weightPoints} color="#FF5E14" label="peso-portal" />
+                <MiniLineChart points={weightPoints} color="var(--gym-accent)" label="peso-portal" />
               </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ── SECCIÓN 6: FOTOS DE PROGRESO ─────────────────────────────────────────── */}
-      {themeConfig.features.gym_progress && (
-        <div
-          className="p-5 rounded-2xl space-y-4"
-          style={{
-            backgroundColor: "var(--gym-bg-card)",
-            border: "1px solid var(--gym-border)",
-          }}
-        >
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--gym-text-ghost)" }}>
-              Fotos de progreso
-            </p>
-            <MemberProgressPhotoUpload />
-          </div>
-
-          {progressPhotos.length > 0 ? (
-            <div className="grid grid-cols-3 gap-2">
-              {progressPhotos.slice(0, 3).map((photo) => (
-                <div key={photo.id} className="relative rounded-xl overflow-hidden" style={{ aspectRatio: "3/4" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={photo.photo_url}
-                    alt={photo.photo_type}
-                    className="w-full h-full object-cover"
-                  />
-                  <div
-                    className="absolute bottom-0 left-0 right-0 px-2 py-1 text-center"
-                    style={{ backgroundColor: "rgba(0,0,0,0.65)" }}
-                  >
-                    <p className="text-[9px] capitalize" style={{ color: "var(--gym-text-muted)" }}>
-                      {photo.photo_type === "front" ? "Frente" : photo.photo_type === "side" ? "Lado" : "Espalda"}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div
-              className="rounded-xl py-8 flex flex-col items-center gap-2"
-              style={{ backgroundColor: "#0d0d0d", border: "1px dashed #1e1e1e" }}
-            >
-              <p className="text-[12px]" style={{ color: "#333" }}>
-                Sin fotos aún
-              </p>
-              <p className="text-[10px]" style={{ color: "#2a2a2a" }}>
-                Sube tu primera foto con el botón de arriba
-              </p>
             </div>
           )}
         </div>

@@ -107,8 +107,8 @@ export function AdminPostComposer({ plans }: AdminPostComposerProps): React.Reac
   }
 
   return (
-    <div className="bg-[#111] border border-[#1a1a1a] rounded-[16px] p-4 mb-4">
-      <p className="text-[10px] font-semibold text-[#FF5E14] uppercase tracking-[0.08em] mb-3">
+    <div className="bg-card border border-border rounded-[16px] p-4 mb-4">
+      <p className="text-[10px] font-semibold text-primary uppercase tracking-[0.08em] mb-3">
         📌 Publicar como admin
       </p>
 
@@ -120,7 +120,7 @@ export function AdminPostComposer({ plans }: AdminPostComposerProps): React.Reac
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Título del anuncio o post..."
           maxLength={100}
-          className="w-full h-9 bg-[#0d0d0d] border border-[#1e1e1e] rounded-lg px-3 text-sm text-[#ccc] placeholder-[#444] outline-none focus:border-[#FF5E1440] transition-colors"
+          className="w-full h-9 bg-sidebar border border-border rounded-lg px-3 text-sm text-[#ccc] placeholder-[#444] outline-none focus:border-primary/25 transition-colors"
         />
 
         {/* Cuerpo con contador */}
@@ -131,7 +131,7 @@ export function AdminPostComposer({ plans }: AdminPostComposerProps): React.Reac
             placeholder="Escribe el contenido del post..."
             maxLength={bodyLimit}
             rows={3}
-            className="w-full bg-[#0d0d0d] border border-[#1e1e1e] rounded-lg px-3 py-2 text-sm text-[#ccc] placeholder-[#444] outline-none focus:border-[#FF5E1440] resize-none transition-colors"
+            className="w-full bg-sidebar border border-border rounded-lg px-3 py-2 text-sm text-[#ccc] placeholder-[#444] outline-none focus:border-primary/25 resize-none transition-colors"
           />
           <span
             className="absolute bottom-2 right-3 text-[10px]"
@@ -157,7 +157,7 @@ export function AdminPostComposer({ plans }: AdminPostComposerProps): React.Reac
 
         {/* Selector de plan */}
         {showPlanSelector && plans.length > 0 && (
-          <div className="bg-[#0d0d0d] border border-[#1e1e1e] rounded-lg p-3 space-y-2">
+          <div className="bg-sidebar border border-border rounded-lg p-3 space-y-2">
             <p className="text-[10px] text-[#555] uppercase tracking-[0.06em]">Visible para los planes:</p>
             <div className="flex flex-wrap gap-1.5">
               {plans.map((plan) => {
@@ -169,9 +169,9 @@ export function AdminPostComposer({ plans }: AdminPostComposerProps): React.Reac
                     onClick={() => togglePlan(plan.id)}
                     className="h-7 px-2.5 rounded-full text-[11px] font-medium transition-all cursor-pointer"
                     style={{
-                      background: isSelected ? "rgba(255,94,20,0.12)" : "#1a1a1a",
-                      border: `1px solid ${isSelected ? "rgba(255,94,20,0.3)" : "#2a2a2a"}`,
-                      color: isSelected ? "#FF5E14" : "#666",
+                      background: isSelected ? "color-mix(in srgb, var(--gym-accent) 12%, transparent)" : "#1a1a1a",
+                      border: `1px solid ${isSelected ? "color-mix(in srgb, var(--gym-accent) 30%, transparent)" : "#2a2a2a"}`,
+                      color: isSelected ? "var(--gym-accent)" : "#666",
                     }}
                   >
                     {plan.name}
@@ -244,7 +244,7 @@ export function AdminPostComposer({ plans }: AdminPostComposerProps): React.Reac
           <button
             type="submit"
             disabled={isSubmitting || !title.trim() || !body.trim()}
-            className="h-7 px-3 bg-[#FF5E14] disabled:opacity-50 text-white text-[11px] font-semibold rounded-lg transition-opacity hover:opacity-90 ml-auto cursor-pointer"
+            className="h-7 px-3 bg-primary disabled:opacity-50 text-white text-[11px] font-semibold rounded-lg transition-opacity hover:opacity-90 ml-auto cursor-pointer"
           >
             {isSubmitting ? "Publicando..." : "Publicar"}
           </button>

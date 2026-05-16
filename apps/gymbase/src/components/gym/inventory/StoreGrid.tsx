@@ -72,7 +72,7 @@ export function StoreGrid({ products, currency }: StoreGridProps): React.ReactNo
             className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer"
             style={
               activeCategory === null
-                ? { backgroundColor: "#FF5E14", color: "#fff" }
+                ? { backgroundColor: "var(--gym-accent)", color: "#fff" }
                 : { backgroundColor: "var(--gym-bg-elevated)", color: "var(--gym-text-muted)", border: "1px solid var(--gym-border)" }
             }
           >
@@ -85,7 +85,7 @@ export function StoreGrid({ products, currency }: StoreGridProps): React.ReactNo
               className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer"
               style={
                 activeCategory === cat
-                  ? { backgroundColor: "#FF5E14", color: "#fff" }
+                  ? { backgroundColor: "var(--gym-accent)", color: "#fff" }
                   : { backgroundColor: "var(--gym-bg-elevated)", color: "var(--gym-text-muted)", border: "1px solid var(--gym-border)" }
               }
             >
@@ -148,7 +148,7 @@ export function StoreGrid({ products, currency }: StoreGridProps): React.ReactNo
                   {/* Categoría */}
                   <span
                     className="text-[10px] font-semibold uppercase tracking-[0.08em] px-2 py-0.5 rounded-full self-start"
-                    style={{ backgroundColor: "rgba(255,94,20,0.1)", color: "#FF5E14" }}
+                    style={{ backgroundColor: "color-mix(in srgb, var(--gym-accent) 10%, transparent)", color: "var(--gym-accent)" }}
                   >
                     {CATEGORY_LABELS[product.category]}
                   </span>

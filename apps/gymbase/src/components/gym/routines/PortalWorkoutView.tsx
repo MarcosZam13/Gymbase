@@ -17,9 +17,9 @@ const MUSCLE_LABEL: Record<string, string> = {
 };
 
 const MUSCLE_COLOR: Record<string, string> = {
-  chest: "#FF5E14", back: "#38BDF8", shoulders: "#A855F7",
+  chest: "var(--gym-accent)", back: "#38BDF8", shoulders: "#A855F7",
   biceps: "#FACC15", triceps: "#FACC15", legs: "#EF4444",
-  core: "#22C55E", cardio: "#38BDF8", full_body: "#FF5E14",
+  core: "#22C55E", cardio: "#38BDF8", full_body: "var(--gym-accent)",
 };
 
 const MUSCLE_SVG_IDS: Record<string, string[]> = {
@@ -320,12 +320,12 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
   const circumference = 188;
   const arcOffset     = timerMax > 0 ? circumference * (1 - timerValue / timerMax) : circumference;
   const timerColor    = timerMax > 0
-    ? timerValue / timerMax > 0.5 ? "#FF5E14" : timerValue / timerMax > 0.2 ? "#FACC15" : "#EF4444"
+    ? timerValue / timerMax > 0.5 ? "var(--gym-accent)" : timerValue / timerMax > 0.2 ? "#FACC15" : "#EF4444"
     : "#22C55E";
 
   const muscleGroup    = currentEx?.exercise?.muscle_group ?? null;
   const activeMuscIds  = muscleGroup ? (MUSCLE_SVG_IDS[muscleGroup] ?? []) : [];
-  const muscleColor    = muscleGroup ? (MUSCLE_COLOR[muscleGroup] ?? "#FF5E14") : "#FF5E14";
+  const muscleColor    = muscleGroup ? (MUSCLE_COLOR[muscleGroup] ?? "var(--gym-accent)") : "var(--gym-accent)";
   const videoUrl       = currentEx?.exercise?.video_url ? getYouTubeEmbedUrl(currentEx.exercise.video_url) : null;
 
   // Datos de la última sesión para el ejercicio actual (historial inline)
@@ -350,7 +350,7 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
       ═══════════════════════════════════ */}
       <div style={{
         width: 310, flexShrink: 0, overflowY: "auto",
-        backgroundColor: "#0D0D0D", borderRight: "0.5px solid #1a1a1a",
+        backgroundColor: "var(--sidebar)", borderRight: "0.5px solid #1a1a1a",
         display: "flex", flexDirection: "column",
       }}>
         {/* Encabezado — incluye back button cuando hay múltiples rutinas activas */}
@@ -376,13 +376,13 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
               title="Test de fuerza 1RM"
               style={{
                 width: 28, height: 28, borderRadius: 7, flexShrink: 0,
-                background: "rgba(255,94,20,0.06)", border: "0.5px solid rgba(255,94,20,0.15)",
+                background: "color-mix(in srgb, var(--gym-accent) 6%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 15%, transparent)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 textDecoration: "none",
               }}
             >
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path d="M2 10l2.5-3.5 2.5 2 2.5-4.5 2 2" stroke="#FF5E14" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M2 10l2.5-3.5 2.5 2 2.5-4.5 2 2" stroke="var(--gym-accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
           </div>
@@ -412,7 +412,7 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
             { val: progressPct + "%", lbl: "Progreso" },
           ].map(({ val, lbl }) => (
             <div key={lbl} style={{ background: "#080808", border: "0.5px solid #1a1a1a", borderRadius: 10, padding: "10px 8px", textAlign: "center" }}>
-              <p style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontSize: 22, fontWeight: 700, color: lbl === "Progreso" ? "#FF5E14" : "#fff", letterSpacing: "-0.02em" }}>{val}</p>
+              <p style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontSize: 22, fontWeight: 700, color: lbl === "Progreso" ? "var(--gym-accent)" : "#fff", letterSpacing: "-0.02em" }}>{val}</p>
               <p style={{ fontSize: 8, color: "#444", textTransform: "uppercase", letterSpacing: "0.06em", marginTop: 1 }}>{lbl}</p>
             </div>
           ))}
@@ -432,8 +432,8 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
                 key={day.id}
                 onClick={() => selectDay(i)}
                 style={{
-                  background: isActive ? "rgba(255,94,20,0.04)" : "#080808",
-                  border: `0.5px solid ${isActive ? "rgba(255,94,20,0.4)" : "#1a1a1a"}`,
+                  background: isActive ? "color-mix(in srgb, var(--gym-accent) 4%, transparent)" : "#080808",
+                  border: `0.5px solid ${isActive ? "color-mix(in srgb, var(--gym-accent) 40%, transparent)" : "#1a1a1a"}`,
                   borderRadius: 12, padding: "10px 12px",
                   display: "flex", alignItems: "center", gap: 8,
                   cursor: "pointer", transition: "all 0.15s", textAlign: "left",
@@ -443,8 +443,8 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
                   width: 30, height: 30, borderRadius: 7, flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontSize: 14, fontWeight: 700,
-                  background: isDone ? "rgba(255,94,20,0.15)" : isActive ? "#FF5E14" : "#161616",
-                  color: isDone ? "#FF5E14" : isActive ? "#fff" : "#444",
+                  background: isDone ? "color-mix(in srgb, var(--gym-accent) 15%, transparent)" : isActive ? "var(--gym-accent)" : "#161616",
+                  color: isDone ? "var(--gym-accent)" : isActive ? "#fff" : "#444",
                 }}>
                   {isDone ? "✓" : day.day_number}
                 </div>
@@ -456,9 +456,9 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
                 </div>
                 <span style={{
                   padding: "2px 7px", borderRadius: 100, fontSize: 9, fontWeight: 700,
-                  background: isDone ? "rgba(34,197,94,0.1)" : isActive ? "rgba(255,94,20,0.1)" : "#111",
-                  color: isDone ? "#22C55E" : isActive ? "#FF5E14" : "#444",
-                  border: `0.5px solid ${isDone ? "rgba(34,197,94,0.2)" : isActive ? "rgba(255,94,20,0.2)" : "#1a1a1a"}`,
+                  background: isDone ? "rgba(34,197,94,0.1)" : isActive ? "color-mix(in srgb, var(--gym-accent) 10%, transparent)" : "#111",
+                  color: isDone ? "#22C55E" : isActive ? "var(--gym-accent)" : "#444",
+                  border: `0.5px solid ${isDone ? "rgba(34,197,94,0.2)" : isActive ? "color-mix(in srgb, var(--gym-accent) 20%, transparent)" : "#1a1a1a"}`,
                 }}>
                   {isDone ? "Hecho" : isActive ? "Hoy" : "🔒"}
                 </span>
@@ -474,7 +474,7 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
       <div style={{ flex: 1, overflowY: "auto", backgroundColor: "#080808", display: "flex", flexDirection: "column" }}>
         {/* Barra de progreso */}
         <div style={{ height: 2, backgroundColor: "#111", flexShrink: 0, position: "sticky", top: 0, zIndex: 10 }}>
-          <div style={{ height: "100%", width: `${progressPct}%`, backgroundColor: "#FF5E14", transition: "width 0.7s cubic-bezier(.22,1,.36,1)" }} />
+          <div style={{ height: "100%", width: `${progressPct}%`, backgroundColor: "var(--gym-accent)", transition: "width 0.7s cubic-bezier(.22,1,.36,1)" }} />
         </div>
 
         {/* Top bar de sesión */}
@@ -494,8 +494,8 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
             fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontVariantNumeric: "tabular-nums",
           }}>
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <circle cx="6" cy="6" r="4.5" stroke="#FF5E14" strokeWidth="2" />
-              <path d="M6 3.5v2.5l1.5 1" stroke="#FF5E14" strokeWidth="1.6" strokeLinecap="round" />
+              <circle cx="6" cy="6" r="4.5" stroke="var(--gym-accent)" strokeWidth="2" />
+              <path d="M6 3.5v2.5l1.5 1" stroke="var(--gym-accent)" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
             {fmtTime(sessionSecs)}
           </div>
@@ -625,11 +625,11 @@ interface RoutineCardProps {
 
 function RoutineCard({ routine, todayIdx, trainingDays, todayDayName, todayExCount, onStart }: RoutineCardProps): React.ReactNode {
   return (
-    <div style={{ margin: "14px 16px 0", background: "#0d0d0d", border: "0.5px solid #1a1a1a", borderRadius: 16, overflow: "hidden" }}>
-      <div style={{ height: 2, background: "linear-gradient(90deg, #FF5E14, #FF8C5A)" }} />
+    <div style={{ margin: "14px 16px 0", background: "var(--sidebar)", border: "0.5px solid #1a1a1a", borderRadius: 16, overflow: "hidden" }}>
+      <div style={{ height: 2, background: "linear-gradient(90deg, var(--gym-accent), var(--gym-accent))" }} />
       <div style={{ padding: "14px 14px 12px" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 9, fontWeight: 700, color: "#FF5E14", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
-          <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#FF5E14", display: "inline-block" }} />
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 9, fontWeight: 700, color: "var(--gym-accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
+          <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--gym-accent)", display: "inline-block" }} />
           Rutina activa
         </div>
         <p style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontSize: 20, fontWeight: 700, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1, marginBottom: 3 }}>
@@ -651,14 +651,14 @@ function RoutineCard({ routine, todayIdx, trainingDays, todayDayName, todayExCou
                 <span style={{ fontSize: 7, color: "#444", textTransform: "uppercase", fontWeight: 600 }}>{d}</span>
                 <div style={{
                   width: 24, height: 24, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center",
-                  background: isToday ? "#FF5E14" : isPast ? "rgba(255,94,20,0.15)" : "#161616",
-                  border: `0.5px solid ${isToday ? "#FF5E14" : isPast ? "rgba(255,94,20,0.3)" : "#1e1e1e"}`,
+                  background: isToday ? "var(--gym-accent)" : isPast ? "color-mix(in srgb, var(--gym-accent) 15%, transparent)" : "#161616",
+                  border: `0.5px solid ${isToday ? "var(--gym-accent)" : isPast ? "color-mix(in srgb, var(--gym-accent) 30%, transparent)" : "var(--border)"}`,
                 }}>
                   {isToday ? (
                     <span style={{ fontSize: 10, fontWeight: 700, color: "#fff", fontFamily: "var(--font-barlow, 'Barlow Condensed')" }}>H</span>
                   ) : isPast ? (
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M2 5l2.5 2.5 4-4" stroke="#FF5E14" strokeWidth="2.5" strokeLinecap="round" />
+                      <path d="M2 5l2.5 2.5 4-4" stroke="var(--gym-accent)" strokeWidth="2.5" strokeLinecap="round" />
                     </svg>
                   ) : (
                     <span style={{ fontSize: 9, color: "#333" }}>{isTraining ? "·" : "—"}</span>
@@ -671,9 +671,9 @@ function RoutineCard({ routine, todayIdx, trainingDays, todayDayName, todayExCou
 
         {/* Strip de hoy */}
         <div style={{ background: "#111", borderRadius: 10, padding: "10px 12px", display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(255,94,20,0.12)", border: "0.5px solid rgba(255,94,20,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: "color-mix(in srgb, var(--gym-accent) 12%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 25%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-              <path d="M2 7.5h2M11 7.5h2M4 7.5h2v-2.5h2v5h2v-3.5" stroke="#FF5E14" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M2 7.5h2M11 7.5h2M4 7.5h2v-2.5h2v5h2v-3.5" stroke="var(--gym-accent)" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </div>
           <div>
@@ -682,7 +682,7 @@ function RoutineCard({ routine, todayIdx, trainingDays, todayDayName, todayExCou
           </div>
           <button
             onClick={onStart}
-            style={{ marginLeft: "auto", height: 28, padding: "0 12px", background: "#FF5E14", border: "none", borderRadius: 7, fontSize: 11, fontWeight: 700, color: "#fff", cursor: "pointer", flexShrink: 0 }}
+            style={{ marginLeft: "auto", height: 28, padding: "0 12px", background: "var(--gym-accent)", border: "none", borderRadius: 7, fontSize: 11, fontWeight: 700, color: "#fff", cursor: "pointer", flexShrink: 0 }}
           >
             Empezar →
           </button>
@@ -734,7 +734,7 @@ function ExerciseZone({ exerciseName, videoUrl, muscleGroup, activeMuscleIds, mu
       )}
 
       <div style={{ position: "absolute", bottom: 12, right: 16, display: "flex", alignItems: "center", gap: 4, background: "rgba(0,0,0,0.6)", borderRadius: 5, padding: "3px 8px", fontSize: 9, color: "#666", zIndex: 3 }}>
-        <span style={{ width: 5, height: 5, borderRadius: "50%", background: videoUrl ? "#22C55E" : "#FF5E14", display: "inline-block" }} />
+        <span style={{ width: 5, height: 5, borderRadius: "50%", background: videoUrl ? "#22C55E" : "var(--gym-accent)", display: "inline-block" }} />
         {videoUrl ? "Video" : "Demo"}
       </div>
     </div>
@@ -787,7 +787,7 @@ function ExerciseInfoCard({ exercise, muscleColor, onShowProgress }: ExerciseInf
   const diffStyle = DIFF_STYLE[diffKey] ?? DIFF_STYLE.beginner;
 
   return (
-    <div style={{ background: "#0d0d0d", border: "0.5px solid #1a1a1a", borderRadius: 16, padding: "18px 20px" }}>
+    <div style={{ background: "var(--sidebar)", border: "0.5px solid #1a1a1a", borderRadius: 16, padding: "18px 20px" }}>
       <p style={{ fontSize: 10, color: "#444", textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 5 }}>
         <span style={{ color: muscleColor }}>{ex?.muscle_group ? (MUSCLE_LABEL[ex.muscle_group] ?? ex.muscle_group) : "Ejercicio"}</span>
         {ex?.equipment && <> › <span style={{ color: "#555" }}>{ex.equipment}</span></>}
@@ -803,13 +803,13 @@ function ExerciseInfoCard({ exercise, muscleColor, onShowProgress }: ExerciseInf
             title="Ver progresión de peso"
             style={{
               marginTop: 4, width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-              background: "#111", border: "0.5px solid #1e1e1e",
+              background: "#111", border: "0.5px solid var(--border)",
               cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
               transition: "all 0.15s",
             }}
           >
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-              <path d="M2 11l3-4 3 2 3-5 2 2" stroke="#FF5E14" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M2 11l3-4 3 2 3-5 2 2" stroke="var(--gym-accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M2 13h11" stroke="#333" strokeWidth="1.2" strokeLinecap="round" />
             </svg>
           </button>
@@ -914,7 +914,7 @@ function SetsCard({
   const totalSets = exercise.sets ?? 3;
 
   return (
-    <div style={{ background: "#0d0d0d", border: "0.5px solid #1a1a1a", borderRadius: 16, padding: "16px 18px", marginBottom: 12 }}>
+    <div style={{ background: "var(--sidebar)", border: "0.5px solid #1a1a1a", borderRadius: 16, padding: "16px 18px", marginBottom: 12 }}>
       {/* Header: serie actual + badge PR potencial */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 5 }}>
@@ -932,8 +932,8 @@ function SetsCard({
         {isPotentialPR && (
           <span style={{
             padding: "3px 10px", borderRadius: 20, fontSize: 10, fontWeight: 700,
-            background: "rgba(255,94,20,0.15)", border: "0.5px solid rgba(255,94,20,0.4)",
-            color: "#FF5E14", letterSpacing: "0.05em",
+            background: "color-mix(in srgb, var(--gym-accent) 15%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 40%, transparent)",
+            color: "var(--gym-accent)", letterSpacing: "0.05em",
           }}>
             🏆 PR
           </span>
@@ -945,8 +945,8 @@ function SetsCard({
         {Array.from({ length: totalSets }).map((_, i) => (
           <div key={i} style={{
             width: 10, height: 10, borderRadius: "50%",
-            background: i < currentSet - 1 ? "#FF5E14" : i === currentSet - 1 ? "#fff" : "#1a1a1a",
-            border: `1px solid ${i < currentSet - 1 ? "#FF5E14" : i === currentSet - 1 ? "#fff" : "#2a2a2a"}`,
+            background: i < currentSet - 1 ? "var(--gym-accent)" : i === currentSet - 1 ? "#fff" : "#1a1a1a",
+            border: `1px solid ${i < currentSet - 1 ? "var(--gym-accent)" : i === currentSet - 1 ? "#fff" : "#2a2a2a"}`,
             boxShadow: i === currentSet - 1 ? "0 0 6px rgba(255,255,255,0.2)" : "none",
             transition: "all 0.3s cubic-bezier(.22,1,.36,1)",
           }} />
@@ -978,8 +978,8 @@ function SetsCard({
               style={{
                 display: "flex", alignItems: "center", gap: 8,
                 padding: "8px 10px", borderRadius: 10,
-                background: isDone ? "rgba(255,94,20,0.04)" : isCurrent ? "#111" : "transparent",
-                border: `0.5px solid ${isDone ? "rgba(255,94,20,0.2)" : isCurrent ? "#222" : "transparent"}`,
+                background: isDone ? "color-mix(in srgb, var(--gym-accent) 4%, transparent)" : isCurrent ? "#111" : "transparent",
+                border: `0.5px solid ${isDone ? "color-mix(in srgb, var(--gym-accent) 20%, transparent)" : isCurrent ? "#222" : "transparent"}`,
                 opacity: !isCurrent && !isDone ? 0.5 : 1,
                 transition: "all 0.2s",
               }}
@@ -988,8 +988,8 @@ function SetsCard({
               <span style={{
                 width: 20, height: 20, borderRadius: 5, flexShrink: 0,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                background: isDone ? "rgba(255,94,20,0.15)" : isCurrent ? "#FF5E14" : "#1a1a1a",
-                color: isDone ? "#FF5E14" : isCurrent ? "#fff" : "#333",
+                background: isDone ? "color-mix(in srgb, var(--gym-accent) 15%, transparent)" : isCurrent ? "var(--gym-accent)" : "#1a1a1a",
+                color: isDone ? "var(--gym-accent)" : isCurrent ? "#fff" : "#333",
                 fontSize: 9, fontWeight: 700,
                 fontFamily: "var(--font-barlow, 'Barlow Condensed')",
               }}>
@@ -1006,10 +1006,10 @@ function SetsCard({
                 disabled={isDone}
                 style={{
                   width: 56, height: 32, background: isDone ? "transparent" : "#0a0a0a",
-                  border: `0.5px solid ${setIsPR ? "rgba(255,94,20,0.5)" : isCurrent ? "#2a2a2a" : "#1a1a1a"}`,
+                  border: `0.5px solid ${setIsPR ? "color-mix(in srgb, var(--gym-accent) 50%, transparent)" : isCurrent ? "#2a2a2a" : "#1a1a1a"}`,
                   borderRadius: 7, textAlign: "center",
                   fontSize: 13, fontWeight: 700,
-                  color: isDone ? "#555" : setIsPR ? "#FF5E14" : "#fff",
+                  color: isDone ? "#555" : setIsPR ? "var(--gym-accent)" : "#fff",
                   outline: "none",
                   fontVariantNumeric: "tabular-nums",
                 }}
@@ -1041,10 +1041,10 @@ function SetsCard({
               {/* Badge PR por set */}
               {setIsPR && !isDone && (
                 <span style={{
-                  fontSize: 8, fontWeight: 700, color: "#FF5E14",
+                  fontSize: 8, fontWeight: 700, color: "var(--gym-accent)",
                   padding: "1px 5px", borderRadius: 10,
-                  background: "rgba(255,94,20,0.12)",
-                  border: "0.5px solid rgba(255,94,20,0.3)",
+                  background: "color-mix(in srgb, var(--gym-accent) 12%, transparent)",
+                  border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)",
                   flexShrink: 0,
                 }}>
                   PR
@@ -1081,7 +1081,7 @@ function RestTimerCard({ timerValue, timerMax, timerColor, arcOffset, circumfere
   const displayColor = timerDone && !isResting ? "#22C55E" : timerMax > 0 ? timerColor : "#fff";
 
   return (
-    <div style={{ background: "#0d0d0d", border: "0.5px solid #1a1a1a", borderRadius: 16, padding: "16px 20px", marginBottom: 12 }}>
+    <div style={{ background: "var(--sidebar)", border: "0.5px solid #1a1a1a", borderRadius: 16, padding: "16px 20px", marginBottom: 12 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
         <div style={{ position: "relative", width: 72, height: 72, flexShrink: 0 }}>
           <svg width="72" height="72" viewBox="0 0 72 72">
@@ -1118,7 +1118,7 @@ function NextExerciseStrip({ exercise }: { exercise: RoutineExercise }): React.R
   const name    = exercise.exercise?.name ?? "Ejercicio";
   const detail  = `${exercise.sets ?? 3} series · ${exercise.reps ?? "—"} reps${exercise.rest_seconds ? ` · ${exercise.rest_seconds}s` : ""}`;
   return (
-    <div style={{ background: "#0d0d0d", border: "0.5px solid #1a1a1a", borderRadius: 12, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+    <div style={{ background: "var(--sidebar)", border: "0.5px solid #1a1a1a", borderRadius: 12, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
       <div style={{ width: 32, height: 32, borderRadius: 8, background: "#111", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 9h3M9 9h3M5 9v2M9 9v2M5 10h4" stroke="#333" strokeWidth="1.8" strokeLinecap="round" /></svg>
       </div>
@@ -1184,7 +1184,7 @@ function ActionRow({
     );
   }
 
-  let mainBg     = "#FF5E14";
+  let mainBg = "var(--gym-accent)";
   let mainText   = "Completar serie";
   let mainAction = onComplete;
 
@@ -1254,8 +1254,8 @@ function ExerciseList({ exercises, activeIndex, completedIds, onSelect }: Exerci
               key={re.id}
               onClick={() => onSelect(i)}
               style={{
-                background: isCurr ? "rgba(255,94,20,0.04)" : "#0d0d0d",
-                border: `0.5px solid ${isCurr ? "rgba(255,94,20,0.4)" : "#1a1a1a"}`,
+                background: isCurr ? "color-mix(in srgb, var(--gym-accent) 4%, transparent)" : "var(--sidebar)",
+                border: `0.5px solid ${isCurr ? "color-mix(in srgb, var(--gym-accent) 40%, transparent)" : "#1a1a1a"}`,
                 borderRadius: 10, padding: "10px 12px",
                 display: "flex", alignItems: "center", gap: 8,
                 cursor: "pointer", transition: "all 0.15s", textAlign: "left",
@@ -1263,8 +1263,8 @@ function ExerciseList({ exercises, activeIndex, completedIds, onSelect }: Exerci
             >
               <div style={{
                 width: 22, height: 22, borderRadius: 5, flexShrink: 0,
-                background: isDone ? "rgba(255,94,20,0.15)" : isCurr ? "#FF5E14" : "#161616",
-                color: isDone ? "#FF5E14" : isCurr ? "#fff" : "#444",
+                background: isDone ? "color-mix(in srgb, var(--gym-accent) 15%, transparent)" : isCurr ? "var(--gym-accent)" : "#161616",
+                color: isDone ? "var(--gym-accent)" : isCurr ? "#fff" : "#444",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 10, fontWeight: 700, fontFamily: "var(--font-barlow, 'Barlow Condensed')",
               }}>
@@ -1299,21 +1299,21 @@ function PRCelebrationModal({ prs, onClose }: PRCelebrationModalProps): React.Re
       background: "rgba(0,0,0,0.85)", backdropFilter: "blur(6px)",
     }}>
       <div style={{
-        background: "#0d0d0d", border: "0.5px solid rgba(255,94,20,0.3)",
+        background: "var(--sidebar)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)",
         borderRadius: 24, padding: "36px 32px", maxWidth: 380, width: "90%",
         textAlign: "center",
       }}>
         {/* Ícono de trofeo */}
         <div style={{
           width: 72, height: 72, borderRadius: 20,
-          background: "rgba(255,94,20,0.1)", border: "0.5px solid rgba(255,94,20,0.3)",
+          background: "color-mix(in srgb, var(--gym-accent) 10%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)",
           display: "flex", alignItems: "center", justifyContent: "center",
           margin: "0 auto 20px", fontSize: 36,
         }}>
           🏆
         </div>
 
-        <p style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontSize: 32, fontWeight: 900, color: "#FF5E14", letterSpacing: "-0.02em", marginBottom: 6 }}>
+        <p style={{ fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontSize: 32, fontWeight: 900, color: "var(--gym-accent)", letterSpacing: "-0.02em", marginBottom: 6 }}>
           ¡Nuevo récord!
         </p>
         <p style={{ fontSize: 13, color: "#555", marginBottom: 24 }}>
@@ -1326,14 +1326,14 @@ function PRCelebrationModal({ prs, onClose }: PRCelebrationModalProps): React.Re
             <div
               key={`${pr.exercise_id}-${idx}`}
               style={{
-                background: "rgba(255,94,20,0.05)", border: "0.5px solid rgba(255,94,20,0.2)",
+                background: "color-mix(in srgb, var(--gym-accent) 5%, transparent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 20%, transparent)",
                 borderRadius: 12, padding: "12px 16px",
                 display: "flex", alignItems: "center", justifyContent: "space-between",
               }}
             >
               <span style={{ fontSize: 13, fontWeight: 600, color: "#ccc" }}>{pr.exercise_name}</span>
               <div style={{ textAlign: "right" }}>
-                <p style={{ fontSize: 18, fontWeight: 700, color: "#FF5E14", fontFamily: "var(--font-barlow, 'Barlow Condensed')", letterSpacing: "-0.02em", lineHeight: 1 }}>
+                <p style={{ fontSize: 18, fontWeight: 700, color: "var(--gym-accent)", fontFamily: "var(--font-barlow, 'Barlow Condensed')", letterSpacing: "-0.02em", lineHeight: 1 }}>
                   {pr.new_pr} kg
                 </p>
                 {pr.old_pr !== null && (
@@ -1349,7 +1349,7 @@ function PRCelebrationModal({ prs, onClose }: PRCelebrationModalProps): React.Re
         <button
           onClick={onClose}
           style={{
-            width: "100%", height: 48, background: "#FF5E14", border: "none",
+            width: "100%", height: 48, background: "var(--gym-accent)", border: "none",
             borderRadius: 14, fontSize: 15, fontWeight: 700, color: "#fff",
             cursor: "pointer",
           }}

@@ -97,10 +97,10 @@ export function ReactionsBar({
               className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium transition-all cursor-pointer"
               style={{
                 background: optimisticState.myReaction === type
-                  ? "rgba(255,94,20,0.15)"
+                  ? "color-mix(in srgb, var(--gym-accent) 15%, transparent)"
                   : "rgba(255,255,255,0.05)",
-                border: `1px solid ${optimisticState.myReaction === type ? "rgba(255,94,20,0.4)" : "#2a2a2a"}`,
-                color: optimisticState.myReaction === type ? "#FF5E14" : "#737373",
+                border: `1px solid ${optimisticState.myReaction === type ? "color-mix(in srgb, var(--gym-accent) 40%, transparent)" : "#2a2a2a"}`,
+                color: optimisticState.myReaction === type ? "var(--gym-accent)" : "#737373",
               }}
             >
               <span>{EMOJI_MAP[type]}</span>

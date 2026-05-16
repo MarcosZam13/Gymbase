@@ -152,7 +152,7 @@ export function RoutineDayEditor({ day, exercises }: RoutineDayEditorProps): Rea
                       {/* Badge de pirámide configurada */}
                       {re.default_sets && re.default_sets.length > 0 && (
                         <span className="flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
-                          style={{ background: "rgba(255,94,20,0.12)", color: "#FF5E14", border: "0.5px solid rgba(255,94,20,0.3)" }}>
+                          style={{ background: "color-mix(in srgb, var(--gym-accent) 12%, transparent)", color: "var(--gym-accent)", border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)" }}>
                           <Layers className="w-2.5 h-2.5" />
                           pirámide
                         </span>
@@ -237,7 +237,7 @@ export function RoutineDayEditor({ day, exercises }: RoutineDayEditorProps): Rea
         <select
           value={selectedExercise}
           onChange={(e) => setSelectedExercise(e.target.value)}
-          className="flex h-9 w-full rounded-md border border-[#222] bg-[#0d0d0d] px-3 py-1 text-sm text-[#ddd] focus:border-[#FF5E14] focus:outline-none transition-colors"
+          className="flex h-9 w-full rounded-md border border-[#222] bg-sidebar px-3 py-1 text-sm text-[#ddd] focus:border-primary focus:outline-none transition-colors"
           style={{ colorScheme: "dark" }}
         >
           <option value="">Seleccionar...</option>

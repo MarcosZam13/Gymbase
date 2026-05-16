@@ -3,7 +3,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient, getCurrentUser, getOrgId } from "@/lib/supabase/server";
+import { createClient, getCurrentUser, getOrgId, createAdminClient } from "@/lib/supabase/server";
 import {
   fetchChallenges,
   fetchChallengeById,
@@ -187,4 +187,36 @@ export async function awardBadge(
     console.error("[awardBadge] Error:", error);
     return { success: false, error: "Error al otorgar el badge (puede que ya exista)" };
   }
+}
+
+// ─── Upload de banner a challenge-banners ─────────────────────────────────────
+
+const MIME_TO_EXT: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+
+export async function uploadChallengeBanner(formData: FormData): Promise<ActionResult<{ url: string }>> {
+  const user = await getCurrentUser();
+  if (!user || (user.role !== "admin" && user.role !== "owner")) return { success: false, error: "Sin permisos" };
+
+  const file = formData.get("file");
+  if (!(file instanceof Blob)) return { success: false, error: "Archivo requerido" };
+
+  const ext = MIME_TO_EXT[file.type];
+  if (!ext) return { success: false, error: "Solo se permiten imágenes JPG, PNG o WebP" };
+  if (file.size > 2 * 1024 * 1024) return { success: false, error: "La imagen no puede superar 2 MB" };
+
+  const adminClient = createAdminClient();
+  const path = `banners/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const arrayBuffer = await file.arrayBuffer();
+
+  const { error: uploadError } = await adminClient.storage
+    .from("challenge-banners")
+    .upload(path, new Uint8Array(arrayBuffer), { contentType: file.type, upsert: false });
+
+  if (uploadError) {
+    console.error("[uploadChallengeBanner] Upload error:", uploadError.message);
+    return { success: false, error: "Error al subir la imagen" };
+  }
+
+  const { data: { publicUrl } } = adminClient.storage.from("challenge-banners").getPublicUrl(path);
+  return { success: true, data: { url: publicUrl } };
 }

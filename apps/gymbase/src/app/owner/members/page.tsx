@@ -17,13 +17,13 @@ function DonutChart({
   const total = data.reduce((s, d) => s + d.active_count, 0);
   if (total === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-[#737373] text-sm">
+      <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
         Sin datos
       </div>
     );
   }
 
-  const COLORS = ["#FF5E14", "#22C55E", "#FACC15", "#3B82F6", "#8B5CF6", "#EC4899"];
+  const COLORS = ["var(--gym-accent)", "#22C55E", "#FACC15", "#3B82F6", "#8B5CF6", "#EC4899"];
   const R = 70;
   const CX = 90;
   const CY = 90;
@@ -76,9 +76,9 @@ function DonutChart({
         {segments.map((seg, i) => (
           <div key={i} className="flex items-center gap-2 text-sm">
             <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: seg.color }} />
-            <span className="text-[#737373]">{seg.name}</span>
+            <span className="text-muted-foreground">{seg.name}</span>
             <span className="text-white font-medium ml-auto pl-4">{seg.count}</span>
-            <span className="text-[#737373] text-xs w-12 text-right">{seg.pct}%</span>
+            <span className="text-muted-foreground text-xs w-12 text-right">{seg.pct}%</span>
           </div>
         ))}
       </div>
@@ -131,7 +131,7 @@ export default async function OwnerMembersPage({
           <h1 className="font-barlow font-bold text-3xl text-white tracking-wide uppercase">
             Membresías
           </h1>
-          <p className="text-[#737373] text-sm mt-1">Distribución y retención por plan</p>
+          <p className="text-muted-foreground text-sm mt-1">Distribución y retención por plan</p>
         </div>
         <div className="flex items-center gap-3">
           <ExportCSVButton filename={`membresias-${period}.csv`} rows={csvRows} />
@@ -143,22 +143,22 @@ export default async function OwnerMembersPage({
 
       {/* KPIs rápidos */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Total activos</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Total activos</p>
           <p className="font-barlow font-bold text-3xl text-white">{totalActive}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Ingresos del mes</p>
-          <p className="font-barlow font-bold text-3xl text-[#FF5E14]">
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Ingresos del mes</p>
+          <p className="font-barlow font-bold text-3xl text-primary">
             {formatCurrency(totalRevenue)}
           </p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Nuevos este período</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Nuevos este período</p>
           <p className="font-barlow font-bold text-3xl text-green-400">+{totalNew}</p>
         </div>
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-5">
-          <p className="text-sm text-[#737373] mb-2">Cancelaciones</p>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <p className="text-sm text-muted-foreground mb-2">Cancelaciones</p>
           <p className="font-barlow font-bold text-3xl text-red-400">{totalCancelled}</p>
         </div>
       </div>
@@ -166,7 +166,7 @@ export default async function OwnerMembersPage({
       {/* Donut + tabla */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Donut chart */}
-        <div className="bg-[#111111] border border-[#1E1E1E] rounded-xl p-6 flex flex-col">
+        <div className="bg-card border border-border rounded-xl p-6 flex flex-col">
           <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
             Distribución por plan
           </h2>
@@ -178,7 +178,7 @@ export default async function OwnerMembersPage({
         </div>
 
         {/* Tabla detallada */}
-        <div className="lg:col-span-2 bg-[#111111] border border-[#1E1E1E] rounded-xl p-6">
+        <div className="lg:col-span-2 bg-card border border-border rounded-xl p-6">
           <h2 className="font-barlow font-semibold text-lg text-white uppercase tracking-wide mb-4">
             Detalle por plan
           </h2>
