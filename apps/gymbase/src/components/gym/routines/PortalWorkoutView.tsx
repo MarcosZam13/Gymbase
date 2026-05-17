@@ -387,6 +387,33 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
           </div>
         </div>
 
+        {/* Selector de días — scroll horizontal */}
+        {sortedDays.length > 1 && (
+          <div style={{ overflowX: "auto", display: "flex", gap: 6, padding: "8px 16px", borderBottom: "0.5px solid #111", flexShrink: 0 }}>
+            {sortedDays.map((day, i) => {
+              const isAct = i === activeDayIndex;
+              const isDn  = i < activeDayIndex;
+              return (
+                <button
+                  key={day.id}
+                  onClick={() => selectDay(i)}
+                  style={{
+                    flexShrink: 0, padding: "5px 12px", borderRadius: 20, cursor: "pointer",
+                    border: `0.5px solid ${isAct ? "color-mix(in srgb, var(--gym-accent) 40%, transparent)" : "#1a1a1a"}`,
+                    background: isAct ? "color-mix(in srgb, var(--gym-accent) 8%, transparent)" : "#0a0a0a",
+                    color: isAct ? "var(--gym-accent)" : isDn ? "#22C55E" : "#555",
+                    fontSize: 11, fontWeight: 600,
+                    display: "flex", alignItems: "center", gap: 4,
+                  }}
+                >
+                  {isDn ? <span>✓</span> : null}
+                  {day.name ?? `Día ${day.day_number}`}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         {/* Contenido scrollable */}
         {currentEx ? (
           <div style={{ flex: 1, overflowY: "auto", padding: "12px 16px" }}>
