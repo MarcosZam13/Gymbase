@@ -7,7 +7,9 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "dev:gymbase": "turbo run dev --filter=@memberbase/gymbase",
-    "build:gymbase": "turbo run build --filter=@memberbase/gymbase"
+    "build:gymbase": "turbo run build --filter=@memberbase/gymbase",
+    "dev:iron-gym": "pnpm --filter=@memberbase/gymbase dev:iron-gym",
+    "dev:zenith-club": "pnpm --filter=@memberbase/gymbase dev:zenith-club"
   },
   "devDependencies": {
     "turbo": "^2.5.4"
