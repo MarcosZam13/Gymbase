@@ -10,7 +10,7 @@ import {
   CalendarDays,
   Trophy,
   TrendingUp,
-  UserCircle,
+  BookOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { themeConfig } from "@/lib/theme";
@@ -30,12 +30,12 @@ interface BottomNavItem {
 }
 
 const BOTTOM_NAV_ITEMS: BottomNavItem[] = [
-  { href: "/portal/dashboard",  label: "Inicio",  icon: LayoutDashboard },
-  { href: "/portal/routines",   label: "Rutinas", icon: Dumbbell,     flag: "gym_routines" },
-  { href: "/portal/calendar",   label: "Clases",  icon: CalendarDays, flag: "gym_calendar" },
-  { href: "/portal/challenges", label: "Retos",    icon: Trophy,       flag: "gym_challenges" },
-  { href: "/portal/progress",  label: "Progreso", icon: TrendingUp,   flag: "gym_health_metrics" },
-  { href: "/portal/profile",   label: "Perfil",   icon: UserCircle },
+  { href: "/portal/dashboard",  label: "Inicio",    icon: LayoutDashboard },
+  { href: "/portal/content",    label: "Contenido", icon: BookOpen },
+  { href: "/portal/routines",   label: "Rutinas",   icon: Dumbbell,     flag: "gym_routines" },
+  { href: "/portal/calendar",   label: "Clases",    icon: CalendarDays, flag: "gym_calendar" },
+  { href: "/portal/challenges", label: "Retos",      icon: Trophy,       flag: "gym_challenges" },
+  { href: "/portal/progress",  label: "Progreso",   icon: TrendingUp,   flag: "gym_health_metrics" },
 ];
 
 export function GymPortalBottomNav({ profile: _, isActive: hasMembership = true }: GymPortalBottomNavProps): React.ReactNode {

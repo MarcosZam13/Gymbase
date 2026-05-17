@@ -96,6 +96,16 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
   /* ── Estado para el modal de progresión de peso por ejercicio ── */
   const [progressModal,  setProgressModal]    = useState<{ id: string; name: string; muscleGroup?: string | null } | null>(null);
 
+  /* ── Detección de mobile ── */
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = (): void => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const activeDay    = sortedDays[activeDayIndex];
   const dayExercises = activeDay
     ? [...activeDay.exercises].sort((a, b) => a.sort_order - b.sort_order)
@@ -342,6 +352,174 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
   const currentExPR       = currentEx ? (memberPRs[currentEx.exercise_id] ?? null) : null;
   const isPotentialPR     = !isNaN(currentWeightNum) && currentExPR !== null && currentWeightNum > currentExPR;
 
+  /* ── Layout mobile ── */
+  if (isMobile) {
+    return (
+      <div style={{ position: "fixed", top: 64, bottom: 56, left: 0, right: 0, zIndex: 20, backgroundColor: "#080808", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+        {/* Barra de progreso */}
+        <div style={{ height: 3, backgroundColor: "#111", flexShrink: 0 }}>
+          <div style={{ height: "100%", width: `${progressPct}%`, backgroundColor: "var(--gym-accent)", transition: "width 0.7s cubic-bezier(.22,1,.36,1)" }} />
+        </div>
+
+        {/* Top bar: back + día + contador + timer */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 16px", borderBottom: "0.5px solid #111", flexShrink: 0 }}>
+          {onBack && (
+            <button
+              onClick={onBack}
+              style={{ display: "flex", alignItems: "center", gap: 4, background: "none", border: "none", cursor: "pointer", color: "#555", fontSize: 11, fontFamily: "inherit", padding: 0, flexShrink: 0 }}
+            >
+              ← Rutinas
+            </button>
+          )}
+          <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>
+            <p style={{ fontSize: 11, color: "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {activeDay?.name ?? `Día ${activeDay?.day_number}`}
+              <span style={{ color: "#2a2a2a", margin: "0 4px" }}>›</span>
+              <span style={{ color: "#888" }}>Ejercicio {activeExIndex + 1}/{dayExercises.length}</span>
+            </p>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "4px 10px", background: "#111", border: "0.5px solid #1a1a1a", borderRadius: 20, fontSize: 12, fontWeight: 700, color: "#fff", fontFamily: "var(--font-barlow, 'Barlow Condensed')", fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="4.5" stroke="var(--gym-accent)" strokeWidth="2" />
+              <path d="M6 3.5v2.5l1.5 1" stroke="var(--gym-accent)" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+            {fmtTime(sessionSecs)}
+          </div>
+        </div>
+
+        {/* Contenido scrollable */}
+        {currentEx ? (
+          <div style={{ flex: 1, overflowY: "auto", padding: "12px 16px" }}>
+            <ExerciseZone
+              exerciseName={currentEx.exercise?.name ?? "Ejercicio"}
+              videoUrl={videoUrl}
+              muscleGroup={muscleGroup}
+              activeMuscleIds={activeMuscIds}
+              muscleColor={muscleColor}
+              height={190}
+            />
+            <div style={{ marginTop: 10 }}>
+              <ExerciseInfoCard
+                exercise={currentEx}
+                muscleColor={muscleColor}
+                onShowProgress={() => setProgressModal({ id: currentEx.exercise_id, name: currentEx.exercise?.name ?? "Ejercicio", muscleGroup: currentEx.exercise?.muscle_group })}
+              />
+            </div>
+            {lastExData && lastExData.sets.length > 0 && (
+              <div style={{ marginTop: 8 }}>
+                <HistoryStrip
+                  sets={lastExData.sets}
+                  open={showHistory[currentEx.id] ?? false}
+                  onToggle={() => setShowHistory((prev) => ({ ...prev, [currentEx.id]: !prev[currentEx.id] }))}
+                />
+              </div>
+            )}
+            <div style={{ marginTop: 10 }}>
+              <SetsCard
+                exercise={currentEx}
+                currentSet={currentSet}
+                setsData={currentExSets}
+                memberPR={currentExPR}
+                isPotentialPR={isPotentialPR}
+                onWeightChange={(setIdx, val) => updateSetWeight(currentEx.id, setIdx, val)}
+                onRepsChange={(setIdx, val) => updateSetReps(currentEx.id, setIdx, val)}
+              />
+            </div>
+            <div style={{ marginTop: 10 }}>
+              <RestTimerCard
+                timerValue={timerValue}
+                timerMax={timerMax}
+                timerColor={timerColor}
+                arcOffset={arcOffset}
+                circumference={circumference}
+                isResting={isResting}
+                timerDone={timerDone}
+              />
+            </div>
+            {nextEx && (
+              <div style={{ marginTop: 8 }}>
+                <NextExerciseStrip exercise={nextEx} />
+              </div>
+            )}
+            {/* Lista de ejercicios compacta */}
+            {dayExercises.length > 0 && (
+              <div style={{ marginTop: 16 }}>
+                <p style={{ fontSize: 10, fontWeight: 600, color: "#444", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>
+                  Ejercicios de la sesión
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {dayExercises.map((re, i) => {
+                    const isDone = completedExIds.has(re.id);
+                    const isCurr = i === activeExIndex;
+                    return (
+                      <button
+                        key={re.id}
+                        onClick={() => setActiveExIndex(i)}
+                        style={{
+                          background: isCurr ? "color-mix(in srgb, var(--gym-accent) 4%, transparent)" : "#0a0a0a",
+                          border: `0.5px solid ${isCurr ? "color-mix(in srgb, var(--gym-accent) 40%, transparent)" : "#1a1a1a"}`,
+                          borderRadius: 10, padding: "9px 12px",
+                          display: "flex", alignItems: "center", gap: 8,
+                          cursor: "pointer", textAlign: "left",
+                        }}
+                      >
+                        <div style={{ width: 22, height: 22, borderRadius: 5, flexShrink: 0, background: isDone ? "color-mix(in srgb, var(--gym-accent) 15%, transparent)" : isCurr ? "var(--gym-accent)" : "#161616", color: isDone ? "var(--gym-accent)" : isCurr ? "#fff" : "#444", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, fontFamily: "var(--font-barlow, 'Barlow Condensed')" }}>
+                          {isDone ? "✓" : i + 1}
+                        </div>
+                        <span style={{ fontSize: 12, color: isCurr ? "#fff" : "#555", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {re.exercise?.name ?? "Ejercicio"}
+                        </span>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: "#333", flexShrink: 0, fontFamily: "var(--font-barlow, 'Barlow Condensed')" }}>
+                          {re.sets ?? 3}×{re.reps ?? "—"}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <div style={{ height: 16 }} />
+              </div>
+            )}
+          </div>
+        ) : (
+          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <p style={{ color: "#444", fontSize: 14 }}>Seleccioná un día para empezar</p>
+          </div>
+        )}
+
+        {/* Barra de acción fija abajo */}
+        <div style={{ padding: "10px 16px", borderTop: "0.5px solid #111", backgroundColor: "#080808", flexShrink: 0 }}>
+          <ActionRow
+            isResting={isResting}
+            isExDone={isExDone}
+            hasNext={!!nextEx}
+            allDone={allDone}
+            workoutDone={workoutDone}
+            saving={saving}
+            currentSet={currentSet}
+            totalSets={currentEx?.sets ?? 3}
+            onComplete={handleCompleteSet}
+            onSkipRest={skipRest}
+            onNextEx={() => setActiveExIndex(i => i + 1)}
+            onFinish={handleFinishWorkout}
+          />
+        </div>
+
+        {progressModal && (
+          <ExerciseProgressModal
+            exerciseId={progressModal.id}
+            exerciseName={progressModal.name}
+            muscleGroup={progressModal.muscleGroup}
+            onClose={() => setProgressModal(null)}
+          />
+        )}
+        {showPRModal && (
+          <PRCelebrationModal prs={newPRs} onClose={() => setShowPRModal(false)} />
+        )}
+      </div>
+    );
+  }
+
+  /* ── Layout desktop ── */
   return (
     <div style={{ display: "flex", height: "calc(100vh - 96px)", overflow: "hidden", margin: "0 -24px -32px" }}>
 
@@ -700,15 +878,16 @@ interface ExerciseZoneProps {
   muscleGroup: string | null;
   activeMuscleIds: string[];
   muscleColor: string;
+  height?: number;
 }
 
-function ExerciseZone({ exerciseName, videoUrl, muscleGroup, activeMuscleIds, muscleColor }: ExerciseZoneProps): React.ReactNode {
+function ExerciseZone({ exerciseName, videoUrl, muscleGroup, activeMuscleIds, muscleColor, height = 260 }: ExerciseZoneProps): React.ReactNode {
   const isActive = (id: string): boolean => activeMuscleIds.includes(id);
   const fill = (id: string): string => isActive(id) ? muscleColor : "#1a1a1a";
   const opacity = (id: string): number => isActive(id) ? 0.65 : 1;
 
   return (
-    <div style={{ background: "#0a0a0a", border: "0.5px solid #1a1a1a", borderRadius: 20, overflow: "hidden", position: "relative", height: 260, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+    <div style={{ background: "#0a0a0a", border: "0.5px solid #1a1a1a", borderRadius: 20, overflow: "hidden", position: "relative", height, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
       <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
 
       {videoUrl ? (

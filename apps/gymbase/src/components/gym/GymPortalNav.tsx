@@ -130,7 +130,7 @@ export function GymPortalNav({ profile, isActive = true, gymName }: GymPortalNav
         </nav>
 
         {/* ── Menú de usuario ──────────────────────────────────────────────── */}
-        <div className="relative shrink-0" ref={menuRef}>
+        <div className="relative shrink-0 ml-auto md:ml-0" ref={menuRef}>
           <button
             onClick={() => setUserMenuOpen(!userMenuOpen)}
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors"
