@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NEXT_PUBLIC_GYM_CLIENT=zenith-club GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000002 next dev --port 3001",
-    "dev:iron-gym": "NEXT_PUBLIC_GYM_CLIENT=iron-gym GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000001 next dev --port 3001",
-    "dev:zenith-club": "NEXT_PUBLIC_GYM_CLIENT=zenith-club GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000002 next dev --port 3002",
+    "dev": "NEXT_PUBLIC_GYM_CLIENT=zenith-club GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000002 node scripts/copy-theme-assets.mjs && NEXT_PUBLIC_GYM_CLIENT=zenith-club GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000002 next dev --port 3001",
+    "dev:iron-gym": "NEXT_PUBLIC_GYM_CLIENT=iron-gym GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000001 node scripts/copy-theme-assets.mjs && NEXT_PUBLIC_GYM_CLIENT=iron-gym GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000001 next dev --port 3001",
+    "dev:zenith-club": "NEXT_PUBLIC_GYM_CLIENT=zenith-club GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000002 node scripts/copy-theme-assets.mjs && NEXT_PUBLIC_GYM_CLIENT=zenith-club GYMBASE_ORG_ID=00000000-0000-0000-0000-000000000002 next dev --port 3002",
+    "prebuild": "node scripts/copy-theme-assets.mjs",
     "build": "next build",
     "start": "next start --port 3001",
     "lint": "eslint",
