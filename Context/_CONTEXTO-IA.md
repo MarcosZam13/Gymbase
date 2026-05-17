@@ -1,7 +1,7 @@
 # _CONTEXTO-IA — GymBase: Contexto comprimido para IAs
 
 > Leer este archivo antes de tocar cualquier código. Diseñado para máximo contexto, mínimo tokens.
-> Actualizado: 2026-05-11
+> Actualizado: 2026-05-16
 
 ---
 
@@ -52,25 +52,23 @@ Arquitectura monorepo:
 
 ---
 
-## Configuración de Tema (IMPORTANTE — estado actual en transición)
+## Configuración de Tema (M17 — code-driven, completo)
 
-Actualmente `layout.tsx` lee config desde DB vía `getOrgConfig()` → header `x-org-config` del middleware → `buildThemeVars(config)`. **Este sistema tiene bugs** (ver _ESTADO-ACTUAL.md).
+- `NEXT_PUBLIC_GYM_CLIENT` env var define el cliente activo en build time (ej: `iron-gym`)
+- `layout.tsx` importa `themeConfig` desde `src/lib/theme.ts` que resuelve el cliente correcto
+- Sin DB, sin middleware config, sin cache — tema inmutable por deploy
+- `apps/gymbase/theme.config.ts` → fallback si GYM_CLIENT no está definido
+- `clients/gymbase/iron-gym/theme.config.ts` → iron-gym (naranja, dark, industrial)
+- `clients/gymbase/zenith-club/theme.config.ts` → zenith-club (cyan, navy, premium)
 
-**Destino (M17 — code-driven):**
-- `GYM_CLIENT` env var define el cliente activo (ej: `iron-gym`)
-- `layout.tsx` importará `clients/gymbase/${GYM_CLIENT}/theme.config.ts` directamente
-- Sin DB, sin middleware config, sin cache → tema inmutable en build time
-
-**Archivos de config:**
-- `apps/gymbase/theme.config.ts` → template base / fallback de desarrollo
-- `clients/gymbase/iron-gym/theme.config.ts` → config del primer cliente (incompleta aún)
+**Agregar nuevo cliente:** ver `Context/ONBOARDING-NUEVO-GYM.md`
 
 ---
 
 ## Patrones Críticos
 
 ### Auth / Roles
-- Roles: `admin` | `member` | `owner` (en `profiles.role`)
+- Roles: `admin` | `member` | `owner` (en `org_members.role`, ya NO en `profiles.role`)
 - Todo Server Action llama `getCurrentUser()` al inicio — nunca confiar en el cliente
 - RLS: tablas usan `get_user_org_id()` SECURITY DEFINER para filtrar por org
 - `get_user_role()` SECURITY DEFINER — retorna rol del usuario autenticado
@@ -78,12 +76,14 @@ Actualmente `layout.tsx` lee config desde DB vía `getOrgConfig()` → header `x
 - Rate limiting en login: RPC `count_recent_login_attempts()` — max 5 intentos / 15 min
 - Google OAuth: solo para miembros; admin/owner rechazados en `/auth/callback`
 
-### Multi-Tenancy (Fase 1 actual)
-- Un deployment = un gym = un proyecto Supabase
-- `getOrgId()` obtiene ID de primera fila en `organizations` + cachea en variable de módulo
-- Fallback: `process.env.GYMBASE_ORG_ID`
-- Todas las queries deben filtrar por `org_id`
-- **NUNCA** omitir el filtro `org_id` en queries de producción
+### Multi-Tenancy (Fase 2 — org_members)
+- Un deployment = un gym (misma DB compartida, aislada por RLS)
+- `org_members (user_id, org_id, role)` — reemplazó `profiles.org_id` + `profiles.role`
+- `get_user_org_id()` SECURITY DEFINER — lee `org_members` para el usuario autenticado
+- `get_user_role()` SECURITY DEFINER — lee rol desde `org_members`
+- `getOrgId()` en código: primera fila de `organizations` + fallback `process.env.GYMBASE_ORG_ID`
+- Auth callback hace auto-join: crea fila en `org_members` con role='member' si no existe
+- Todas las queries deben filtrar por `org_id` — **NUNCA** omitir en producción
 
 ### Server Actions
 ```typescript
@@ -106,8 +106,8 @@ type ActionResult<T = void> = { success: true; data?: T } | { success: false; er
 ### "use server" en barrel files (Next.js 16 + Turbopack)
 Todo archivo en `actions/` debe tener `"use server"` en la primera línea. Sin esto, Turbopack incluye el archivo en el bundle del cliente y falla en build.
 
-### RLS — Bug conocido en content
-La policy `content_select_published_with_active_subscription` no muestra contenido sin restricción de plan. Ver fix pendiente en _ESTADO-ACTUAL.md.
+### RLS — Content (resuelto 2026-05-11)
+La policy `content_select_published_with_active_subscription` fue corregida: si un contenido no tiene filas en `content_plans` → visible para cualquier miembro con suscripción activa.
 
 ---
 
