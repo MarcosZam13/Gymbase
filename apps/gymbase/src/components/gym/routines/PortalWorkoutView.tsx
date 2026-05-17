@@ -408,9 +408,16 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
           {onBack && (
             <button
               onClick={onBack}
-              style={{ display: "flex", alignItems: "center", gap: 4, background: "none", border: "none", cursor: "pointer", color: "#555", fontSize: 11, fontFamily: "inherit", padding: 0, flexShrink: 0 }}
+              style={{
+                display: "flex", alignItems: "center", gap: 4, flexShrink: 0,
+                background: "color-mix(in srgb, var(--gym-accent) 8%, transparent)",
+                border: "0.5px solid color-mix(in srgb, var(--gym-accent) 30%, transparent)",
+                padding: "5px 10px", borderRadius: 20,
+                cursor: "pointer", color: "var(--gym-accent)",
+                fontSize: 11, fontWeight: 600, fontFamily: "inherit",
+              }}
             >
-              ← Rutinas
+              ← Mis rutinas
             </button>
           )}
           <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>

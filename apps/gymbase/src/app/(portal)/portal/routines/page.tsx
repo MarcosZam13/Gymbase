@@ -1,7 +1,6 @@
 // page.tsx — Página de rutinas del portal: selector multi-rutina o workout view directo
 
 import { getMemberRoutineStack, getRoutineById } from "@/actions/routine.actions";
-import { PortalWorkoutView } from "@/components/gym/routines/PortalWorkoutView";
 import { RoutineSelector } from "@/components/gym/routines/RoutineSelector";
 import { themeConfig } from "@/lib/theme";
 import type { RoutineWithDays } from "@/types/gym-routines";
@@ -28,20 +27,7 @@ export default async function PortalRoutinesPage(): Promise<React.ReactNode> {
     );
   }
 
-  // Una sola rutina → workout view directo (comportamiento original, sin cambio de UX)
-  if (memberRoutines.length === 1) {
-    const routineDetail = await getRoutineById(memberRoutines[0].routine_id);
-    if (!routineDetail) {
-      return (
-        <p style={{ color: "#555", textAlign: "center", padding: "48px 0" }}>
-          No se pudo cargar el detalle de la rutina.
-        </p>
-      );
-    }
-    return <PortalWorkoutView routine={routineDetail} />;
-  }
-
-  // Múltiples rutinas → precargar detalles en paralelo y mostrar selector
+  // Precargar detalles en paralelo (siempre usar RoutineSelector para tener onBack)
   const detailResults = await Promise.all(
     memberRoutines.map((mr) => getRoutineById(mr.routine_id))
   );
