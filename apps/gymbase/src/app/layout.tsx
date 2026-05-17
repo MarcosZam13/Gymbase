@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { DM_Sans, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/shared/QueryProvider";
+import { NavigationProgress } from "@/components/shared/NavigationProgress";
 import { Toaster } from "@/components/ui/sonner";
 import { themeConfig } from "@/lib/theme";
 import { buildThemeVarsFromConfig } from "@/lib/theme-vars";
@@ -41,6 +42,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-gym-base text-gym-text-primary">
         <QueryProvider>
+          <NavigationProgress />
           {children}
           <Toaster position="top-right" richColors />
         </QueryProvider>

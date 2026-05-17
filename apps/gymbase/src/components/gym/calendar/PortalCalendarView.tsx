@@ -38,7 +38,13 @@ function formatWeekRange(monday: Date): string {
 }
 
 export function PortalCalendarView({ classes: initialClasses, myBookings, classTypes, weekStart }: PortalCalendarViewProps): React.ReactNode {
-  const [weekOffset, setWeekOffset] = useState(0);
+  // Inicializar el offset para que la semana visible sea la del cliente (no la del servidor en UTC)
+  const [weekOffset, setWeekOffset] = useState(() => {
+    const clientMonday = getMondayOf(new Date());
+    const serverMonday = getMondayOf(new Date(weekStart));
+    const diffMs = clientMonday.getTime() - serverMonday.getTime();
+    return Math.round(diffMs / (7 * 24 * 60 * 60 * 1000));
+  });
   const [classes, setClasses] = useState<ScheduledClass[]>(initialClasses);
   const [isPending, startTransition] = useTransition();
   const [activeTypeId, setActiveTypeId] = useState<string | null>(null);

@@ -58,6 +58,40 @@ interface PortalWorkoutViewProps {
   onBack?: () => void;
 }
 
+/* ── Audio helpers — Web Audio API, sin archivos externos ───────────────────── */
+
+function playTone(freq: number, duration: number, delay = 0, volume = 0.35): void {
+  try {
+    setTimeout(() => {
+      const AudioCtx = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(volume, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + duration + 0.05);
+    }, delay);
+  } catch { /* ignorar si el navegador no soporta Web Audio */ }
+}
+
+// Descanso terminado — doble beep ascendente (¡a trabajar!)
+function playRestDone(): void {
+  playTone(660, 0.12, 0);
+  playTone(880, 0.18, 140);
+}
+
+// Ejercicio completado — triple beep ascendente
+function playExerciseDone(): void {
+  playTone(660, 0.1, 0);
+  playTone(880, 0.1, 130);
+  playTone(1100, 0.22, 260);
+}
+
 /* ── Componente principal ────────────────────────────────────────────────────── */
 
 export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): React.ReactNode {
@@ -105,6 +139,13 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
+
+  /* ── Triggers de audio — evitar efectos dentro de setState updaters ── */
+  const [restSoundTick,  setRestSoundTick]  = useState(0);
+  const [exSoundTick,    setExSoundTick]    = useState(0);
+
+  useEffect(() => { if (restSoundTick > 0) playRestDone(); }, [restSoundTick]);
+  useEffect(() => { if (exSoundTick   > 0) playExerciseDone(); }, [exSoundTick]);
 
   const activeDay    = sortedDays[activeDayIndex];
   const dayExercises = activeDay
@@ -182,7 +223,7 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
     if (!isResting) return;
     const id = setInterval(() => {
       setTimerValue(v => {
-        if (v <= 1) { setIsResting(false); setTimerDone(true); return 0; }
+        if (v <= 1) { setIsResting(false); setTimerDone(true); setRestSoundTick(t => t + 1); return 0; }
         return v - 1;
       });
     }, 1000);
@@ -239,6 +280,7 @@ export function PortalWorkoutView({ routine, onBack }: PortalWorkoutViewProps): 
     } else {
       setCompletedExIds(prev => new Set([...prev, currentEx.id]));
       setTimerDone(true);
+      setExSoundTick(t => t + 1);
     }
   }
 
