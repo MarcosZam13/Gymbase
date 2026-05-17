@@ -1,0 +1,12 @@
+node_modules
+**/node_modules
+.next
+**/.next
+.turbo
+**/.turbo
+*.tsbuildinfo
+**/*.tsbuildinfo
+gymbase-demo
+.agents
+skills-lock.json
+ENGRAM.md
