@@ -176,16 +176,18 @@ export default async function ProfilePage(): Promise<React.ReactNode> {
             </div>
           </div>
 
-          {/* Lado derecho: QR compacto */}
+          {/* Lado derecho: QR compacto — toca para ver a pantalla completa */}
           {themeConfig.features.gym_qr_checkin && (
             <div className="shrink-0">
               {qrData ? (
-                <div className="flex flex-col items-center gap-1">
-                  <QRDisplay qrData={qrData} memberName={null} compact />
+                <Link href="/qr/show" className="flex flex-col items-center gap-1 group">
+                  <div className="transition-transform group-active:scale-95">
+                    <QRDisplay qrData={qrData} memberName={null} compact />
+                  </div>
                   <p className="text-[9px] text-center" style={{ color: "var(--gym-text-ghost)" }}>
-                    Mi QR
+                    Toca para ampliar
                   </p>
-                </div>
+                </Link>
               ) : (
                 <div
                   className="w-[104px] h-[104px] rounded-xl flex flex-col items-center justify-center gap-1"

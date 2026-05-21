@@ -31,7 +31,7 @@ export function QRScanner(): React.ReactNode {
       if (result.success) {
         const isCheckout = result.data?.check_out_at !== null;
         setStatus("success");
-        setScanResult({ isCheckout });
+        setScanResult({ isCheckout, memberName: result.data?.member_name ?? undefined });
         setMessage(isCheckout ? "Check-out registrado" : "Check-in registrado");
       } else {
         setStatus("error");

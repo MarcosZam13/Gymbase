@@ -66,9 +66,9 @@ export async function generateMemberQR(userId: string): Promise<ActionResult<QRC
 }
 
 // Procesa un escaneo de QR y registra el check-in
-export async function scanCheckin(input: unknown): Promise<ActionResult<AttendanceLog>> {
+export async function scanCheckin(input: unknown): Promise<ActionResult<AttendanceLog & { member_name: string | null }>> {
   const user = await getCurrentUser();
-  if (!user || !["admin", "trainer"].includes(user.role)) {
+  if (!user || !["admin", "owner", "trainer"].includes(user.role)) {
     return { success: false, error: "Sin permisos para registrar asistencia" };
   }
 
@@ -89,19 +89,27 @@ export async function scanCheckin(input: unknown): Promise<ActionResult<Attendan
       return { success: false, error: "Código QR no válido o desactivado" };
     }
 
+    // Obtener nombre del miembro para mostrarlo en el kiosk
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name")
+      .eq("id", qrRecord.user_id)
+      .single();
+    const member_name: string | null = profile?.full_name ?? null;
+
     // Verificar si ya tiene un check-in abierto
     const openCheckin = await fetchOpenCheckin(supabase, qrRecord.user_id);
     if (openCheckin) {
       // Si ya está adentro, hacer check-out automático
       const checkout = await performCheckout(supabase, openCheckin.id);
       revalidatePath("/admin/occupancy");
-      return { success: true, data: checkout };
+      return { success: true, data: { ...checkout, member_name } };
     }
 
     // Registrar check-in
     const checkin = await insertCheckin(supabase, qrRecord.user_id, qrRecord.org_id, user.id);
     revalidatePath("/admin/occupancy");
-    return { success: true, data: checkin };
+    return { success: true, data: { ...checkin, member_name } };
   } catch (error) {
     console.error("[scanCheckin] Error:", error);
     const message = error instanceof Error ? error.message : "Error al procesar el check-in";

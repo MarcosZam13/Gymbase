@@ -7,8 +7,8 @@ import { QRScanner } from "@/components/gym/checkin/QRScanner";
 export default async function QRScanPage(): Promise<React.ReactNode> {
   const user = await getCurrentUser();
 
-  // Solo admin/trainer puede acceder al escáner
-  if (!user || !["admin", "trainer"].includes(user.role)) {
+  // Solo admin/owner/trainer puede acceder al escáner
+  if (!user || !["admin", "owner", "trainer"].includes(user.role)) {
     redirect("/login");
   }
 
