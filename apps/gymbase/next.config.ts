@@ -2,6 +2,8 @@
 import type { NextConfig } from 'next';
 import path from 'path';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 // Headers de seguridad aplicados a todas las rutas
 const securityHeaders = [
   { key: 'X-DNS-Prefetch-Control', value: 'on' },
@@ -15,8 +17,8 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      // unsafe-eval requerido por Next.js dev; unsafe-inline necesario para Tailwind y estilos en runtime
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      // unsafe-inline necesario para Tailwind; unsafe-eval solo en dev (requerido por Next.js HMR)
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       // blob: para previews de fotos; data: para avatares inline; supabase para storage

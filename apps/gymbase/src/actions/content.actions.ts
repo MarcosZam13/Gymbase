@@ -37,7 +37,8 @@ export async function getContentForUserPaginated(params: {
     let dataQ = supabase.from("content").select(CONTENT_SELECT).order("sort_order", { ascending: true }).range(from, to);
 
     if (params.search?.trim()) {
-      const f = `title.ilike.%${params.search.trim()}%,description.ilike.%${params.search.trim()}%`;
+      const term = params.search.trim().replace(/[%_\\]/g, (c) => `\\${c}`);
+      const f = `title.ilike.%${term}%,description.ilike.%${term}%`;
       countQ = countQ.or(f);
       dataQ = dataQ.or(f);
     }

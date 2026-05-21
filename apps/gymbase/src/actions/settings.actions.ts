@@ -245,7 +245,7 @@ export async function searchMembers(
       .select("role, profiles!inner(id, full_name, email)")
       .eq("org_id", orgId)
       .neq("role", "owner")
-      .or(`profiles.full_name.ilike.%${query}%,profiles.email.ilike.%${query}%`)
+      .or(`profiles.full_name.ilike.%${query.replace(/[%_\\]/g, (c) => `\\${c}`)}%,profiles.email.ilike.%${query.replace(/[%_\\]/g, (c) => `\\${c}`)}%`)
       .order("role")
       .limit(8);
 

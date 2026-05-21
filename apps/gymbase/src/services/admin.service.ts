@@ -155,7 +155,8 @@ export async function fetchMembersPaginated(
   let dataQ = supabase.from("profiles").select(MEMBER_PROFILE_SELECT).in("id", userIdFilter).order("created_at", { ascending: false }).range(from, to);
 
   if (params.search?.trim()) {
-    const filter = `full_name.ilike.%${params.search.trim()}%,email.ilike.%${params.search.trim()}%`;
+    const term = params.search.trim().replace(/[%_\\]/g, (c) => `\\${c}`);
+    const filter = `full_name.ilike.%${term}%,email.ilike.%${term}%`;
     countQ = countQ.or(filter);
     dataQ = dataQ.or(filter);
   }

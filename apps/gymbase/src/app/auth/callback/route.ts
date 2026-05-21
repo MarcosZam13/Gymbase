@@ -12,7 +12,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as "invite" | "recovery" | "email" | null;
-  const next = searchParams.get("next") ?? "/portal/dashboard";
+  const rawNext = searchParams.get("next") ?? "/portal/dashboard";
+  // Prevenir open redirect: solo rutas internas (empiezan con / pero no con //)
+  const next = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/portal/dashboard";
 
   const cookieStore = await cookies();
   const supabase = createServerClient(
