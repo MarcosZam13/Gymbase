@@ -59,7 +59,7 @@ export const themeConfig = {
     gym_challenges: true,
     gym_member_custom_routines: true,
     gym_inventory: false,
-    gym_marketplace: false,
+    gym_marketplace: true,
     gym_accounting: true,
   },
 } as const;

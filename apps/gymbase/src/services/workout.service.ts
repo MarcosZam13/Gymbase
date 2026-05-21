@@ -194,6 +194,7 @@ export async function getMemberPRs(
 export async function updatePersonalRecords(
   supabase: SupabaseClient,
   userId: string,
+  orgId: string,
   exercises: WorkoutExerciseDone[]
 ): Promise<PRResult[]> {
   const exerciseIds = exercises.map((e) => e.exercise_id);
@@ -245,6 +246,7 @@ export async function updatePersonalRecords(
         .upsert(
           {
             user_id: userId,
+            org_id: orgId,
             exercise_id: exerciseId,
             max_weight: maxWeight,
             max_reps: maxReps,
@@ -389,7 +391,7 @@ export async function saveWorkoutSession(
   });
 
   // Actualizar PRs después de guardar el log
-  const newPRs = await updatePersonalRecords(supabase, userId, exercises);
+  const newPRs = await updatePersonalRecords(supabase, userId, orgId, exercises);
 
   return { log, newPRs };
 }

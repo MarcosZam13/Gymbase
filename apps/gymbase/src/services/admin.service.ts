@@ -40,7 +40,7 @@ export async function fetchAdminStats(
     { count: publishedContent },
     { count: newMembers },
   ] = await Promise.all([
-    supabase.from("subscriptions").select("*", { count: "exact", head: true }).eq("status", "active"),
+    supabase.from("subscriptions").select("*", { count: "exact", head: true }).eq("status", "active").gt("expires_at", now.toISOString()),
     supabase.from("payment_proofs").select("*", { count: "exact", head: true }).eq("status", "pending"),
     supabase.from("payment_proofs").select("amount").eq("status", "approved").gte("created_at", startOfMonth).lt("created_at", startOfNextMonth),
     supabase.from("content").select("*", { count: "exact", head: true }).eq("is_published", true),
