@@ -19,11 +19,15 @@ export function QRScanner(): React.ReactNode {
   const [status, setStatus] = useState<ScanStatus>("idle");
   const [message, setMessage] = useState("");
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
+  // Ref en lugar de state para que el guard sea síncrono y evite doble-scan
+  const isProcessingRef = useRef(false);
+  const lastScannedRef = useRef<string>("");
 
   const handleScan = useCallback(async (decodedText: string): Promise<void> => {
-    if (isProcessing) return;
-    setIsProcessing(true);
+    if (isProcessingRef.current) return;
+    if (decodedText === lastScannedRef.current) return; // mismo QR consecutivo
+    isProcessingRef.current = true;
+    lastScannedRef.current = decodedText;
 
     try {
       const result = await scanCheckin({ qr_code: decodedText });
@@ -49,9 +53,10 @@ export function QRScanner(): React.ReactNode {
       setStatus("scanning");
       setMessage("");
       setScanResult(null);
-      setIsProcessing(false);
+      isProcessingRef.current = false;
+      lastScannedRef.current = "";
     }, 3000);
-  }, [isProcessing]);
+  }, []);
 
   useEffect(() => {
     const scannerId = "qr-scanner-container";

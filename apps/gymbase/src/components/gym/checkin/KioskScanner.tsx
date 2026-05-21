@@ -19,13 +19,16 @@ export function KioskScanner({ orgId, gymName }: KioskScannerProps): React.React
   const [message, setMessage] = useState("");
   const [memberName, setMemberName] = useState<string | null>(null);
   const [isCheckout, setIsCheckout] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const isProcessingRef = useRef(false);
+  const lastScannedRef = useRef<string>("");
 
   const { current, capacity } = useOccupancy(orgId);
 
   const handleScan = useCallback(async (decodedText: string): Promise<void> => {
-    if (isProcessing) return;
-    setIsProcessing(true);
+    if (isProcessingRef.current) return;
+    if (decodedText === lastScannedRef.current) return;
+    isProcessingRef.current = true;
+    lastScannedRef.current = decodedText;
 
     try {
       const result = await scanCheckin({ qr_code: decodedText });
@@ -49,9 +52,10 @@ export function KioskScanner({ orgId, gymName }: KioskScannerProps): React.React
       setStatus("scanning");
       setMessage("");
       setMemberName(null);
-      setIsProcessing(false);
+      isProcessingRef.current = false;
+      lastScannedRef.current = "";
     }, 3500);
-  }, [isProcessing]);
+  }, []);
 
   useEffect(() => {
     const scannerId = "kiosk-scanner-container";
